@@ -27,7 +27,11 @@ function parseFile(filename, failOnError)
   var code = fs.readFileSync(filename, "UTF-8");
   code = code.replace(/^(#!.*\n)/, "(:$1:)");
   var c = new Compiler();
-  c.compile(code);
+  var ast = c.compile(code);
+  var fail = ast.error !== undefined;
+  if(fail) console.log(ast);
+  fail ? failures.push(filename) : successes.push(filename);
+  console.log(ast.markers);
   //removeParentPtr(ast);
   //var json = JSON.stringify(ast, null, 2);
   //console.log(json);
