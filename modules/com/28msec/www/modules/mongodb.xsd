@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+ 
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.28msec.com/modules/mongodb"
+  xmlns="http://www.28msec.com/modules/mongodb"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+ 
+  <xs:simpleType name="oid">
+    <xs:restriction base="xs:base64Binary"/>
+  </xs:simpleType>
+ 
+  <xs:simpleType name="regex">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="js-code">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="symbol">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="timestamp">
+    <xs:restriction base="xs:unsignedLong"/>
+  </xs:simpleType>
+
+</xs:schema>
+

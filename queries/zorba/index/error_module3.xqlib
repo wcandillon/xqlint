@@ -1,0 +1,17 @@
+
+(:
+  Check that index domain expr does not produce any atomic items
+:)
+
+module namespace idx = "http://www.w3.org/TestModules/idx";
+
+import module namespace dml = "http://www.zorba-xquery.com/modules/store/static/collections/dml";
+
+declare namespace ann = "http://www.zorba-xquery.com/annotations";
+
+declare collection idx:auctions as node()*;
+
+
+declare %ann:value-range %ann:manual index idx:foo 
+on nodes (dml:collection(xs:QName("idx:auctions"))/site/people/person, "1")
+by fn:data(./@id) as xs:string;
