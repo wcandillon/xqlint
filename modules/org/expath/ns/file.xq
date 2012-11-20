@@ -484,23 +484,6 @@ declare %an:sequential function file:write(
 (:~
  : Writes a sequence of Base64 items as binary to a file.
  :
- : The operation is equivalent to calling:
- : <pre>file:write-binary($file, $content, fn:true())</pre>.
- :
- : @param $file The path/URI of the file to write the content to.
- : @param $content The content to be serialized to the file.
- : @return The empty sequence.
- : @error file:FOFL0004 If <pre>$file</pre> points to a directory.
- : @error file:FOFL9999 If any other error occurs.
- :)
-declare %an:sequential function file:write-binary(
-  $file as xs:string,
-  $content as xs:base64Binary*
-) as empty-sequence() external;
-
-(:~
- : Writes a sequence of Base64 items as binary to a file.
- :
  : @param $file The path/URI of the file to write the content to.
  : @param $content The content to be serialized to the file.
  : @return The empty sequence.
