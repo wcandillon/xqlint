@@ -18,6 +18,10 @@ npm install dryice
 ```bash
 npm install walk
 ```
+Generate the parser
+-----------
+zorba -q generate_parser.xq -f
+
 Running the test suite
 -----------
 ```bash
