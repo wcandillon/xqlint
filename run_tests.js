@@ -29,7 +29,6 @@ function parseFile(filename, failOnError)
   var c = new Compiler();
   var ast = c.compile(code);
   var fail = ast.error !== undefined;
-  if(fail) console.log(ast);
   fail ? failures.push(filename) : successes.push(filename);
   console.log(ast.markers);
   //removeParentPtr(ast);
