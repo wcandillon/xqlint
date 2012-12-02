@@ -33,6 +33,7 @@ REx -ll 2 -backtrack -tree -javascript -a xqlint XQueryParser.ebnf
 
 Running the test suite
 -----------
+### Parser test suite
 ```bash
 node run_tests.js --keep-going
 ```
@@ -45,6 +46,11 @@ node run_tests.js -f filename
 For instance:
 ```bash
 node run_tests.js -f queries/zorba/boolean/compare0.xq
+```
+
+### Unit tests
+```bash
+node tests/all.js
 ```
 
 Who is using this project?
