@@ -14,9 +14,11 @@ npm install dryice
 ```
 * Optionals (to run tests)
     * Walk (https://github.com/coolaj86/node-walk)
+    * AMD loader (https://github.com/ajaxorg/node-amd-loader)
+    * asyncjs (https://github.com/fjakobs/async.js)
 
 ```bash
-npm install walk
+npm install walk amd-loader async
 ```
 Generate the parser
 -----------

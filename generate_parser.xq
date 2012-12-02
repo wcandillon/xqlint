@@ -23,5 +23,7 @@ variable $response := http-client:send-request(validate {
   </http:multipart>
 </http:request>
 });
-fs:write($output, $response[2], $output-text);
-$response[1]
+variable $meta := $response[1];
+variable $body := string($response[2]);
+fs:write($output, $body, $output-text);
+$body
