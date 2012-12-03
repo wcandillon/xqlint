@@ -52,22 +52,6 @@ function getTokens(code)
   return visitor.getTokens();
 }
 
-function getCode(tokens)
-{
-  var value = null;
-
-  for(var i in tokens.lines) {
-    var line = tokens.lines[i];
-    value = value === null ? "" : value + "\n";
-    for(var j in line) {
-      var token = line[j];
-      value += token.value;
-    }
-  }
-
-  return value;
-}
-
 module.exports = {
     
     name: "Semantic Highlighter",
@@ -75,8 +59,17 @@ module.exports = {
     "test: simple flwor": function() {
       var code = "for $i in (let, for)\nreturn return";
       var tokens = getTokens(code);
-      var comp = getCode(tokens);
-      assert.equal(code, comp);
+      var reference = {
+        "lines":[
+          [ {"value":"","type":"text"},{"value":"","type":"text"},{"value":"for","type":"keyword"},{"value":" ","type":"text"},
+            {"value":"$i","type":"variable"},{"value":" ","type":"text"},{"value":"in","type":"keyword"},{"value":" ","type":"text"},
+            {"value":"(","type":"text"},{"value":"let","type":"support.function"},{"value":"","type":"text"},{"value":",","type":"text"},
+            {"value":" ","type":"text"},{"value":"for","type":"support.function"},{"value":"","type":"text"},{"value":")","type":"text"},{"value":"","type":"text"} ],
+          [{"value":"","type":"text"},{"value":"return","type":"keyword"},{"value":" ","type":"text"},{"value":"return","type":"support.function"},{"value":"","type":"text"},{"value":"","type":"text"}]
+        ],
+        "states":["start"]
+      };
+      assert.equal(JSON.stringify(tokens), JSON.stringify(reference));
     }
 };
 });
