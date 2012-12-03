@@ -35,6 +35,7 @@ if (typeof process !== "undefined") {
 define(function(require, exports, module) {
 "use strict";
 
+var fs = require('fs');
 var assert = require("./assertions");
 
 var requirejs = require('../r');
@@ -92,6 +93,16 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
+    },
+
+    "test: functx module": function() {
+      var path = "./tests/queries/zorba/functx/functx1.xqlib";
+      var code = fs.readFileSync(path, "UTF-8");
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      console.log(markers);
+      assert.equal(markers.length, 1);
     }
 };
 });
