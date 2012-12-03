@@ -66,8 +66,25 @@ module.exports = {
       assert.equal(marker.type, "warning");
       assert.equal(marker.level, "warning");
       assert.equal(marker.message, "$a: unused variable.");
-    }
+    },
+    
+    "test: complex flwor with unused let": function() {
+      var code = "let $a := 1\nlet $b := $a\nlet $b := $b + 1\nlet $b := 2\nreturn $b";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
+      var marker = markers[0];
+      assert.equal(marker.pos.sl, 2);
+    },
 
+    "test: complex flwor with no unused var": function() {
+      var code = "let $items := ()\nlet $item := $items[1]\nlet $item := $item\nreturn $item";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
+    }
 };
 });
 
