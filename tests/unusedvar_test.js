@@ -84,6 +84,14 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
+    },
+
+    "test: for binding with no unused var": function() {
+      var code = "let $zips := ()\nfor $zip in tokenize($zips, \"\\n\")\nlet $zip := jn:parse-json($zip)\nreturn $zip";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
     }
 };
 });
