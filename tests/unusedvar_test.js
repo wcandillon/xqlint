@@ -101,9 +101,20 @@ module.exports = {
       var compiler = new Compiler();
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
-      console.log(markers);
       assert.equal(markers.length, 2);
-    }
+      assert.equal(markers[0].pos.sl, 1780);
+      assert.equal(markers[1].pos.sl, 1979);
+    },
+    
+    "test: undeclared variable reference in module variable": function() {
+      var code = "declare variable $test := $test;";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
+      assert.equal(markers[0].message.substring(0, 10), "[XPST0008]");
+    },
+
 };
 });
 
