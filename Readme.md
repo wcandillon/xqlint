@@ -6,12 +6,6 @@ The XQuery parser is generated using REx Parser Generator (http://www.bottlecaps
 
 Dependencies
 -----------
-* Required
-    * Dryice (https://github.com/mozilla/dryice)
-
-```bash
-npm install dryice
-```
 * Optionals (to run tests)
     * Walk (https://github.com/coolaj86/node-walk)
     * AMD loader (https://github.com/ajaxorg/node-amd-loader)
