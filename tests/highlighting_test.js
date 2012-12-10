@@ -52,6 +52,8 @@ function getTokens(code)
   return visitor.getTokens();
 }
 
+//TODO: test highlighting of: replace json value of $tweet("created_at") with $dateTime;
+//TODO: check highlighting for true, null, false in JSONiq.
 module.exports = {
     
     name: "Semantic Highlighter",
