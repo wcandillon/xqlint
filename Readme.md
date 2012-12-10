@@ -18,13 +18,13 @@ npm install dryice
     * asyncjs (https://github.com/fjakobs/async.js)
 
 ```bash
-npm install walk amd-loader async
+npm install walk amd-loader asyncjs
 ```
 Generate the parser
 -----------
 The parser can be generated programmatically by using the following XQuery file:
 ```bash
-zorba -q generate_parser.xq -f
+zorba -q generate_parser.xq -f --serialize-text
 ```
 Or via http://www.bottlecaps.de/rex/:
 ```bash
