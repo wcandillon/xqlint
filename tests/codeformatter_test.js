@@ -54,8 +54,20 @@ module.exports = {
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      console.log(formatted);
+      //console.log(formatted);
+    },
+
+    "test: simple enclosed expr": function() {
+      var code = "<foo foo='{for $i in (1 to 10) return $i}' />";
+      var h = new JSONParseTreeHandler(code);
+      var parser = new XQueryParser(code, h);
+      parser.parse_XQuery();
+      var ast = h.getParseTree();
+      var codeFormatter = new CodeFormatter(ast);
+      var formatted = codeFormatter.format();
+      assert.equal(code, formatted); 
     }
+
 };
 });
 
