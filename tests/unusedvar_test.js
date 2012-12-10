@@ -114,7 +114,42 @@ module.exports = {
       assert.equal(markers.length, 1);
       assert.equal(markers[0].message.substring(0, 10), "[XPST0008]");
     },
+    
+    "test: undeclared variable reference in local variable (1)": function() {
+      var code = "declare function local:test() {\nvariable $foo := $foo;\n$foo;\n};\nlocal:test()";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
+      assert.equal(markers[0].message.substring(0, 10), "[XPST0008]");
+    },
+    
+    "test: undeclared variable reference in local variable (2)": function() {
+      var code = "variable $foo := $foo;\n$foo";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
+      assert.equal(markers[0].message.substring(0, 10), "[XPST0008]");
+    },
+    
+    "test: scripting statements (1)": function() {
+      var code = "$a;\nvariable $a := 1;";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 2);
+      assert.equal(markers[0].message.substring(0, 10), "$a: unused");
+      assert.equal(markers[1].message.substring(0, 10), "[XPST0008]");
+    },
 
+    "test: scripting statements (2)": function() {
+      var code = "variable $a := 1;$a;";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
+    }, 
 };
 });
 
