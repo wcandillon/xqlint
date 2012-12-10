@@ -102,7 +102,7 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       console.log(markers);
-      assert.equal(markers.length, 1);
+      assert.equal(markers.length, 2);
     }
 };
 });
