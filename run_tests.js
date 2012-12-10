@@ -12,17 +12,6 @@ var successes = [];
 var failures  = [];
 var testHighlighter = false;
 
-function removeParentPtr(ast)
-{
-  if(ast.getParent !== undefined) {
-    delete ast.getParent;
-  }
-  for(var i in ast.children) {
-    var child = ast.children[i];
-    removeParentPtr(child);
-  }
-}
-
 function getCode(tokens)
 {
   var value = null;
