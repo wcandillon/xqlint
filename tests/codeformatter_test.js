@@ -66,6 +66,18 @@ module.exports = {
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
       assert.equal(code, formatted); 
+    },
+
+    "test: simple FLWOR": function() {
+      var code = "let $a := let $b := 1 return $b return $a";
+      var expected = "let $a := let $b := 1\n          return $b\nreturn $b";
+      var h = new JSONParseTreeHandler(code);
+      var parser = new XQueryParser(code, h);
+      parser.parse_XQuery();
+      var ast = h.getParseTree();
+      var codeFormatter = new CodeFormatter(ast);
+      var formatted = codeFormatter.format();
+      assert.equal(code, formatted); 
     }
 
 };
