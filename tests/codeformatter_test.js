@@ -78,6 +78,18 @@ module.exports = {
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
       assert.equal(code, formatted); 
+    },
+
+    "test: operators (1)": function() {
+      var code = "1\t+1";
+      var expected = "1 + 1";
+      var h = new JSONParseTreeHandler(code);
+      var parser = new XQueryParser(code, h);
+      parser.parse_XQuery();
+      var ast = h.getParseTree();
+      var codeFormatter = new CodeFormatter(ast);
+      var formatted = codeFormatter.format();
+      assert.equal(code, formatted); 
     }
 
 };
