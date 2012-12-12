@@ -4,6 +4,10 @@ var requirejs = require('./r');
 var Compiler = requirejs('./lib/Compiler').Compiler;
 var SyntaxHighlighter = requirejs('./lib/visitors/SyntaxHighlighter').SyntaxHighlighter;
 
+var JSONParseTreeHandler = requirejs('./lib/JSONParseTreeHandler').JSONParseTreeHandler;
+var XQueryParser = requirejs('./lib/XQueryParser').XQueryParser;
+var CodeFormatter = requirejs('./lib/visitors/CodeFormatter').CodeFormatter;
+
 String.prototype.endsWith = function(suffix) {
   return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -11,6 +15,9 @@ String.prototype.endsWith = function(suffix) {
 var successes = [];
 var failures  = [];
 var testHighlighter = false;
+var testMarkers = false;
+var testCodeFormatter = true;
+
 
 function getCode(tokens)
 {
@@ -37,13 +44,30 @@ function parseFile(filename, failOnError)
   var ast = c.compile(code);
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);
-  console.log(ast.markers);
-  
+
+  if (testMarkers){
+    console.log(ast.markers);
+  }
+
   if(testHighlighter) {
     console.log("Test syntax highlighter");
     var visitor = new SyntaxHighlighter(ast);
     var tokens = visitor.getTokens();
     if(code !== getCode(tokens)) throw "Syntax Highlighter issue with " + filename;
+  }
+
+  if(testCodeFormatter){
+    console.log("Test code formatter");
+    console.log("Code preformat:\n" + code);
+    var h = new JSONParseTreeHandler(code);
+    var parser = new XQueryParser(code, h);
+    parser.parse_XQuery();
+    ast = h.getParseTree();
+    //console.log(ast);
+    var codeFormatter = new CodeFormatter(ast);
+    var formatted = codeFormatter.format();
+    console.log("Code postformat:");
+    console.log(formatted);
   }
 }
 
@@ -61,9 +85,9 @@ function main(args) {
     var filename = args[file + 1];
     path = "./" + filename;
     parseFile(filename, keepGoing);
-  } else {
+  } else { 
     var walker  = walk.walk(path, { followLinks: false });
-    
+
     walker.on('file', function(root, stat, next) {
       // Add this file to the list of files
       var filename = root + '/' + stat.name;
@@ -79,9 +103,9 @@ function main(args) {
       console.log("The following files didn't parse: ");
       var i;
       for(i in failures)
-      {
-        console.log(failures[i]);
-      }
+    {
+      console.log(failures[i]);
+    }
     });
   }
 };
