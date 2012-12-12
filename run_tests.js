@@ -16,7 +16,7 @@ var successes = [];
 var failures  = [];
 var testHighlighter = false;
 var testMarkers = false;
-var testCodeFormatter = true;
+var testCodeFormatter = false;
 
 
 function getCode(tokens)
@@ -75,6 +75,7 @@ function main(args) {
   var keepGoing =  args.indexOf("--keep-going") != -1;
   var file      =  args.indexOf("-f");
   testHighlighter = args.indexOf("--test-highlighter") != -1;
+  testCodeFormatter = args.indexOf("--test-formatter") != -1;
 
   var path      = "./tests/queries";
   if(file != -1)
