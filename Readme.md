@@ -18,7 +18,7 @@ Generate the parser
 -----------
 The parser can be generated programmatically by using the following XQuery file:
 ```bash
-zorba -q generate_parser.xq -f
+zorba -q generate_xquery_parser.xq -f
 ```
 Or via http://www.bottlecaps.de/rex/:
 ```bash
