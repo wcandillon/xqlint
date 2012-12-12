@@ -35,9 +35,8 @@ var CommentParser = exports.CommentParser = function CommentParser(string, parsi
   init(string, parsingEventHandler);
 ?>
 
-Whitespace
-         ::= S^WS EOF
-           | Comment EOF
+
+Comments ::= (S^WS | Comment)* EOF
 
 Comment  ::= '(:' ( CommentContents | Comment )* ':)'
 
