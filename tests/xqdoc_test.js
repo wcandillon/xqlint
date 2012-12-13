@@ -27,51 +27,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ***** END LICENSE BLOCK ***** */
- 
-define(function(require, exports, module){
-  
-  var XQueryParser = require('./XQueryParser').XQueryParser;
-  var JSONParseTreeHandler = require('./JSONParseTreeHandler').JSONParseTreeHandler;
-  var Utils = require('./utils').Utils;  
-  var Translator = require('./Translator').Translator;
-  
-  var Compiler = exports.Compiler = function() {
-    this.compile = function(code) {
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      var ast = null;
-      var error = null;
-      try {
-        parser.parse_XQuery();
-     } catch(e) {
-        if(e instanceof parser.ParseException) {
-          var pos = Utils.convertPosition(code, e.getBegin(), e.getEnd());
-          var message = parser.getErrorMessage(e);
-          if(pos.sc === pos.ec) {
-            pos.ec++;
-          }
-          error = {
-            pos: pos,
-            type: "error",
-            level: "error",
-            message: message
-          };
-        } else {
-          throw e;
-        }
+
+if (typeof process !== "undefined") {
+    require("amd-loader");
+}
+
+define(function(require, exports, module) {
+"use strict";
+
+var assert = require("./assertions");
+
+var requirejs = require('../r');
+var CommentParser = requirejs('../lib/CommentParser').CommentParser;
+var CommentHandler = requirejs('../lib/CommentHandler').CommentHandler;
+
+module.exports = {
+    
+    name: "XQDoc",
+    
+    "test: simple comment parsing": function() {
+      var code = "  \n (: Hello World :) (: (: :) :) \n (: Hello :)";
+      var h = new CommentHandler(code);
+      var parser = new CommentParser(code, h);
+      parser.parse_Comments();
+      var ast = h.getParseTree();
+      var commentNb = 0;
+      for(var i in ast.children) {
+        var child = ast.children[i];
+        if(child.name === "Comment") commentNb++
       }
-      ast = h.getParseTree();
-      //Utils.removeParentPtr(ast);
-      if (this.showAST !== undefined){
-        console.log(JSON.stringify(ast, null, 2));
-      }
-      var translator = new Translator(ast);
-      ast = translator.translate();
-      if(error !== null) {
-        ast.markers.push(error);  
-        ast.error = true;
-      }
-      return ast;
-    }
-  }
+      assert.equal(3, commentNb); 
+    },
+};
 });
+
+if (typeof module !== "undefined" && module === require.main) {
+    require("asyncjs").test.testcase(module.exports).exec()
+}

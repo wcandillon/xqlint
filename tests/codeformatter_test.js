@@ -63,13 +63,14 @@ define(function(require, exports, module) {
 
     "test: simple code formatting": function() {
       var code = "for $i in (let, for) return return";
+      var expected = "for $i in (let, for)\nreturn return";
       var h = new JSONParseTreeHandler(code);
       var parser = new XQueryParser(code, h);
       parser.parse_XQuery();
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      //console.log(formatted);
+      assert.equal(formatted, expected); 
     },
 
     "test: simple enclosed expr": function() {
@@ -125,6 +126,18 @@ define(function(require, exports, module) {
       var code = "typeswitch ((1)) case text() return 1 case element (a) return 2 default return 3";
       var expected = "typeswitch ((1))\n    case text()\n        return 1\n    case element(a)\n        return 2\n    default\n        return 3";
       testFormat(code, expected);
+    },
+
+    "test: operators (1)": function() {
+      var code = "1\t+1";
+      var expected = "1 + 1";
+      var h = new JSONParseTreeHandler(code);
+      var parser = new XQueryParser(code, h);
+      parser.parse_XQuery();
+      var ast = h.getParseTree();
+      var codeFormatter = new CodeFormatter(ast);
+      var formatted = codeFormatter.format();
+      assert.equal(formatted, expected); 
     }
 
   };
