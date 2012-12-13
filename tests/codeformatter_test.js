@@ -48,13 +48,14 @@ module.exports = {
     
     "test: simple code formatting": function() {
       var code = "for $i in (let, for) return return";
+      var expected = "for $i in (let, for)\nreturn return";
       var h = new JSONParseTreeHandler(code);
       var parser = new XQueryParser(code, h);
       parser.parse_XQuery();
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      //console.log(formatted);
+      assert.equal(formatted, expected); 
     },
 
     "test: simple enclosed expr": function() {
@@ -65,7 +66,7 @@ module.exports = {
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      assert.equal(code, formatted); 
+      assert.equal(formatted, code); 
     },
 
     "test: simple FLWOR": function() {
@@ -77,7 +78,7 @@ module.exports = {
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      assert.equal(code, formatted); 
+      assert.equal(formatted, expected); 
     },
 
     "test: operators (1)": function() {
@@ -89,7 +90,7 @@ module.exports = {
       var ast = h.getParseTree();
       var codeFormatter = new CodeFormatter(ast);
       var formatted = codeFormatter.format();
-      assert.equal(code, formatted); 
+      assert.equal(formatted, expected); 
     }
 
 };
