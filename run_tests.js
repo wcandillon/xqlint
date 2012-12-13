@@ -17,7 +17,7 @@ var failures  = [];
 var testHighlighter = false;
 var testMarkers = false;
 var testCodeFormatter = false;
-
+var showAST = false;
 
 function getCode(tokens)
 {
@@ -41,7 +41,11 @@ function parseFile(filename, failOnError)
   var code = fs.readFileSync(filename, "UTF-8");
   code = code.replace(/^(#!.*\n)/, "(:$1:)");
   var c = new Compiler();
+  if (showAST){
+    c.showAST = true;
+  }
   var ast = c.compile(code);
+  
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);
 
@@ -76,6 +80,7 @@ function main(args) {
   var file      =  args.indexOf("-f");
   testHighlighter = args.indexOf("--test-highlighter") != -1;
   testCodeFormatter = args.indexOf("--test-formatter") != -1;
+  showAST = args.indexOf("--ast") != -1;
 
   var path      = "./tests/queries";
   if(file != -1)
@@ -103,10 +108,9 @@ function main(args) {
       console.log(successes.length + " succeeded, " + failures.length + " failed.");
       console.log("The following files didn't parse: ");
       var i;
-      for(i in failures)
-    {
-      console.log(failures[i]);
-    }
+      for(i in failures) {
+        console.log(failures[i]);
+      }
     });
   }
 };
