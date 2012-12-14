@@ -1,4 +1,4 @@
 if (true()) then
-    \"looooooooooooooooooooooooooooooooong\"
+    "looooooooooooooooooooooooooooooooong"
 else
     1

@@ -1,1 +1,1 @@
-if (true()) then \"looooooooooooooooooooooooooooooooong\" else 1
+if (true()) then "looooooooooooooooooooooooooooooooong" else 1
