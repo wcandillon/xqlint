@@ -59,36 +59,36 @@ define(function(require, exports, module) {
     name: "FormatWriter",
 
   "test: empty": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG;
     assert.equal(w.getResult(), "");
   },
   "test: single space": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG;
     w.appendStr(" ");
     assert.equal(w.getResult(), "");
   },
   "test: blank line": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG;
     w.postNewLine();
     assert.equal(w.getResult(), "\n");
   },
   "test: blank lines with WS": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG;
     w.appendStr("\n   \n");
     assert.equal(w.getResult(), "\n\n");
   },
   "test: text": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG; 
     w.appendStr("text");
     assert.equal(w.getResult(), "text");
   },
   "test: text with spaces": function() {
-    var w = new FormatWriter();
+    var w = new FormatWriter(indent);
     w.DEBUG = DEBUG; 
     w.appendStr(" text with spaces  ");
     assert.equal(w.getResult(), "text with spaces  ");
@@ -186,13 +186,14 @@ define(function(require, exports, module) {
     w.postNewLine(1);
     testResult(w, "\n\n\n");
   },
-  "test: newlines 4": function() {
+  "test: newline and indent 1": function() {
     var w = new FormatWriter(indent);
-    w.DEBUG = DEBUG; 
+    w.DEBUG = DEBUG;
+    w.appendStr("level 1");
     w.postNewLine();
-    w.postNewLine();
-    w.postNewLine();
-    testResult(w, "\n");
+    w.pushIndent();
+    w.appendStr("level 1");
+    testResult(w, "level 1\nlevel 1");
   }
 
 };
