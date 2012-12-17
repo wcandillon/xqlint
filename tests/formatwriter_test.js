@@ -195,7 +195,7 @@ define(function(require, exports, module) {
     w.postNewLine();
     w.pushIndent();
     w.appendStr("level 1");
-    testResult(w, "level 1\n  level 1");
+    testResult(w, "level 1\nlevel 1");
   },
   "test: multi push indent 1": function() {
     var w = new FormatWriter(indent);
