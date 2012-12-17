@@ -67,7 +67,7 @@ define(function(require, exports, module) {
 
   };
 
-  var testFiles = fs.readdirSync(path.resolve(__dirname, "queries/xqlint"));
+  var testFiles = fs.readdirSync(path.resolve(__dirname, "queries/xqlint")).sort();
   
   console.log("Parsing tests...");
   for (var i = 0; i < testFiles.length; i++){
