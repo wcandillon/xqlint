@@ -91,7 +91,7 @@ define(function(require, exports, module) {
     var w = new FormatWriter(indent);
     w.DEBUG = DEBUG; 
     w.appendStr(" text with spaces  ");
-    assert.equal(w.getResult(), "text with spaces  ");
+    assert.equal(w.getResult(), "text with spaces");
   },
   "test: text on several lines": function() {
     var w = new FormatWriter(indent);
@@ -116,15 +116,17 @@ define(function(require, exports, module) {
     w.pushIndent();
     w.appendStr(" \n ");
     w.appendStr("level 2");
-    testResult(w,  "level 1  \n  level 2");
+    testResult(w,  "level 1\n  level 2");
   },
   "test: indentation 3": function() {
     var w = new FormatWriter(indent);
     w.DEBUG = DEBUG; 
-    w.appendStr("level 1\n");
+    w.appendStr("level 1 ");
     w.pushIndent();
-    w.appendStr("    level 1");
-    testResult(w, "level 1\nlevel 1");
+    w.postNewLine();
+    w.appendStr(" \n ");
+    w.appendStr("level 2");
+    testResult(w, "level 1\n  level 2");  
   },
   "test: indentation 4": function() {
     var w = new FormatWriter(indent);
@@ -193,7 +195,7 @@ define(function(require, exports, module) {
     w.postNewLine();
     w.pushIndent();
     w.appendStr("level 1");
-    testResult(w, "level 1\nlevel 1");
+    testResult(w, "level 1\n  level 1");
   },
   "test: multi push indent 1": function() {
     var w = new FormatWriter(indent);
@@ -202,8 +204,8 @@ define(function(require, exports, module) {
     w.pushIndent();
     w.pushIndent();
     w.postNewLine();
-    w.appendStr("level 2");
-    testResult(w, "level 1\n  level 2");
+    w.appendStr("    level 3");
+    testResult(w, "level 1\n    level 3");
   },
   "test: multi push indent 2": function() {
     var w = new FormatWriter(indent);
@@ -212,10 +214,10 @@ define(function(require, exports, module) {
     w.pushIndent();
     w.pushIndent();
     w.postNewLine();
-    w.appendStr(" level 2");
+    w.appendStr(" level 3");
     w.postNewLine();
-    w.appendStr(" level 2");
-    testResult(w, "level 1\n  level 2\n  level 2");
+    w.appendStr(" level 3");
+    testResult(w, "level 1\n    level 3\n    level 3");
   }
 
 };
