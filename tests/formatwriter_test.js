@@ -194,6 +194,28 @@ define(function(require, exports, module) {
     w.pushIndent();
     w.appendStr("level 1");
     testResult(w, "level 1\nlevel 1");
+  },
+  "test: multi push indent 1": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG;
+    w.appendStr("level 1");
+    w.pushIndent();
+    w.pushIndent();
+    w.postNewLine();
+    w.appendStr("level 2");
+    testResult(w, "level 1\n  level 2");
+  },
+  "test: multi push indent 2": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG;
+    w.appendStr("level 1");
+    w.pushIndent();
+    w.pushIndent();
+    w.postNewLine();
+    w.appendStr(" level 2");
+    w.postNewLine();
+    w.appendStr(" level 2");
+    testResult(w, "level 1\n  level 2\n  level 2");
   }
 
 };
