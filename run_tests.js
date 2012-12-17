@@ -19,6 +19,8 @@ var testMarkers = false;
 var testCodeFormatter = false;
 var showAST = false;
 
+var testFileExtensions = ['.xq'];
+
 function getCode(tokens)
 {
   var value = null;
@@ -60,9 +62,13 @@ function parseFile(filename, failOnError)
     if(code !== getCode(tokens)) throw "Syntax Highlighter issue with " + filename;
   }
 
+  var green = '\x1b[32m';
+  var red = '\x1b[31m';
+  var reset = '\x1b[0m';
+
   if(testCodeFormatter){
     console.log("Test code formatter");
-    console.log("Code preformat:\n" + code);
+    console.log(red + "Code preformat:\n\"\n" + code + "\n\"");
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
@@ -70,14 +76,15 @@ function parseFile(filename, failOnError)
     //console.log(ast);
     var codeFormatter = new CodeFormatter(ast);
     var formatted = codeFormatter.format();
-    console.log("Code postformat:");
-    console.log(formatted);
+    console.log(green + "Code postformat:\n\"");
+    console.log(formatted + "\n\"" + reset);
   }
 }
 
 function main(args) {
   var keepGoing =  args.indexOf("--keep-going") != -1;
   var file      =  args.indexOf("-f");
+  var dir       =  args.indexOf("-d");
   testHighlighter = args.indexOf("--test-highlighter") != -1;
   testCodeFormatter = args.indexOf("--test-formatter") != -1;
   showAST = args.indexOf("--ast") != -1;
@@ -91,7 +98,23 @@ function main(args) {
     var filename = args[file + 1];
     path = "./" + filename;
     parseFile(filename, keepGoing);
-  } else { 
+  } else if (dir != -1){
+    if (args.length <= (dir + 1)) {
+      throw "Missing argument to -d: -d <dirname>";
+    }
+    var dirName = args[dir + 1];
+    var testFiles = fs.readdirSync(dirName);
+    for (var i = 0; i < testFiles.length; i++){
+      var testFile = dirName + testFiles[i];
+
+      for (var j = 0; j < testFileExtensions.length; j++){
+        if (testFile.endsWith(testFileExtensions[j])){
+          parseFile(testFile, keepGoing); 
+          break;
+        }
+      }
+    }
+  }else { 
     var walker  = walk.walk(path, { followLinks: false });
 
     walker.on('file', function(root, stat, next) {
