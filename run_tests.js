@@ -18,6 +18,7 @@ var testHighlighter = false;
 var testMarkers = false;
 var testCodeFormatter = false;
 var showAST = false;
+var writeBack = false;
 
 var testFileExtensions = ['.xq'];
 
@@ -78,16 +79,26 @@ function parseFile(filename, failOnError)
     var formatted = codeFormatter.format();
     console.log(green + "Code postformat:\n\"");
     console.log(formatted + "\n\"" + reset);
+    if (writeBack) {
+      fs.writeFile(filename, formatted, function(err) {
+        if(err) {
+          console.log(err);
+        } else {
+          console.log("Wrote formatted code to " + filename);
+        }
+      }); 
+    }
   }
 }
 
 function main(args) {
-  var keepGoing =  args.indexOf("--keep-going") != -1;
-  var file      =  args.indexOf("-f");
-  var dir       =  args.indexOf("-d");
-  testHighlighter = args.indexOf("--test-highlighter") != -1;
+  var keepGoing     = args.indexOf("--keep-going") != -1;
+  var file          = args.indexOf("-f");
+  var dir           = args.indexOf("-d");
+  testHighlighter   = args.indexOf("--test-highlighter") != -1;
   testCodeFormatter = args.indexOf("--test-formatter") != -1;
-  showAST = args.indexOf("--ast") != -1;
+  showAST           = args.indexOf("--ast") != -1;
+  writeBack         = args.indexOf("-w") != -1;
 
   var path      = "./tests/queries";
   if(file != -1)
