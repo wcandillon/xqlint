@@ -67,25 +67,48 @@ define(function(require, exports, module) {
 
   };
 
-  var testFiles = fs.readdirSync(path.resolve(__dirname, "queries/xqlint")).sort();
-  
-  console.log("Parsing tests...");
-  for (var i = 0; i < testFiles.length; i++){
-
-    var testFile = path.resolve(__dirname, "queries/xqlint/" + testFiles[i]);
-    if (testFile.indexOf(".xq", testFile.length - 3) === -1){
-      continue;
+  function parseTestFiles(dir, recursive){
+    if (dir.charAt(dir.length - 1) !== '/'){
+      dir += '/';
     }
-    var solFile = testFile.substring(0, testFile.length - 3) + ".txt";
+    var testFiles = fs.readdirSync(path.resolve(__dirname, dir)).sort();
 
-    var testFileContent = fs.readFileSync(testFile, "utf8");
-    var solFileContent = fs.readFileSync(solFile, "utf8");
+    
+    var childDirs = [];
 
-    var testName = "test: " + testFiles[i].substring(0, testFiles[i].length - 3);
+    for (var i = 0; i < testFiles.length; i++){
 
-    console.log(testFile);
+      var testFile = path.resolve(__dirname, dir + testFiles[i]);
+      
+      var stats = fs.statSync(testFile);
+      if (stats.isDirectory()){
+        childDirs.push(testFile);
+        continue;
+      }
 
-    addTestCase(testName, testFileContent, solFileContent);
+      if (testFile.indexOf(".xq", testFile.length - 3) === -1){
+        continue;
+      }
+      var solFile = testFile.substring(0, testFile.length - 3) + ".txt";
+
+      if (!fs.existsSync(solFile)){
+        continue;
+      }
+
+      var testFileContent = fs.readFileSync(testFile, "utf8");
+      var solFileContent = fs.readFileSync(solFile, "utf8");
+
+      var testName = "test: " + testFiles[i].substring(0, testFiles[i].length - 3);
+
+      console.log(testFile);
+
+      addTestCase(testName, testFileContent, solFileContent);
+    }
+
+
+    for (var i = 0; i < childDirs.length; i++){
+      parseTestFiles(childDirs[i], true);
+    }
   }
 
   function addTestCase(name, code, expected){
@@ -93,6 +116,9 @@ define(function(require, exports, module) {
       testFormat(code,expected);
     }
   };
+
+  console.log("Parsing tests...");
+  parseTestFiles("queries/xqlint", true);
 
 });
 
