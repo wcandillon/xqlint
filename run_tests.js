@@ -114,7 +114,10 @@ function main(args) {
       throw "Missing argument to -d: -d <dirname>";
     }
     var dirName = args[dir + 1];
-    var testFiles = fs.readdirSync(dirName);
+    if (dirName.charAt(dirName.length - 1) !== '/'){
+      dirName += '/';
+    }
+    var testFiles = fs.readdirSync(dirName).sort();
     for (var i = 0; i < testFiles.length; i++){
       var testFile = dirName + testFiles[i];
 
