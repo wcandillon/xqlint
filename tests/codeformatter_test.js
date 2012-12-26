@@ -98,7 +98,7 @@ define(function(require, exports, module) {
       var testFileContent = fs.readFileSync(testFile, "utf8");
       var solFileContent = fs.readFileSync(solFile, "utf8");
 
-      var testName = "test: " + testFiles[i].substring(0, testFiles[i].length - 3);
+      var testName = "test: " + dir.substring(dir.lastIndexOf('xqlint') + 7 )+ testFiles[i].substring(0, testFiles[i].length - 3);
 
       console.log(testFile);
 
