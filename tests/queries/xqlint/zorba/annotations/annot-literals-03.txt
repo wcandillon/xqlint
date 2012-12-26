@@ -3,8 +3,7 @@
    
 declare namespace ann = "http://www.zorba-xquery.com/annotations";   
 
-declare %ann:sequential(123, "string literal") function
-local:func()
+declare %ann:sequential(123, "string literal") function local:func()
 {
     1
 };
