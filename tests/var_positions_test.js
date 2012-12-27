@@ -27,18 +27,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ***** END LICENSE BLOCK ***** */
- 
-define(function(require, exports, module){
-  var StaticContext = exports.StaticContext = function(pos, parent){
-    
-    this.pos = pos;
 
-    this.parent = parent;
+if (typeof process !== "undefined") {
+    require("amd-loader");
+}
+
+define(function(require, exports, module) {
+"use strict";
+
+var fs = require('fs');
+var assert = require("./assertions");
+
+var requirejs = require('../r');
+var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
+var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
+var Compiler = requirejs('../lib/Compiler').Compiler;
+var Utils = require('../lib/utils').Utils;  
+
+var findNodes = function(ast, name) {
+  var results = [];
+  if(ast.name === name) {
+    results.push(ast);
+  }
+  for(var i in ast.children)
+  {
+    var child = ast.children[i];
+    var r = findNodes(child, name);
+    results = results.concat(r);
+  }
+  return results;
+};
+
+module.exports = {
     
-    this.children = [];
+    name: "Variable Positions",
     
-    this.varDecls = {};
-    this.varRefs = {};
-    
-  };
+    "test: simple variable analysis": function() {
+      var code = "variable $a := 1; $a := $a + 1; $a";
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var sctx = ast.sctx;
+      var nodes = findNodes(ast, "VarRef");
+      var ref = nodes[nodes.length - 1];
+      var currentSctx = Utils.findNode(sctx, { line: ref.sl, col: ref.sc });
+      console.log(currentSctx);
+    } 
+};
 });
+
+if (typeof module !== "undefined" && module === require.main) {
+    require("asyncjs").test.testcase(module.exports).exec()
+}
