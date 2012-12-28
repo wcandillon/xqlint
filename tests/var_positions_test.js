@@ -63,14 +63,37 @@ module.exports = {
     name: "Variable Positions",
     
     "test: simple variable analysis": function() {
-      var code = "variable $a := 1; $a := $a + 1; $a";
+      var code = "declare function local:test() { variable $a := 1; $a := $a + 1; $a; $a }; local:test()";
       var compiler = new Compiler();
       var ast = compiler.compile(code);
       var sctx = ast.sctx;
       var nodes = findNodes(ast, "VarRef");
       var ref = nodes[nodes.length - 1];
-      var currentSctx = Utils.findNode(sctx, { line: ref.sl, col: ref.sc });
-      console.log(currentSctx);
+      var currentSctx = Utils.findNode(sctx, { line: ref.pos.sl, col: ref.pos.sc });
+      var varRefs = currentSctx.getVarRefs("a");
+      var varDecl = currentSctx.getVarDecl("a");
+      
+      //{ sl: 0, sc: 56, el: 0, ec: 58 }
+      assert.equal(varRefs[0].pos.sl, 0);
+      assert.equal(varRefs[0].pos.sc, 56);
+      assert.equal(varRefs[0].pos.el, 0);
+      assert.equal(varRefs[0].pos.ec, 58);
+      //{ sl: 0, sc: 64, el: 0, ec: 66 }
+      assert.equal(varRefs[1].pos.sl, 0);
+      assert.equal(varRefs[1].pos.sc, 64);
+      assert.equal(varRefs[1].pos.el, 0);
+      assert.equal(varRefs[1].pos.ec, 66);
+      //{ sl: 0, sc: 68, el: 0, ec: 70 }
+      assert.equal(varRefs[2].pos.sl, 0);
+      assert.equal(varRefs[2].pos.sc, 68);
+      assert.equal(varRefs[2].pos.el, 0);
+      assert.equal(varRefs[2].pos.ec, 70);
+     
+      //{ sl: 0, sc: 41, el: 0, ec: 43 }
+      assert.equal(varDecl.pos.sl, 0);
+      assert.equal(varDecl.pos.sc, 41);
+      assert.equal(varDecl.pos.el, 0);
+      assert.equal(varDecl.pos.ec, 43);
     } 
 };
 });

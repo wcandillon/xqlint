@@ -63,7 +63,7 @@ module.exports = {
       assert.equal(marker.pos.sl, 1);
       assert.equal(marker.pos.sc, 4);
       assert.equal(marker.pos.el, 1);
-      assert.equal(marker.pos.ec, 12);
+      assert.equal(marker.pos.ec, 6);
       assert.equal(marker.type, "warning");
       assert.equal(marker.level, "warning");
       assert.equal(marker.message, "$a: unused variable.");
