@@ -61,7 +61,7 @@ module.exports = {
       assert.equal(markers.length, 1);
       var marker = markers[0];
       assert.equal(marker.pos.sl, 1);
-      assert.equal(marker.pos.sc, 4);
+      assert.equal(marker.pos.sc, 5);
       assert.equal(marker.pos.el, 1);
       assert.equal(marker.pos.ec, 6);
       assert.equal(marker.type, "warning");

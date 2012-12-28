@@ -91,7 +91,7 @@ module.exports = {
      
       //{ sl: 0, sc: 41, el: 0, ec: 43 }
       assert.equal(varDecl.pos.sl, 0);
-      assert.equal(varDecl.pos.sc, 41);
+      assert.equal(varDecl.pos.sc, 42);
       assert.equal(varDecl.pos.el, 0);
       assert.equal(varDecl.pos.ec, 43);
     } 
