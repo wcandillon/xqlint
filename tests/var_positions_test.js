@@ -75,17 +75,17 @@ module.exports = {
       
       //{ sl: 0, sc: 56, el: 0, ec: 58 }
       assert.equal(varRefs[0].pos.sl, 0);
-      assert.equal(varRefs[0].pos.sc, 56);
+      assert.equal(varRefs[0].pos.sc, 57);
       assert.equal(varRefs[0].pos.el, 0);
       assert.equal(varRefs[0].pos.ec, 58);
       //{ sl: 0, sc: 64, el: 0, ec: 66 }
       assert.equal(varRefs[1].pos.sl, 0);
-      assert.equal(varRefs[1].pos.sc, 64);
+      assert.equal(varRefs[1].pos.sc, 65);
       assert.equal(varRefs[1].pos.el, 0);
       assert.equal(varRefs[1].pos.ec, 66);
       //{ sl: 0, sc: 68, el: 0, ec: 70 }
       assert.equal(varRefs[2].pos.sl, 0);
-      assert.equal(varRefs[2].pos.sc, 68);
+      assert.equal(varRefs[2].pos.sc, 69);
       assert.equal(varRefs[2].pos.el, 0);
       assert.equal(varRefs[2].pos.ec, 70);
      
