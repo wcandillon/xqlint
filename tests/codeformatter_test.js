@@ -29,73 +29,99 @@
  * ***** END LICENSE BLOCK ***** */
 
 if (typeof process !== "undefined") {
-    require("amd-loader");
+  require("amd-loader");
 }
 
 define(function(require, exports, module) {
-"use strict";
+  "use strict";
 
-var assert = require("./assertions");
+  var assert = require("./assertions");
 
-var requirejs = require('../r');
-var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
-var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
-var CodeFormatter = requirejs('../lib/visitors/CodeFormatter').CodeFormatter;
+  var requirejs = require('../r');
+  var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
+  var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
+  var CodeFormatter = requirejs('../lib/visitors/CodeFormatter').CodeFormatter;
 
-module.exports = {
+  var fs = require('fs');
+  var path = require('path');
+
+  function testFormat(code, expected){
+    var h = new JSONParseTreeHandler(code);
+    var parser = new XQueryParser(code, h);
+    parser.parse_XQuery();
+    var ast = h.getParseTree();
+    var codeFormatter = new CodeFormatter(ast);
+    var formatted = codeFormatter.format();
+    if (expected.trim() != formatted.trim()){
+      console.log("Input:\n" + code.trim());
+      console.log("Expected:\n" + expected.trim());
+      console.log("Formatted:\n" + formatted.trim());
+    }
+    assert.equal(expected.trim(), formatted.trim());
+  }
+
+
+  module.exports = {
+
+    name: "Code Formatter"
+
+  };
+
+  function parseTestFiles(dir, recursive){
+    if (dir.charAt(dir.length - 1) !== '/'){
+      dir += '/';
+    }
+    var testFiles = fs.readdirSync(path.resolve(__dirname, dir)).sort();
+
     
-    name: "Code Formatter",
-    
-    "test: simple code formatting": function() {
-      var code = "for $i in (let, for) return return";
-      var expected = "for $i in (let, for)\nreturn return";
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      parser.parse_XQuery();
-      var ast = h.getParseTree();
-      var codeFormatter = new CodeFormatter(ast);
-      var formatted = codeFormatter.format();
-      assert.equal(formatted, expected); 
-    },
+    var childDirs = [];
 
-    "test: simple enclosed expr": function() {
-      var code = "<foo foo='{for $i in (1 to 10) return $i}' />";
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      parser.parse_XQuery();
-      var ast = h.getParseTree();
-      var codeFormatter = new CodeFormatter(ast);
-      var formatted = codeFormatter.format();
-      assert.equal(formatted, code); 
-    },
+    for (var i = 0; i < testFiles.length; i++){
 
-    "test: simple FLWOR": function() {
-      var code = "let $a := let $b := 1 return $b return $a";
-      var expected = "let $a := let $b := 1\n          return $b\nreturn $b";
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      parser.parse_XQuery();
-      var ast = h.getParseTree();
-      var codeFormatter = new CodeFormatter(ast);
-      var formatted = codeFormatter.format();
-      assert.equal(formatted, expected); 
-    },
+      var testFile = path.resolve(__dirname, dir + testFiles[i]);
+      
+      var stats = fs.statSync(testFile);
+      if (stats.isDirectory()){
+        childDirs.push(testFile);
+        continue;
+      }
 
-    "test: operators (1)": function() {
-      var code = "1\t+1";
-      var expected = "1 + 1";
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      parser.parse_XQuery();
-      var ast = h.getParseTree();
-      var codeFormatter = new CodeFormatter(ast);
-      var formatted = codeFormatter.format();
-      assert.equal(formatted, expected); 
+      if (testFile.indexOf(".xq", testFile.length - 3) === -1){
+        continue;
+      }
+      var solFile = testFile.substring(0, testFile.length - 3) + ".txt";
+
+      if (!fs.existsSync(solFile)){
+        continue;
+      }
+
+      var testFileContent = fs.readFileSync(testFile, "utf8");
+      var solFileContent = fs.readFileSync(solFile, "utf8");
+
+      var testName = "test: " + dir.substring(dir.lastIndexOf('xqlint') + 7 )+ testFiles[i].substring(0, testFiles[i].length - 3);
+
+      console.log(testFile);
+
+      addTestCase(testName, testFileContent, solFileContent);
     }
 
-};
+
+    for (var i = 0; i < childDirs.length; i++){
+      parseTestFiles(childDirs[i], true);
+    }
+  }
+
+  function addTestCase(name, code, expected){
+    module.exports[name] = function(){
+      testFormat(code,expected);
+    }
+  };
+
+  console.log("Parsing tests...");
+  parseTestFiles("queries/xqlint", true);
+
 });
 
 if (typeof module !== "undefined" && module === require.main) {
-    require("asyncjs").test.testcase(module.exports).exec()
+  require("asyncjs").test.testcase(module.exports).exec()
 }
