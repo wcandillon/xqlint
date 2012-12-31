@@ -52,12 +52,41 @@ define(function(require, exports, module) {
     var ast = h.getParseTree();
     var codeFormatter = new CodeFormatter(ast);
     var formatted = codeFormatter.format();
-    if (expected.trim() != formatted.trim()){
-      console.log("Input:\n" + code.trim());
-      console.log("Expected:\n" + expected.trim());
-      console.log("Formatted:\n" + formatted.trim());
-    }
-    assert.equal(expected.trim(), formatted.trim());
+    expected = expected.trim();
+    formatted = formatted.trim();
+    code = code.trim();
+    if (expected != formatted){
+      console.log("Input:\n" + code);
+      console.log("Expected:\n" + expected);
+      console.log("Formatted:\n" + formatted);
+      var parts1 = expected.split('\n');
+      var parts2 = formatted.split('\n');
+      for (var i = 0; i < parts1.length && i < parts2.length; i++){ 
+        var ex = parts1[i];
+        var fo = parts2[i];
+        var printed = false;
+        for (var j = 0; j < ex.length && j < fo.length; j++){
+          if (ex[j] !== fo[j]){
+            printed = true;
+            console.log("Line " + i + ", first diff @char" + j);
+            console.log(ex);
+            console.log(fo); 
+            break;
+          }
+        }
+        if (ex.length !== fo.length){
+          console.log("Line " + i + " differs in length");
+          if (!printed){
+            console.log(ex);
+            console.log(fo); 
+          } 
+        }
+      }
+      if (parts1.length !== parts2.length){
+        console.log("Different #lines");
+      }
+   }
+    assert.equal(expected, formatted);
   }
 
 
