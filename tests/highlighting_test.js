@@ -95,7 +95,9 @@ module.exports = {
       var code = "(:~ Foo :)\n1 + 1\n(: Bar :)";
       var tokens = getTokens(code);
       assert.equal(tokens.lines[0][0].type, "comment.doc");
+      assert.equal(tokens.lines[0][0].value, "(:~ Foo :)");
       assert.equal(tokens.lines[2][1].type, "comment");
+      assert.equal(tokens.lines[2][1].value, "(: Bar :)");
     },
 
     "test: functx": function() {
