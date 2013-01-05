@@ -158,7 +158,16 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
-    },
+    }, 
+
+    "test: module variable (2)": function() {
+      var code = "import module namespace res = 'http://www.28msec.com/modules/http/response'; $res:bad-request;";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      //TODO: implement URI resolving
+      assert.equal(markers.length, 0);
+    }
 };
 });
 
