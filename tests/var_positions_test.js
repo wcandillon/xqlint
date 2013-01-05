@@ -62,6 +62,30 @@ module.exports = {
     
     name: "Variable Positions",
     
+    "test: Util.findNode()": function() {
+      var code = 'import module namespace http = "http://expath.org/ns/http-client";\n' +
+                 'let $request := <http:request method="GET" href="http://www.example.com">\n' +
+                 '</http:request>\n' +
+                 'let $response := http:send-request($request)\n' +
+                 'return $response[1]/http:response';
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var node = Utils.findNode(ast, { line: 1, col: 8 });
+      assert.equal(node.name, "EQName");
+    },
+    
+    "test: simple FLWOR": function() {
+        var code = "let $item  := ()\n" +
+                   "let $item  := {\n" +
+                   "  'foo': $item\n" +
+                   "}\n" +
+                   "return $item";
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var node = Utils.findNode(ast, { line: 4, col: 10 });
+      assert.equal(node.name, "EQName");            
+    },
+    
     "test: simple variable analysis": function() {
       var code = "declare function local:test() { variable $a := 1; $a := $a + 1; $a; $a }; local:test()";
       var compiler = new Compiler();
