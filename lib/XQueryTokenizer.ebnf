@@ -48,26 +48,15 @@ Start   ::= '<![CDATA['
           | DecimalLiteral
           | DoubleLiteral
           | Variable
-          | OpeningTag
-          | ClosingTag
           | QName
           | EOF
-
-OpeningTag
-        ::= '<' QName
-
-ClosingTag
-        ::= '<' '/' QName
-
-TagContent
-        ::= '>'
-          | '/>'
 
 Variable
         ::= '$' EQName
     
-CDataSection
-        ::= CDataSection^Token
+CData
+        ::= CDataSectionContents
+          | ']]>'
           /* ws: explicit */
 
 DirCommentConstructor
@@ -81,7 +70,7 @@ DirPIConstructor
 Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
           /* ws: explicit */
 
-Comment  ::= CommentContents | ':)' | '(:'
+Comment  ::= CommentContents | ':)' | '(:' | S | EOF
           /* ws: explicit */
 
 Whitespace
@@ -356,8 +345,10 @@ DirCommentContents
          ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )*
 DirPIContents
          ::= ( Char* - ( Char* '?>' Char* ) ) &'?'
+/*
 CDataSection
          ::= '<![CDATA[' CDataSectionContents ']]>'
+*/
 CDataSectionContents
          ::= Char* - ( Char* ']]>' Char* )
 Wildcard ::= "*"

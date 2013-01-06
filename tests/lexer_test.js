@@ -45,7 +45,7 @@ module.exports = {
     
     name: "XQuery Lexer",
     
-    "test: Util.findNode()": function() {
+    "test: Comments": function() {
       var code = '(: Hello World (:  \n hello :) world :)';
       var lines = code.split("\n");
       var state = undefined;
@@ -54,7 +54,7 @@ module.exports = {
             [ { type: 'comment', value: '(:' },
               { type: 'comment', value: ' Hello World ' },
               { type: 'comment', value: '(:' },
-              { type: 'text', value: '  ' } ],
+              { type: 'comment', value: '  ' } ],
           state: '["Start","Comment","Comment"]' },
         { tokens:
            [ { type: 'comment', value: ' hello ' },
