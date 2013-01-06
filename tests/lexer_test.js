@@ -48,13 +48,13 @@ module.exports = {
     "test: Comments": function() {
       var code = '(: Hello World (:  \n hello :) world :)';
       var lines = code.split("\n");
-      var state = undefined;
+      //var state = undefined;
       var expected = [
         { tokens:
             [ { type: 'comment', value: '(:' },
               { type: 'comment', value: ' Hello World ' },
               { type: 'comment', value: '(:' },
-              { type: 'comment', value: '  ' } ],
+              { type: 'text', value: '  ' } ],
           state: '["Start","Comment","Comment"]' },
         { tokens:
            [ { type: 'comment', value: ' hello ' },
@@ -67,10 +67,73 @@ module.exports = {
       for(var i in lines) {
         var line = lines[i];
         var tokens = XQueryLexer.getLineTokens(line, state);
-        state = tokens.state;
+        var state = tokens.state;
         result.push(tokens);
       }
-      assert.equal(JSON.stringify(result), JSON.stringify(expected));
+      assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+      assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+    
+    "test: XML Comments": function() {
+      var code = '<!-- Hello\nWorld --> 1\n 1';
+      var lines = code.split("\n");
+      //var state = undefined;
+      var expected = [
+        { tokens: 
+          [ { type: 'comments', value: '<!--' },
+            { type: 'comments', value: ' Hello' } ],
+         state: '["Start","XMLComment"]' },
+       { tokens: 
+          [ { type: 'comments', value: 'World ' },
+            { type: 'comments', value: '-->' },
+            { type: 'text', value: ' ' },
+            { type: 'constant', value: '1' } ],
+         state: '["Start"]' },
+       { tokens: 
+          [ { type: 'text', value: ' ' },
+            { type: 'constant', value: '1' } ],
+         state: '["Start"]' }
+      ];
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = XQueryLexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+      assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+      assert.equal(JSON.stringify(result[2]), JSON.stringify(expected[2]));
+    },
+    
+    "test: PI": function() {
+      var code = '<?php \n ?>';
+      var lines = code.split("\n")[0];
+      //var state = undefined;
+      var expected = [
+        { tokens: 
+          [ { type: 'comments', value: '<!--' },
+            { type: 'comments', value: ' Hello' } ],
+         state: '["Start","XMLComment"]' },
+       { tokens: 
+          [ { type: 'comments', value: 'World ' },
+            { type: 'comments', value: '-->' },
+            { type: 'text', value: ' ' },
+            { type: 'constant', value: '1' } ],
+         state: '["Start"]' },
+       { tokens: 
+          [ { type: 'text', value: ' ' },
+            { type: 'constant', value: '1' } ],
+         state: '["Start"]' }
+      ];
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = XQueryLexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      console.log(JSON.stringify(result, null, 2));
     }
   };
 });

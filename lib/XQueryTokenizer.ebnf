@@ -59,19 +59,17 @@ CData
           | ']]>'
           /* ws: explicit */
 
-DirCommentConstructor
-         ::= '<!--' DirCommentContents '-->'
+XMLComment
+         ::= DirCommentContents | '-->' | EOF
           /* ws: explicit */
 
-DirPIConstructor
-         ::= '<?' PITarget ( S DirPIContents )? '?>'
+PI       ::=  PITarget | DirPIContents | '?>' | EOF
           /* ws: explicit */
 
 Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
           /* ws: explicit */
 
-Comment  ::= CommentContents | ':)' | '(:' | S | EOF
-          /* ws: explicit */
+Comment  ::= CommentContents | ':)' | '(:' | EOF
 
 Whitespace
          ::= S^WS
@@ -413,6 +411,7 @@ Digits   ::= [0-9]+
 CommentContents
          ::= ( ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) - ( Char* '(' ) ) &':'
            |   ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) )                   &'('
+          /* ws: explicit */
 EOF      ::= $
 NonNCNameChar
           ::= $
