@@ -68,14 +68,14 @@ define(function(require, exports, module) {
         for (var j = 0; j < ex.length && j < fo.length; j++){
           if (ex[j] !== fo[j]){
             printed = true;
-            console.log("Line " + i + ", first diff @char" + j);
+            console.log("Line " + (i+1) + ", first diff @char" + (j+1));
             console.log(ex);
             console.log(fo); 
             break;
           }
         }
         if (ex.length !== fo.length){
-          console.log("Line " + i + " differs in length");
+          console.log("Line " + (i+1) + " differs in length");
           if (!printed){
             console.log(ex);
             console.log(fo); 

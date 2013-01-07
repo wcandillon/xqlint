@@ -93,6 +93,46 @@ define(function(require, exports, module) {
     w.appendStr(" text with spaces  ");
     assert.equal(w.getResult(), "text with spaces");
   },
+  "test: text with spaces 2": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG; 
+    w.appendStr(" text");
+    w.postSpace();
+    w.appendStr("with ");
+    w.postSpace();
+    w.appendStr("spaces   ");
+    assert.equal(w.getResult(), "text with spaces");
+  },
+  "test: text with spaces 3": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG; 
+    w.appendStr(" text");
+    w.postSpace();
+    w.appendStr("with");
+    w.postSpace();
+    w.appendStr(" spaces   ");
+    assert.equal(w.getResult(), "text with spaces");
+  },
+  "test: postSpace x 3": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG; 
+    w.appendStr("text");
+    w.postSpace();
+    w.postSpace();
+    w.postSpace();
+    w.appendStr("with spaces  ");
+    assert.equal(w.getResult(), "text with spaces");
+  },
+  "test: postSpace and ws space": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG; 
+    w.appendStr("text");
+    w.postSpace();
+    w.appendStr(" ");
+    w.postSpace();
+    w.appendStr("with spaces  ");
+    assert.equal(w.getResult(), "text with spaces");
+  },
   "test: text on several lines": function() {
     var w = new FormatWriter(indent);
     w.DEBUG = DEBUG; 
