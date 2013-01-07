@@ -39,7 +39,8 @@ var fs = require('fs');
 var assert = require("./assertions");
 
 var requirejs = require('../r');
-var XQueryLexer = requirejs('../lib/XQueryLexer');
+var XQueryLexer = requirejs('../lib/XQueryLexer').XQueryLexer;
+var lexer = new XQueryLexer();
 
 module.exports = {
     
@@ -66,7 +67,7 @@ module.exports = {
       var result = [];
       for(var i in lines) {
         var line = lines[i];
-        var tokens = XQueryLexer.getLineTokens(line, state);
+        var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
         result.push(tokens);
       }
@@ -97,7 +98,7 @@ module.exports = {
       var result = [];
       for(var i in lines) {
         var line = lines[i];
-        var tokens = XQueryLexer.getLineTokens(line, state);
+        var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
         result.push(tokens);
       }
@@ -157,7 +158,7 @@ module.exports = {
       var result = [];
       for(var i in lines) {
         var line = lines[i];
-        var tokens = XQueryLexer.getLineTokens(line, state);
+        var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
         result.push(tokens);
       }
@@ -220,12 +221,31 @@ module.exports = {
       var result = [];
       for(var i in lines) {
         var line = lines[i];
-        var tokens = XQueryLexer.getLineTokens(line, state);
+        var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
         result.push(tokens);
       }
       assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+    
+    "test: XML ": function() {
+      var code = '  <foo>{ 1 + 1 }</foo>    ';
+      var lines = code.split("\n");
+      //var state = undefined;
+      var expected = [
+      
+    ];
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = lexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      console.log(JSON.stringify(result, null, 2));
+      //assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+      //assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     }
   };
 });

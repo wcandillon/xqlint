@@ -43,17 +43,25 @@ Start   ::= '<![CDATA['
           | '(:'
           | '"'
           | "'"
+          | "}"
+          | "{"
           | Wildcard
           | IntegerLiteral
           | DecimalLiteral
           | DoubleLiteral
           | Variable
           | QName
+          | Tag
+          | Operator
           | EOF
-    
-CData
-        ::= CDataSectionContents
-          | ']]>'
+
+StartTag  ::= '>' | '/>' | EOF
+
+TagContent
+         ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
+          /* ws: explicit */
+
+CData    ::= CDataSectionContents | ']]>' | EOF
           /* ws: explicit */
 
 XMLComment
@@ -342,7 +350,13 @@ NCName   ::= NCName^Token
            | 'returning'
 <?TOKENS?>
 
+Operator ::= ':=' | '=' | '<' | '>' | '-' | '+' | 'div'
+
 Variable ::= '$' EQName
+
+Tag      ::= '<' QName
+
+EndTag   ::= '</' QName S? '>'
 
 PragmaContents
          ::= ( Char* - ( Char* '#)' Char* ) ) &'#'
@@ -387,7 +401,7 @@ EscapeApos
 QuotChar ::= (Char - ["&])+
 AposChar ::= (Char - [&'])+
 ElementContentChar
-         ::= Char - [&<{}]
+         ::= (Char - [&<{}])*
 QuotAttrContentChar
          ::= Char - ["&<{}]
 AposAttrContentChar
