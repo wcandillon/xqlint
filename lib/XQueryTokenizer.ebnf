@@ -63,7 +63,7 @@ XMLComment
          ::= DirCommentContents | '-->' | EOF
           /* ws: explicit */
 
-PI       ::=  PITarget | DirPIContents | '?>' | EOF
+PI       ::= PITarget | S | DirPIContents | '?>' | EOF
           /* ws: explicit */
 
 Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
