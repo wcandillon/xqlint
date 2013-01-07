@@ -106,6 +106,65 @@ module.exports = {
       assert.equal(JSON.stringify(result[2]), JSON.stringify(expected[2]));
     },
     
+    "test: String": function() {
+      var code = '"Hello&#160;World \"\"\n&amp;World"';
+      var lines = code.split("\n");
+      //var state = undefined;
+      var expected = [
+  {
+    "tokens": [
+      {
+        "type": "string",
+        "value": "\""
+      },
+      {
+        "type": "string",
+        "value": "Hello"
+      },
+      {
+        "type": "constant.language.escape",
+        "value": "&#160;"
+      },
+      {
+        "type": "string",
+        "value": "World "
+      },
+      {
+        "type": "text",
+        "value": "\"\""
+      }
+    ],
+    "state": "[\"Start\",\"QuotString\"]"
+  },
+  {
+    "tokens": [
+      {
+        "type": "constant.language.escape",
+        "value": "&amp;"
+      },
+      {
+        "type": "string",
+        "value": "World"
+      },
+      {
+        "type": "string",
+        "value": "\""
+      }
+    ],
+    "state": "[\"Start\"]"
+  }
+];
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = XQueryLexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+      assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+    
     "test: PI": function() {
       var code = '  <?php hello \n ?>    ';
       var lines = code.split("\n");
@@ -161,7 +220,6 @@ module.exports = {
       var result = [];
       for(var i in lines) {
         var line = lines[i];
-        console.log(line);
         var tokens = XQueryLexer.getLineTokens(line, state);
         var state = tokens.state;
         result.push(tokens);

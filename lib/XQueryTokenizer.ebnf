@@ -50,9 +50,6 @@ Start   ::= '<![CDATA['
           | Variable
           | QName
           | EOF
-
-Variable
-        ::= '$' EQName
     
 CData
         ::= CDataSectionContents
@@ -72,10 +69,12 @@ Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
 Comment  ::= CommentContents | ':)' | '(:' | EOF
 
 QuotString
-         ::= PredefinedEntityRef | CharRef | EscapeQuot | [^"&] | '"' | EOF
+         ::= PredefinedEntityRef | CharRef | EscapeQuot | QuotChar | '"' | EOF
+          /* ws: explicit */
 
 AposString
-         ::= PredefinedEntityRef | CharRef | EscapeApos | [^&'] | "'" | EOF
+         ::= PredefinedEntityRef | CharRef | EscapeApos | AposChar | "'" | EOF
+          /* ws: explicit */
 
 Whitespace
          ::= S^WS
@@ -343,6 +342,8 @@ NCName   ::= NCName^Token
            | 'returning'
 <?TOKENS?>
 
+Variable ::= '$' EQName
+
 PragmaContents
          ::= ( Char* - ( Char* '#)' Char* ) ) &'#'
 DirCommentContents
@@ -376,10 +377,6 @@ DecimalLiteral
 DoubleLiteral
          ::= ( '.' Digits | Digits ( '.' [0-9]* )? ) [Ee] [+#x002D]? Digits
           /* ws: explicit */
-StringLiteral
-         ::= '"' ( PredefinedEntityRef | CharRef | EscapeQuot | [^"&] )* '"'
-           | "'" ( PredefinedEntityRef | CharRef | EscapeApos | [^&'] )* "'"
-          /* ws: explicit */
 PredefinedEntityRef
          ::= '&' ( 'lt' | 'gt' | 'amp' | 'quot' | 'apos' ) ';'
           /* ws: explicit */
@@ -387,6 +384,8 @@ EscapeQuot
          ::= '""'
 EscapeApos
          ::= "''"
+QuotChar ::= (Char - ["&])+
+AposChar ::= (Char - [&'])+
 ElementContentChar
          ::= Char - [&<{}]
 QuotAttrContentChar
