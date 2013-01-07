@@ -71,6 +71,12 @@ Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
 
 Comment  ::= CommentContents | ':)' | '(:' | EOF
 
+QuotString
+         ::= PredefinedEntityRef | CharRef | EscapeQuot | [^"&] | '"' | EOF
+
+AposString
+         ::= PredefinedEntityRef | CharRef | EscapeApos | [^&'] | "'" | EOF
+
 Whitespace
          ::= S^WS
           /* ws: definition */
