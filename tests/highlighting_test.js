@@ -37,6 +37,8 @@ define(function(require, exports, module) {
 
 var assert = require("./assertions");
 
+var fs = require('fs');
+
 var requirejs = require('../r');
 var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
 var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
@@ -51,6 +53,21 @@ function getTokens(code)
   var visitor = new SyntaxHighlighter(ast);
   return visitor.getTokens();
 }
+
+function toSource(tokens)
+{
+  var value = "";
+  var lines = tokens.lines;
+  for(var i in lines) {
+    if(i > 0) value += "\n";
+    var line = lines[i];
+    for(var j in line) {
+      var token = line[j];
+      value += token.value;
+    }
+  }
+  return value;
+};
 
 //TODO: test highlighting of: replace json value of $tweet("created_at") with $dateTime;
 //TODO: check highlighting for true, null, false in JSONiq.
@@ -72,6 +89,22 @@ module.exports = {
         "states":["start"]
       };
       assert.equal(JSON.stringify(tokens), JSON.stringify(reference));
+    },
+
+    "test: comments": function() {
+      var code = "(:~ Foo :)\n1 + 1\n(: Bar :)";
+      var tokens = getTokens(code);
+      assert.equal(tokens.lines[0][0].type, "comment.doc");
+      assert.equal(tokens.lines[0][0].value, "(:~ Foo :)");
+      assert.equal(tokens.lines[2][1].type, "comment");
+      assert.equal(tokens.lines[2][1].value, "(: Bar :)");
+    },
+
+    "test: functx": function() {
+      var code = fs.readFileSync(__dirname + "/queries/zorba/functx/functx1.xqlib", "utf8");
+      var tokens = getTokens(code);
+      var source = toSource(tokens);
+      assert.equal(code, source);
     }
 };
 });

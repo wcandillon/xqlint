@@ -27,51 +27,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ***** END LICENSE BLOCK ***** */
- 
-define(function(require, exports, module){
-  
-  var XQueryParser = require('./XQueryParser').XQueryParser;
-  var JSONParseTreeHandler = require('./JSONParseTreeHandler').JSONParseTreeHandler;
-  var Utils = require('./utils').Utils;  
-  var Translator = require('./Translator').Translator;
-  
-  var Compiler = exports.Compiler = function() {
-    this.compile = function(code) {
-      var h = new JSONParseTreeHandler(code);
-      var parser = new XQueryParser(code, h);
-      var ast = null;
-      var error = null;
-      try {
-        parser.parse_XQuery();
-     } catch(e) {
-        if(e instanceof parser.ParseException) {
-          var pos = Utils.convertPosition(code, e.getBegin(), e.getEnd());
-          var message = parser.getErrorMessage(e);
-          if(pos.sc === pos.ec) {
-            pos.ec++;
-          }
-          error = {
-            pos: pos,
-            type: "error",
-            level: "error",
-            message: message
-          };
-        } else {
-          throw e;
-        }
-      }
-      ast = h.getParseTree();
-      if (this.showAST !== undefined){
-        Utils.removeParentPtr(ast);
-        console.log(JSON.stringify(ast, null, 2));
-      }
-      var translator = new Translator(ast);
-      ast = translator.translate();
-      if(error !== null) {
-        ast.markers.push(error);  
-        ast.error = true;
-      }
-      return ast;
-    }
-  }
+
+if (typeof process !== "undefined") {
+    require("amd-loader");
+}
+
+define(function(require, exports, module) {
+"use strict";
+
+var fs = require('fs');
+var assert = require("./assertions");
+
+var requirejs = require('../r');
+var Compiler = requirejs('../lib/Compiler').Compiler;
+
+module.exports = {
+    
+    name: "Function References & Declarations",
+    
+    "test: multiple arity": function() {
+      var code = "declare function local:a(){ 1 }; declare function local:a($b){ $b }; local:a(), local:a(1)";
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      
+      var decls = ast.sctx.declaredFunctions;
+      assert.equal(decls["local:a"]["0"] !== undefined, true);
+      assert.equal(decls["local:a"]["1"] !== undefined, true);
+      
+      var refs = ast.sctx.functionReferences;
+      assert.equal(refs["local:a"]["0"].length, 1);
+      assert.equal(refs["local:a"]["1"].length, 1);
+    },
+    
+};
 });
+
+if (typeof module !== "undefined" && module === require.main) {
+    require("asyncjs").test.testcase(module.exports).exec()
+}
