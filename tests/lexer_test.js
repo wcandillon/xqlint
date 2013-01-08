@@ -230,7 +230,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = '  <foo>{ 1 + 1 }</foo>    ';
+      var code = '  <foo>{ 1 + 1 } < </foo>    ';
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [

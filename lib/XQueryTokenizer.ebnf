@@ -401,7 +401,7 @@ EscapeApos
 QuotChar ::= (Char - ["&])+
 AposChar ::= (Char - [&'])+
 ElementContentChar
-         ::= (Char - [&<{}])*
+         ::= (Char - [&<{}])+
 QuotAttrContentChar
          ::= Char - ["&<{}]
 AposAttrContentChar
