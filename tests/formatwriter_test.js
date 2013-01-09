@@ -258,8 +258,30 @@ define(function(require, exports, module) {
     w.postNewLine();
     w.appendStr(" level 3");
     testResult(w, "level 1\n    level 3\n    level 3");
+  },
+  "test: trimRight 1": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG;
+    w.appendStr("word ");
+    w.trimRight();
+    w.appendStr("word");
+    testResult(w, "wordword");
+  },
+  "test: trimRight 2": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG;
+    w.appendStr("    ");
+    w.trimRight();
+    testResult(w, "");
+  },
+  "test: trimRight 3": function() {
+    var w = new FormatWriter(indent);
+    w.DEBUG = DEBUG;
+    w.appendStr("word \n   \t \n \n\n    ");
+    w.trimRight();
+    w.appendStr("word");
+    testResult(w, "wordword");
   }
-
 };
 
 });

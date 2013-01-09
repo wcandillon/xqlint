@@ -3,9 +3,11 @@
 
 declare namespace ann = "http://www.zorba-xquery.com/annotations";
 
+
 declare %ann:sequential(123) function local:func()
 {
     1
 };
+
 
 local:func()

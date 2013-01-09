@@ -4,4 +4,5 @@ as xs:decimal
     $d
 };
 
+
 local:fun(10)
