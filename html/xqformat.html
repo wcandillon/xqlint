@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script type="text/javascript" src="../require.js"></script> 
+
+<script type="text/javascript">
+
+require([ '../lib/XQueryParser', '../lib/JSONParseTreeHandler',
+		 '../lib/visitors/CodeFormatter'], 
+        function (XQueryParser, JSONParseTreeHandler, CodeFormatter) {
+    
+});
+
+
+function formatCode(){
+	var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
+	var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
+	var CodeFormatter = requirejs('../lib/visitors/CodeFormatter').CodeFormatter;
+
+	var tb = document.getElementById("textbox");
+	var code = tb.value;
+	var h = new JSONParseTreeHandler(code);
+    var parser = new XQueryParser(code, h);
+    parser.parse_XQuery();
+    var ast = h.getParseTree();
+    var codeFormatter = new CodeFormatter(ast);
+    var formatted = codeFormatter.format();
+	document.getElementById("textbox2").value = formatted;
+}
+</script>
+
+
+
+</head>
+<body>
+
+
+  <table>
+    <tr>
+      <th>Input</th>
+      <th>Formatted</th>
+    </tr>
+    <tr>
+      <td><textarea name="textbox" id="textbox" cols="80" rows="30">
+          paste your xquery code here...
+        </textarea>
+        </td>
+        <td>
+          <textarea name="textbox2" id="textbox2" cols="80" rows="30">
+
+          </textarea>
+
+          </td>
+        </tr>
+      </table>
+
+<br>
+ <button onclick="formatCode()">Format</button>
+
+
+</body>
+</html> 
