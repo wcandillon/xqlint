@@ -35,7 +35,7 @@ var XQueryTokenizer = exports.XQueryTokenizer = function XQueryTokenizer(string,
   init(string, parsingEventHandler);
 ?>
 
-Start   ::= '<![CDATA['
+start   ::= '<![CDATA['
           | '<!--'
           | '<?'
           | '(#'
@@ -45,6 +45,8 @@ Start   ::= '<![CDATA['
           | "'"
           | "}"
           | "{"
+          | "("
+          | ")"
           | Wildcard
           | IntegerLiteral
           | DecimalLiteral
@@ -55,10 +57,18 @@ Start   ::= '<![CDATA['
           | Operator
           | EOF
 
-StartTag  ::= '>' | '/>' | EOF
+StartTag  ::= '>' | '/>' | QName | "=" | '"' | "'" | EOF
 
 TagContent
-         ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
+         ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | '<!--' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
+          /* ws: explicit */
+
+AposAttr
+        ::= EscapeApos | AposAttrContentChar | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | "'" | EOF
+          /* ws: explicit */
+
+QuotAttr
+        ::= EscapeQuot | QuotAttrContentChar | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | '"' | EOF
           /* ws: explicit */
 
 CData    ::= CDataSectionContents | ']]>' | EOF
@@ -403,9 +413,9 @@ AposChar ::= (Char - [&'])+
 ElementContentChar
          ::= (Char - [&<{}])+
 QuotAttrContentChar
-         ::= Char - ["&<{}]
+         ::= (Char - ["&<{}])+
 AposAttrContentChar
-         ::= Char - [&'<{}]
+         ::= (Char - [&'<{}])+
 PITarget ::= NCName - ( ( 'X' | 'x' ) ( 'M' | 'm' ) ( 'L' | 'l' ) )
 Name     ::= NameStartChar NameChar*
 NameStartChar

@@ -56,13 +56,13 @@ module.exports = {
               { type: 'comment', value: ' Hello World ' },
               { type: 'comment', value: '(:' },
               { type: 'text', value: '  ' } ],
-          state: '["Start","Comment","Comment"]' },
+          state: '["start","Comment","Comment"]' },
         { tokens:
            [ { type: 'comment', value: ' hello ' },
              { type: 'comment', value: ':)' },
              { type: 'comment', value: ' world ' },
              { type: 'comment', value: ':)' } ],
-          state: '["Start"]' }
+          state: '["start"]' }
       ];
       var result = [];
       for(var i in lines) {
@@ -71,6 +71,7 @@ module.exports = {
         var state = tokens.state;
         result.push(tokens);
       }
+      console.log(JSON.stringify(result, null, 2));
       assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
@@ -83,17 +84,17 @@ module.exports = {
         { tokens: 
           [ { type: 'comments', value: '<!--' },
             { type: 'comments', value: ' Hello' } ],
-         state: '["Start","XMLComment"]' },
+         state: '["start","XMLComment"]' },
        { tokens: 
           [ { type: 'comments', value: 'World ' },
             { type: 'comments', value: '-->' },
             { type: 'text', value: ' ' },
             { type: 'constant', value: '1' } ],
-         state: '["Start"]' },
+         state: '["start"]' },
        { tokens: 
           [ { type: 'text', value: ' ' },
             { type: 'constant', value: '1' } ],
-         state: '["Start"]' }
+         state: '["start"]' }
       ];
       var result = [];
       for(var i in lines) {
@@ -135,7 +136,7 @@ module.exports = {
         "value": "\"\""
       }
     ],
-    "state": "[\"Start\",\"QuotString\"]"
+    "state": "[\"start\",\"QuotString\"]"
   },
   {
     "tokens": [
@@ -152,7 +153,7 @@ module.exports = {
         "value": "\""
       }
     ],
-    "state": "[\"Start\"]"
+    "state": "[\"start\"]"
   }
 ];
       var result = [];
@@ -162,6 +163,7 @@ module.exports = {
         var state = tokens.state;
         result.push(tokens);
       }
+      console.log(JSON.stringify(result, null, 2));
       assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
@@ -198,7 +200,7 @@ module.exports = {
             "value": " "
           }
         ],
-        "state": "[\"Start\",\"PI\"]"
+        "state": "[\"start\",\"PI\"]"
       },
       {
         "tokens": [
@@ -215,7 +217,7 @@ module.exports = {
             "value": "    "
           }
         ],
-        "state": "[\"Start\"]"
+        "state": "[\"start\"]"
       }
     ];
       var result = [];
@@ -230,7 +232,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = '  <foo>{ 1 + 1 } < </foo>    ';
+      var code = '  <foo foo=\'bar\' bar="foo" />    ';
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
