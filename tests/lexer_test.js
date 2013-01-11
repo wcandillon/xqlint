@@ -232,7 +232,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = '  <foo foo=\'bar\' bar="foo" />    ';
+      var code = "  <foo foo='bar' bar=\"sadfas\" />    ";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
