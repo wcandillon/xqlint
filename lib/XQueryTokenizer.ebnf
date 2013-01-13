@@ -86,6 +86,10 @@ Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
 
 Comment  ::= CommentContents | ':)' | '(:' | EOF
 
+CommentDoc
+         ::= DocTag | DocCommentContents | ':)' | '(:' | EOF
+          /* ws: explicit */
+
 QuotString
          ::= PredefinedEntityRef | CharRef | EscapeQuot | QuotChar | '"' | EOF
           /* ws: explicit */
@@ -371,7 +375,7 @@ EndTag   ::= '</' QName S? '>'
 PragmaContents
          ::= ( Char* - ( Char* '#)' Char* ) ) &'#'
 DirCommentContents
-         ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )*
+         ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )+
 DirPIContents
          ::= ( Char* - ( Char* '?>' Char* ) ) &'?'
 /*
@@ -441,6 +445,11 @@ CommentContents
          ::= ( ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) - ( Char* '(' ) ) &':'
            |   ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) )                   &'('
           /* ws: explicit */
+DocTag   ::= ' @' NCName
+DocCommentContents
+         ::= ( ( Char+ - ( Char* ( '(:' | ':)' | '@' ) Char* ) ) - ( Char* '(' ) ) &':'
+           |   ( Char+ - ( Char* ( '(:' | ':)' | '@' ) Char* ) )                   &'('
+           |   ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) )                   & ' @'
 EOF      ::= $
 NonNCNameChar
           ::= $
