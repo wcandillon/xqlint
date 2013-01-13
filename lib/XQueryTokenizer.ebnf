@@ -52,7 +52,7 @@ start   ::= '<![CDATA['
           | DecimalLiteral
           | DoubleLiteral
           | Variable
-          | QName
+          | EQName
           | Tag
           | Operator
           | EOF
@@ -78,10 +78,10 @@ XMLComment
          ::= DirCommentContents | '-->' | EOF
           /* ws: explicit */
 
-PI       ::= PITarget | S | DirPIContents | '?>' | EOF
+PI       ::= DirPIContents | '?>' | EOF
           /* ws: explicit */
 
-Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
+Pragma   ::= PragmaContents | '#)' | EOF
           /* ws: explicit */
 
 Comment  ::= CommentContents | ':)' | '(:' | EOF
@@ -373,11 +373,11 @@ Tag      ::= '<' QName
 EndTag   ::= '</' QName S? '>'
 
 PragmaContents
-         ::= ( Char* - ( Char* '#)' Char* ) ) &'#'
+         ::= ( Char* - ( Char* '#' Char* ) )+
 DirCommentContents
          ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )+
 DirPIContents
-         ::= ( Char* - ( Char* '?>' Char* ) ) &'?'
+         ::= ( Char* - ( Char* '?' Char* ) ) 
 /*
 CDataSection
          ::= '<![CDATA[' CDataSectionContents ']]>'

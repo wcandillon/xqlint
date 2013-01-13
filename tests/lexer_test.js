@@ -82,12 +82,12 @@ module.exports = {
       //var state = undefined;
       var expected = [
         { tokens: 
-          [ { type: 'comments', value: '<!--' },
-            { type: 'comments', value: ' Hello' } ],
+          [ { type: 'comment', value: '<!--' },
+            { type: 'comment', value: ' Hello' } ],
          state: '["start","XMLComment"]' },
        { tokens: 
-          [ { type: 'comments', value: 'World ' },
-            { type: 'comments', value: '-->' },
+          [ { type: 'comment', value: 'World ' },
+            { type: 'comment', value: '-->' },
             { type: 'text', value: ' ' },
             { type: 'constant', value: '1' } ],
          state: '["start"]' },
@@ -173,53 +173,41 @@ module.exports = {
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
+  {
+    "tokens": [
       {
-        "tokens": [
-          {
-            "type": "text",
-            "value": "  "
-          },
-          {
-            "type": "xml-pe",
-            "value": "<?"
-          },
-          {
-            "type": "xml-pe",
-            "value": "php"
-          },
-          {
-            "type": "xml-pe",
-            "value": " "
-          },
-          {
-            "type": "xml-pe",
-            "value": "hello"
-          },
-          {
-            "type": "xml-pe",
-            "value": " "
-          }
-        ],
-        "state": "[\"start\",\"PI\"]"
+        "type": "text",
+        "value": "  "
       },
       {
-        "tokens": [
-          {
-            "type": "xml-pe",
-            "value": " "
-          },
-          {
-            "type": "xml-pe",
-            "value": "?>"
-          },
-          {
-            "type": "text",
-            "value": "    "
-          }
-        ],
-        "state": "[\"start\"]"
+        "type": "xml-pe",
+        "value": "<?"
+      },
+      {
+        "type": "xml-pe",
+        "value": "php hello "
       }
-    ];
+    ],
+    "state": "[\"start\",\"PI\"]"
+  },
+  {
+    "tokens": [
+      {
+        "type": "xml-pe",
+        "value": " "
+      },
+      {
+        "type": "xml-pe",
+        "value": "?>"
+      },
+      {
+        "type": "text",
+        "value": "    "
+      }
+    ],
+    "state": "[\"start\"]"
+  }
+];
       var result = [];
       for(var i in lines) {
         var line = lines[i];
@@ -232,7 +220,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "(:~  wcandillon@return.com @return true :)  1    ";
+      var code = "let $foo := <?php 1\nfsdf ?>\nreturn (# foo:bar asdasda\nsdasd #)$foo";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
