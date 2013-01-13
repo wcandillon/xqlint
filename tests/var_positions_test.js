@@ -133,6 +133,7 @@ module.exports = {
       assert.equal(varDecls["b"] !== undefined, true);
       assert.equal(varDecls["c"] !== undefined, true);
       assert.equal(varDecls["d"] !== undefined, true);
+      assert.equal(varDecls["e"] !== undefined, false);
     }
 };
 });
