@@ -9,5 +9,6 @@ variable $dec-file-name := resolve-uri("decoded-text");
 variable $encoded := f:read-text($enc-file-name);
 variable $decoded := f:read-text($dec-file-name);
 
-$encoded eq xs:string(b:encode($decoded)), xs:base64Binary($encoded) eq
-    b:encode($decoded), b:decode(xs:base64Binary($encoded)) eq $decoded
+$encoded eq xs:string(b:encode($decoded)),
+xs:base64Binary($encoded) eq b:encode($decoded),
+b:decode(xs:base64Binary($encoded)) eq $decoded

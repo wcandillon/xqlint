@@ -1,4 +1,5 @@
-declare context item := document {
+declare context item :=
+    document {
   <works>
     <employee name="1" />
     <employee name="2" />

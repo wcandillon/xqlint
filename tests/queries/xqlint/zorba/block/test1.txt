@@ -17,11 +17,8 @@ declare function local:benchmark($last-benchmark)
     let $l := local:last-benchmark()
     return
         if (not($l)) then
-            $last-benchmark := try {
-                    fn:error(xs:QName("local:blub"))
-                } catch * {
-                    ()
-                };
+            $last-benchmark :=
+                try { fn:error(xs:QName("local:blub")) } catch * { () };
         else
             ();
 

@@ -42,6 +42,7 @@ define(function(require, exports, module) {
 
   var requirejs = require('../r');
   var FormatWriter = requirejs('../lib/FormatWriter').FormatWriter;
+  var CodeFormatter = requirejs('../lib/visitors/CodeFormatter').CodeFormatter;
 
   var indent = "  ";
 
