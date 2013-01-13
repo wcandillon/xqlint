@@ -84,7 +84,8 @@ PI       ::= DirPIContents | '?>' | EOF
 Pragma   ::= PragmaContents | '#)' | EOF
           /* ws: explicit */
 
-Comment  ::= CommentContents | ':)' | '(:' | EOF
+Comment  ::= ':)' | '(:' | CommentContents | EOF
+          /* ws: explicit */
 
 CommentDoc
          ::= DocTag | DocCommentContents | ':)' | '(:' | EOF
@@ -442,14 +443,15 @@ CharRef  ::= '&#' [0-9]+ ';'
            | '&#x' [0-9A-Fa-f]+ ';'
 Digits   ::= [0-9]+
 CommentContents
-         ::= ( ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) - ( Char* '(' ) ) &':'
-           |   ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) )                   &'('
-          /* ws: explicit */
-DocTag   ::= ' @' NCName
+         ::= ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) & '('
+           | ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) & $
+           | ( ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) ) - ( Char* '(' ) ) & ':'
+DocTag   ::= ' @' NCName?
 DocCommentContents
-         ::= ( ( Char+ - ( Char* ( '(:' | ':)' | '@' ) Char* ) ) - ( Char* '(' ) ) &':'
-           |   ( Char+ - ( Char* ( '(:' | ':)' | '@' ) Char* ) )                   &'('
+         ::= ( ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) ) - ( Char* '(' ) ) & ':'
+           |   ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) )                   & '('
            |   ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) )                   & ' @'
+           | ( Char+ - ( Char* ( '(:' | ':)' | ' @') Char* ) ) & $
 EOF      ::= $
 NonNCNameChar
           ::= $

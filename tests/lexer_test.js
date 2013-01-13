@@ -55,7 +55,7 @@ module.exports = {
             [ { type: 'comment', value: '(:' },
               { type: 'comment', value: ' Hello World ' },
               { type: 'comment', value: '(:' },
-              { type: 'text', value: '  ' } ],
+              { type: 'comment', value: '  ' } ],
           state: '["start","Comment","Comment"]' },
         { tokens:
            [ { type: 'comment', value: ' hello ' },
@@ -72,6 +72,9 @@ module.exports = {
         result.push(tokens);
       }
       console.log(JSON.stringify(result, null, 2));
+      console.log("=============================================");
+      console.log(JSON.stringify(expected, null, 2));
+      console.log("=============================================");
       assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
@@ -220,7 +223,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "let $foo := <?php 1\nfsdf ?>\nreturn (# foo:bar asdasda\nsdasd #)$foo";
+      var code = "(:\n : Hello\n : World :) 1";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
