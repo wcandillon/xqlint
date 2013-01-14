@@ -223,7 +223,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "declare decimal-format declare";
+      var code = "declare option return 'hello'";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
