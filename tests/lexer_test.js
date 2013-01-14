@@ -223,7 +223,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "(:\n : Hello\n : World :) 1";
+      var code = "if(1) then () else ()";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [

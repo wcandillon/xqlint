@@ -47,6 +47,12 @@ start   ::= '<![CDATA['
           | "{"
           | "("
           | ")"
+          | "/"
+          | "["
+          | "]"
+          | ","
+          | "."
+          | AttrTest
           | Wildcard
           | IntegerLiteral
           | DecimalLiteral
@@ -58,6 +64,7 @@ start   ::= '<![CDATA['
           | EOF
 
 StartTag  ::= '>' | '/>' | QName | "=" | '"' | "'" | EOF
+
 
 TagContent
          ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | '<!--' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
@@ -365,7 +372,7 @@ NCName   ::= NCName^Token
            | 'returning'
 <?TOKENS?>
 
-Operator ::= ':=' | '=' | '<' | '>' | '-' | '+' | 'div'
+Operator ::= '!=' | ':=' | '>=' | '<=' | '=' | '<' | '>' | '-' | '+' | 'div' | '||' | '?'
 
 Variable ::= '$' EQName
 
@@ -379,12 +386,10 @@ DirCommentContents
          ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )+
 DirPIContents
          ::= ( Char* - ( Char* '?' Char* ) ) 
-/*
-CDataSection
-         ::= '<![CDATA[' CDataSectionContents ']]>'
-*/
 CDataSectionContents
-         ::= Char* - ( Char* ']]>' Char* )
+         ::= ( Char+ - ( Char* ']]>' Char* ) ) & ']]'
+           | ( Char+ - ( Char* ']]>' Char* ) ) & $ 
+AttrTest  ::= "@" ( Wildcard | QName )
 Wildcard ::= "*"
          | (NCName ":" "*")
          | ("*" ":" NCName)
