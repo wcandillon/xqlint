@@ -52,6 +52,7 @@ start   ::= '<![CDATA['
           | "]"
           | ","
           | "."
+          | Annotation
           | ModuleDecl
           | OptionDecl
           | AttrTest
@@ -380,6 +381,9 @@ NCName   ::= NCName^Token
 
 ModuleDecl
          ::= ('import' S)? ('module' | 'schema') S 'namespace'
+
+Annotation
+         ::= '%' EQName ?
 
 OptionDecl
          ::= 'declare' S ( ( 'decimal-format' | 'option' ) 

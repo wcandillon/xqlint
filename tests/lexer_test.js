@@ -223,7 +223,7 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "declare option return 'hello'";
+      var code = "declare %an:foo $foo := 1;";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
