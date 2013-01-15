@@ -167,6 +167,24 @@ module.exports = {
       var markers = sctx.markers;
       //TODO: implement URI resolving
       assert.equal(markers.length, 0);
+    },
+
+    "test: group-by var decl": function() {
+      var code = 'import module namespace c = "http://www.example.com/lib/collections";\n' +
+                 '(: Contribution timeframe :)\n' +
+                 'for $anwsers in db:collection($c:answers)\n' +
+                 'group by $user := $anwsers("owner")("user_id")\n' + 
+                 '(: Can be rewritten with ! :)\n' +
+                 'let $last-activity := max(for $anwser in $anwsers return $anwser("last_activity_date"))\n' +
+                 'where exists($user)\n' +
+                 'order by $last-activity descending\n' + 
+                 'return {\n' + 
+                 '"user": $user,\n' +
+                 '"last_activity": $last-activity\n' +  '}';
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
     }
 };
 });
