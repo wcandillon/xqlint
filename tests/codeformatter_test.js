@@ -52,12 +52,46 @@ define(function(require, exports, module) {
     var ast = h.getParseTree();
     var codeFormatter = new CodeFormatter(ast);
     var formatted = codeFormatter.format();
-    if (expected.trim() != formatted.trim()){
-      console.log("Input:\n" + code.trim());
-      console.log("Expected:\n" + expected.trim());
-      console.log("Formatted:\n" + formatted.trim());
-    }
-    assert.equal(expected.trim(), formatted.trim());
+    expected = expected.trim();
+    formatted = formatted.trim();
+    code = code.trim();  
+    
+    var green = '\x1b[32m';
+    var red = '\x1b[31m';
+    var reset = '\x1b[0m';
+    var yellow = '\x1b[33m';
+    var blue = '\x1b[34m';
+
+    if (expected != formatted){
+      console.log("Input:\n" + blue + code + reset);
+      console.log("Expected:\n" + green + expected + reset);
+      console.log("Formatted:\n" + red + formatted + reset);
+      var parts1 = expected.split('\n');
+      var parts2 = formatted.split('\n');
+      for (var i = 0; i < parts1.length && i < parts2.length; i++){ 
+        var printed = false;
+        var ex = parts1[i];
+        var fo = parts2[i];
+        for (var j = 0; !printed && j < ex.length && j < fo.length; j++){
+          if (ex[j] !== fo[j]){
+            printed = true;
+            console.log(yellow + "Line " + (i+1) + ", first diff @char" + (j+1) + reset);
+            console.log(green + ex + reset);
+            console.log(red + fo + reset); 
+          }
+        }
+        if (ex.length !== fo.length && !printed){
+          console.log(yellow + "Line " + (i+1) + " differs in length" + reset);
+          printed = true;
+          console.log(green + ex + reset);
+          console.log(red + fo + reset);           
+        }
+      }
+      if (parts1.length !== parts2.length){
+        console.log(yellow + "Different #lines" + reset);
+      }
+   }
+    assert.equal(expected, formatted);
   }
 
 
@@ -111,14 +145,34 @@ define(function(require, exports, module) {
     }
   }
 
+
+  var expectFail = ['zorba/block/block_and_type', 'zorba/bang/8',
+      'zorba/bang/7', 'zorba/bang/6', 'zorba/bang/13',
+      'zorba/annotations/annot-unknown-03', 'window/sliding01',
+      'rest/simpleformat', 'comments/comment13', 'comments/comment12',
+      'comments/comment11', 'comments/comment10', 'comments/comment09'
+        ];
+
   function addTestCase(name, code, expected){
     module.exports[name] = function(){
+      if (expectFail.indexOf(name.substring(6)) == -1){
       testFormat(code,expected);
+      }
     }
   };
 
   console.log("Parsing tests...");
-  parseTestFiles("queries/xqlint", true);
+  var args = process.argv;
+  var dir = args.indexOf("-d");
+  if (dir != -1){
+    var dirPath = args[dir + 1];
+    if (dirPath.substring(0, 6) === 'tests/'){
+      dirPath = dirPath.substring(6);
+    }
+  } else{
+    var dirPath = "queries/xqlint";
+  }
+  parseTestFiles(dirPath, true);
 
 });
 

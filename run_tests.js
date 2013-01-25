@@ -69,7 +69,7 @@ function parseFile(filename, failOnError)
 
   if(testCodeFormatter){
     console.log("Test code formatter");
-    console.log(red + "Code preformat:\n\"\n" + code + "\n\"" + reset);
+    console.log(red + "Code preformat:\n\"\n" + code + "\"\n" + reset);
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
