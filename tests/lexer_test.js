@@ -223,19 +223,27 @@ module.exports = {
     },
     
     "test: XML ": function() {
-      var code = "declare %an:foo $foo := 1;";
+      var code = 'xquery version "1.0";\n\nlet $message := "Hello World!"\nreturn <results>\n  <message>{$message}</message>\n</results>\n';
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
       
     ];
       var result = [];
+      
       for(var i in lines) {
         var line = lines[i];
+        result[i] = [];
         var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
-        result.push(tokens);
+        result[i].push(state);
+        for(var j in tokens.tokens) {
+          var token = tokens.tokens[j];
+          result[i].push([token.type, token.value]);
+        };
+        //result.push(tokens);
       }
+
       console.log(JSON.stringify(result, null, 2));
       //assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       //assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
