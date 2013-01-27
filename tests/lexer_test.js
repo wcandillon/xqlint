@@ -224,6 +224,7 @@ module.exports = {
     
     "test: XML ": function() {
       var code = 'xquery version "1.0";\n\nlet $message := "Hello World!"\nreturn <results>\n  <message>{$message}</message>\n</results>\n';
+      code = "declare namespace namespace = 'http://www.example.com/'; 1";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
