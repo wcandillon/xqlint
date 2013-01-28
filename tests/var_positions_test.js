@@ -86,6 +86,14 @@ module.exports = {
       assert.equal(node.name, "EQName");            
     },
     
+    "test: simple expr": function(){
+      var code = 'import module namespace ns = "http://www.28msec.com/modules/http/request";\n\nns:parameter-values("url")';
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var currentNode = Utils.findNode(ast, { line: 2, col: 1 });
+      assert.equal(currentNode.name, "EQName");
+     },
+    
     "test: simple variable analysis": function() {
       var code = "declare function local:test() { variable $a := 1; $a := $a + 1; $a; $a }; local:test()";
       var compiler = new Compiler();
