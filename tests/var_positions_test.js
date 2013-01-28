@@ -92,6 +92,8 @@ module.exports = {
       var ast = compiler.compile(code);
       var currentNode = Utils.findNode(ast, { line: 2, col: 1 });
       assert.equal(currentNode.name, "EQName");
+      currentNode = Utils.findNode(ast, { line: 2, col: 2 });
+      assert.equal(currentNode.name, "EQName");
      },
     
     "test: simple variable analysis": function() {
