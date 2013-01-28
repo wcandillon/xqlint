@@ -108,6 +108,17 @@ define(function(require, exports, module) {
         ec: 6
       };
       testRemover(code, removePos);
+    }, 
+
+    "test: remove3": function() {
+      var code = "let $a := 1, $b := 2\nreturn 1";
+      var removePos = {
+        sl: 0,
+        el: 0,
+        sc: 14,
+        ec: 15
+      };
+      testRemover(code, removePos);
     }
    
   };
