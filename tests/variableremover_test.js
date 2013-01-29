@@ -60,7 +60,7 @@ define(function(require, exports, module) {
       }
     };
 
-  function testRemover(code, removePos){
+  function testRemover(code, removePos, expected){
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
@@ -68,8 +68,9 @@ define(function(require, exports, module) {
     var remover = new VariableRemover(ast);
     console.log("Input:\n" + code);
     var removedAst = remover.removeVar(removePos);
-    console.log("Output:\n" + astToText(removedAst));
-    //console.log(JSON.stringify(removedAst));
+    var result = astToText(removedAst);
+    console.log("Output:\n" + result);
+    assert.equal(result, expected);
   }
 
 
@@ -79,46 +80,74 @@ define(function(require, exports, module) {
 
     "test: no action": function() {
       var code = "let $a := 1\nreturn 1";
+      var expected = code;
       var removePos = {
         sl: -1,
         el: -1,
         sc: -1,
         ec: -1
       };
-      testRemover(code, removePos);
+      testRemover(code, removePos, expected);
     },
 
     "test: remove": function() {
       var code = "let $a := 1\nreturn 1";
+      var expected = "\nreturn 1";
       var removePos = {
         sl: 0,
         el: 0,
         sc: 5,
         ec: 6
       };
-      testRemover(code, removePos);
+      testRemover(code, removePos, expected);
     }, 
 
     "test: remove2": function() {
       var code = "let $a := 1, $b := 2\nreturn 1";
+      var expected = "let $b := 2\nreturn 1";
       var removePos = {
         sl: 0,
         el: 0,
         sc: 5,
         ec: 6
       };
-      testRemover(code, removePos);
+      testRemover(code, removePos, expected);
     }, 
 
     "test: remove3": function() {
       var code = "let $a := 1, $b := 2\nreturn 1";
+      var expected = "let $a := 1\nreturn 1";
       var removePos = {
         sl: 0,
         el: 0,
         sc: 14,
         ec: 15
       };
-      testRemover(code, removePos);
+      testRemover(code, removePos, expected);
+    }, 
+
+    "test: remove4": function() {
+      var code = "declare variable $unused := 3;\n1";
+      var expected = "\n1";
+      var removePos = {
+        sl: 0,
+        el: 0,
+        sc: 18,
+        ec: 24
+      };
+      testRemover(code, removePos, expected);
+    }, 
+
+    "test: remove5": function() {
+      var code = "variable $unused := 3;\n1";
+      var expected = "\n1";
+      var removePos = {
+        sl: 0,
+        el: 0,
+        sc: 10,
+        ec: 16
+      };
+      testRemover(code, removePos, expected);
     }
    
   };
