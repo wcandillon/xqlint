@@ -40,7 +40,7 @@ define(function(require, exports, module) {
   var requirejs = require('../r');
   var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
   var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
-  var NamespaceRemover = requirejs('lib/visitors/NamespaceRemover.js').NamespaceRemover;
+  var Renamer = requirejs('lib/visitors/Renamer.js').Renamer;
 
   var fs = require('fs');
   var path = require('path');
@@ -60,15 +60,28 @@ define(function(require, exports, module) {
       }
     };
 
-  function testRemover(code, removePos, expected){
+  function testRename(code, renamePos, toName, expected){
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
     var ast = h.getParseTree();
-    var remover = new NamespaceRemover(ast);
+    var renamer = new Renamer(ast);
     console.log("Input:\n" + code);
-    var removedAst = remover.removeNs(removePos);
-    var result = astToText(removedAst);
+    var newAst = renamer.rename(renamePos, toName);
+    var result = astToText(newAst);
+    console.log("Output:\n" + result);
+    assert.equal(result, expected);
+  }
+
+  function testRenamePrefix(code, renamePos, toPrefix, expected){
+    var h = new JSONParseTreeHandler(code);
+    var parser = new XQueryParser(code, h);
+    parser.parse_XQuery();
+    var ast = h.getParseTree();
+    var renamer = new Renamer(ast);
+    console.log("Input:\n" + code);
+    var newAst = renamer.renamePrefix(renamePos, toPrefix);
+    var result = astToText(newAst);
     console.log("Output:\n" + result);
     assert.equal(result, expected);
   }
@@ -76,46 +89,92 @@ define(function(require, exports, module) {
 
   module.exports = {
 
-    name: "NamespaceRemover",
+    name: "Renamer",
 
-    "test: no action": function() {
-      var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
-      var expected = code;
-      var removePos = {
+    "test: no action1": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected =  code;
+      var renamePos = {
         sl: -1,
         el: -1,
-        sc: -1,
-        ec: -1
+        sc: 0,
+        ec: 0 
       };
-      testRemover(code, removePos, expected);
+      testRename(code, renamePos, "unused", expected);
+    },
+    
+    "test: no action2": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected =  code;
+      var renamePos = {
+        sl: -1,
+        el: -1,
+        sc: 0,
+        ec: 0 
+      };
+      testRenamePrefix(code, renamePos, "unused", expected);
     },
 
-   "test: remove1": function() {
-      var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
-      var expected = '\nimport module "http://expath.org/ns/http-client";\n1';
-      var removePos = {
+   "test: rename1": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected = 'declare namespace testt = "test.org";\ntestt:bla();';
+      var renamePos = {
         sl: 0,
         el: 0,
-        sc: 0,
-        ec: 36
+        sc: 18,
+        ec: 22 
       };
-      testRemover(code, removePos, expected);
-    },
-   
-   "test: remove2": function() {
-      var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
-      var expected = 'declare namespace bla = "example.org";\n\n1';
-      var removePos = {
+      testRename(code, renamePos, "testt", expected);
+   },
+
+   "test: rename2": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected = 'declare namespace test = "test.org";\ntest:bla();';
+      var renamePos = {
         sl: 1,
         el: 1,
         sc: 0,
-        ec: 47
+        ec: 8
       };
-      testRemover(code, removePos, expected);
-    }
-  
-  };
+      testRename(code, renamePos, "test:bla", expected);
+   },
 
+   "test: rename3": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected = 'declare namespace testt = "test.org";\ntestt:bla();';
+      var renamePos = {
+        sl: 0,
+        el: 0,
+        sc: 0,
+        ec: 35
+      };
+      testRename(code, renamePos, "testt", expected);
+   },
+
+   "test: renamePrefix1": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected = 'declare namespace pref:test = "test.org";\ntestt:bla();';
+      var renamePos = {
+        sl: 0,
+        el: 0,
+        sc: 18,
+        ec: 22 
+      };
+      testRenamePrefix(code, renamePos, "pref", expected);
+   },
+
+   "test: renamePrefix2": function() {
+      var code = 'declare namespace test = "test.org";\ntestt:bla();';
+      var expected = 'declare namespace test = "test.org";\ntest:bla();';
+      var renamePos = {
+        sl: 1,
+        el: 1,
+        sc: 0,
+        ec: 8 
+      };
+      testRenamePrefix(code, renamePos, "test", expected);
+   }
+  }
 });
 
 if (typeof module !== "undefined" && module === require.main) {
