@@ -193,6 +193,14 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
+    },
+
+    "test: undeclared variable": function() {
+      var code = 'import module namespace http = "http://expath.org/ns/http-client";\n\nhttp:send-request($request)\n';
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
     }
 };
 });
