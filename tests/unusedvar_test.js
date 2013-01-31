@@ -185,6 +185,14 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
+    },
+
+    "test: group-by": function(){
+      var code = "for $token in ()\nlet $lc := $token\ngroup by $lc\nreturn 1";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
     }
 };
 });
