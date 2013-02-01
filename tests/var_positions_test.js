@@ -86,6 +86,16 @@ module.exports = {
       assert.equal(node.name, "EQName");            
     },
     
+    "test: simple expr": function(){
+      var code = 'import module namespace ns = "http://www.28msec.com/modules/http/request";\n\nns:parameter-values("url")';
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var currentNode = Utils.findNode(ast, { line: 2, col: 1 });
+      assert.equal(currentNode.name, "EQName");
+      currentNode = Utils.findNode(ast, { line: 2, col: 2 });
+      assert.equal(currentNode.name, "EQName");
+     },
+    
     "test: simple variable analysis": function() {
       var code = "declare function local:test() { variable $a := 1; $a := $a + 1; $a; $a }; local:test()";
       var compiler = new Compiler();
@@ -118,7 +128,23 @@ module.exports = {
       assert.equal(varDecl.pos.sc, 42);
       assert.equal(varDecl.pos.el, 0);
       assert.equal(varDecl.pos.ec, 43);
-    } 
+    },
+
+    "test: declared variables in scope": function() {
+      var code = "declare variable $a := 1; declare function local:test(){ variable $d := 3; let $b := 2 let $c := 2 return { $a } }; 1;";
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var sctx = ast.sctx;
+      var nodes = findNodes(ast, "VarRef");
+      var ref = nodes[nodes.length - 1];
+      var currentSctx = Utils.findNode(sctx, { line: ref.pos.sl, col: ref.pos.sc });
+      var varDecls = currentSctx.getVarDecls();
+      assert.equal(varDecls["a"] !== undefined, true);
+      assert.equal(varDecls["b"] !== undefined, true);
+      assert.equal(varDecls["c"] !== undefined, true);
+      assert.equal(varDecls["d"] !== undefined, true);
+      assert.equal(varDecls["e"] !== undefined, false);
+    }
 };
 });
 

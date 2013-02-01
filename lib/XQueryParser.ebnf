@@ -177,7 +177,9 @@ GroupByClause
 GroupingSpecList
          ::= GroupingSpec ( ',' GroupingSpec )*
 GroupingSpec
-         ::= '$' VarName ( TypeDeclaration? ':=' ExprSingle )? ( 'collation' URILiteral )?
+         ::= GroupingVariable ( TypeDeclaration? ':=' ExprSingle )? ( 'collation' URILiteral )?
+GroupingVariable
+         ::= '$' VarName
 OrderByClause
          ::= ( 'order' 'by' | 'stable' 'order' 'by' ) OrderSpecList
 OrderSpecList

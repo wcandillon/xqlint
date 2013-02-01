@@ -35,7 +35,7 @@ var XQueryTokenizer = exports.XQueryTokenizer = function XQueryTokenizer(string,
   init(string, parsingEventHandler);
 ?>
 
-Start   ::= '<![CDATA['
+start   ::= '<![CDATA['
           | '<!--'
           | '<?'
           | '(#'
@@ -45,20 +45,44 @@ Start   ::= '<![CDATA['
           | "'"
           | "}"
           | "{"
+          | "("
+          | ")"
+          | "/"
+          | "["
+          | "]"
+          | ","
+          | "."
+          | ";"
+          | ":"
+          | "!"
+          | "|"
+          | Annotation
+          | ModuleDecl
+          | OptionDecl
+          | AttrTest
           | Wildcard
           | IntegerLiteral
           | DecimalLiteral
           | DoubleLiteral
           | Variable
-          | QName
+          | EQName
           | Tag
           | Operator
           | EOF
 
-StartTag  ::= '>' | '/>' | EOF
+StartTag  ::= '>' | '/>' | QName | "=" | '"' | "'" | EOF
+
 
 TagContent
-         ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
+         ::= ElementContentChar | Tag | EndTag | '<![CDATA[' | '<!--' | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | EOF
+          /* ws: explicit */
+
+AposAttr
+        ::= EscapeApos | AposAttrContentChar | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | "'" | EOF
+          /* ws: explicit */
+
+QuotAttr
+        ::= EscapeQuot | QuotAttrContentChar | PredefinedEntityRef | CharRef | '{{' | '}}' | '{' | '"' | EOF
           /* ws: explicit */
 
 CData    ::= CDataSectionContents | ']]>' | EOF
@@ -68,13 +92,18 @@ XMLComment
          ::= DirCommentContents | '-->' | EOF
           /* ws: explicit */
 
-PI       ::= PITarget | S | DirPIContents | '?>' | EOF
+PI       ::= DirPIContents | '?>' | EOF
           /* ws: explicit */
 
-Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
+Pragma   ::= PragmaContents | '#)' | EOF
           /* ws: explicit */
 
-Comment  ::= CommentContents | ':)' | '(:' | EOF
+Comment  ::= ':)' | '(:' | CommentContents | EOF
+          /* ws: explicit */
+
+CommentDoc
+         ::= DocTag | DocCommentContents | ':)' | '(:' | EOF
+          /* ws: explicit */
 
 QuotString
          ::= PredefinedEntityRef | CharRef | EscapeQuot | QuotChar | '"' | EOF
@@ -83,6 +112,10 @@ QuotString
 AposString
          ::= PredefinedEntityRef | CharRef | EscapeApos | AposChar | "'" | EOF
           /* ws: explicit */
+
+Prefix  ::= NCName
+
+_EQName ::= EQName
 
 Whitespace
          ::= S^WS
@@ -350,7 +383,17 @@ NCName   ::= NCName^Token
            | 'returning'
 <?TOKENS?>
 
-Operator ::= ':=' | '=' | '<' | '>' | '-' | '+' | 'div'
+ModuleDecl
+         ::= ('import' S)? ('module' | 'schema') S 'namespace'
+
+Annotation
+         ::= '%' EQName ?
+
+OptionDecl
+         ::= 'declare' S ( ( 'decimal-format' | 'option' ) 
+           |  ('default' S 'decimal-format') ) 
+
+Operator ::= '!=' | ':=' | '>=' | '<=' | '=' | '<' | '>' | '-' | '+' | 'div' | '||' | '?'
 
 Variable ::= '$' EQName
 
@@ -359,17 +402,15 @@ Tag      ::= '<' QName
 EndTag   ::= '</' QName S? '>'
 
 PragmaContents
-         ::= ( Char* - ( Char* '#)' Char* ) ) &'#'
+         ::= ( Char* - ( Char* '#' Char* ) )+
 DirCommentContents
-         ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )*
+         ::= ( ( Char - '-' ) | '-' ( Char - '-' ) )+
 DirPIContents
-         ::= ( Char* - ( Char* '?>' Char* ) ) &'?'
-/*
-CDataSection
-         ::= '<![CDATA[' CDataSectionContents ']]>'
-*/
+         ::= ( Char* - ( Char* '?' Char* ) ) 
 CDataSectionContents
-         ::= Char* - ( Char* ']]>' Char* )
+         ::= ( Char+ - ( Char* ']]>' Char* ) ) & ']]'
+           | ( Char+ - ( Char* ']]>' Char* ) ) & $ 
+AttrTest  ::= "@" ( Wildcard | QName )
 Wildcard ::= "*"
          | (NCName ":" "*")
          | ("*" ":" NCName)
@@ -403,9 +444,9 @@ AposChar ::= (Char - [&'])+
 ElementContentChar
          ::= (Char - [&<{}])+
 QuotAttrContentChar
-         ::= Char - ["&<{}]
+         ::= (Char - ["&<{}])+
 AposAttrContentChar
-         ::= Char - [&'<{}]
+         ::= (Char - [&'<{}])+
 PITarget ::= NCName - ( ( 'X' | 'x' ) ( 'M' | 'm' ) ( 'L' | 'l' ) )
 Name     ::= NameStartChar NameChar*
 NameStartChar
@@ -428,9 +469,15 @@ CharRef  ::= '&#' [0-9]+ ';'
            | '&#x' [0-9A-Fa-f]+ ';'
 Digits   ::= [0-9]+
 CommentContents
-         ::= ( ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) - ( Char* '(' ) ) &':'
-           |   ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) )                   &'('
-          /* ws: explicit */
+         ::= ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) & '('
+           | ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) & $
+           | ( ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) ) - ( Char* '(' ) ) & ':'
+DocTag   ::= ' @' NCName?
+DocCommentContents
+         ::= ( ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) ) - ( Char* '(' ) ) & ':'
+           |   ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) )                   & '('
+           |   ( Char+ - ( Char* ( '(:' | ':)' | ' @' ) Char* ) )                   & ' @'
+           | ( Char+ - ( Char* ( '(:' | ':)' | ' @') Char* ) ) & $
 EOF      ::= $
 NonNCNameChar
           ::= $

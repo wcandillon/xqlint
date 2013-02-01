@@ -55,14 +55,14 @@ module.exports = {
             [ { type: 'comment', value: '(:' },
               { type: 'comment', value: ' Hello World ' },
               { type: 'comment', value: '(:' },
-              { type: 'text', value: '  ' } ],
-          state: '["Start","Comment","Comment"]' },
+              { type: 'comment', value: '  ' } ],
+          state: '["start","Comment","Comment"]' },
         { tokens:
            [ { type: 'comment', value: ' hello ' },
              { type: 'comment', value: ':)' },
              { type: 'comment', value: ' world ' },
              { type: 'comment', value: ':)' } ],
-          state: '["Start"]' }
+          state: '["start"]' }
       ];
       var result = [];
       for(var i in lines) {
@@ -71,6 +71,10 @@ module.exports = {
         var state = tokens.state;
         result.push(tokens);
       }
+      console.log(JSON.stringify(result, null, 2));
+      console.log("=============================================");
+      console.log(JSON.stringify(expected, null, 2));
+      console.log("=============================================");
       assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
@@ -81,19 +85,19 @@ module.exports = {
       //var state = undefined;
       var expected = [
         { tokens: 
-          [ { type: 'comments', value: '<!--' },
-            { type: 'comments', value: ' Hello' } ],
-         state: '["Start","XMLComment"]' },
+          [ { type: 'comment', value: '<!--' },
+            { type: 'comment', value: ' Hello' } ],
+         state: '["start","XMLComment"]' },
        { tokens: 
-          [ { type: 'comments', value: 'World ' },
-            { type: 'comments', value: '-->' },
+          [ { type: 'comment', value: 'World ' },
+            { type: 'comment', value: '-->' },
             { type: 'text', value: ' ' },
             { type: 'constant', value: '1' } ],
-         state: '["Start"]' },
+         state: '["start"]' },
        { tokens: 
           [ { type: 'text', value: ' ' },
             { type: 'constant', value: '1' } ],
-         state: '["Start"]' }
+         state: '["start"]' }
       ];
       var result = [];
       for(var i in lines) {
@@ -135,7 +139,7 @@ module.exports = {
         "value": "\"\""
       }
     ],
-    "state": "[\"Start\",\"QuotString\"]"
+    "state": "[\"start\",\"QuotString\"]"
   },
   {
     "tokens": [
@@ -152,7 +156,59 @@ module.exports = {
         "value": "\""
       }
     ],
-    "state": "[\"Start\"]"
+    "state": "[\"start\"]"
+  }
+];
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = lexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      console.log(JSON.stringify(result, null, 2));
+      assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+      assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+    
+    "test: PI": function() {
+      var code = '  <?php hello \n ?>    ';
+      var lines = code.split("\n");
+      //var state = undefined;
+      var expected = [
+  {
+    "tokens": [
+      {
+        "type": "text",
+        "value": "  "
+      },
+      {
+        "type": "xml-pe",
+        "value": "<?"
+      },
+      {
+        "type": "xml-pe",
+        "value": "php hello "
+      }
+    ],
+    "state": "[\"start\",\"PI\"]"
+  },
+  {
+    "tokens": [
+      {
+        "type": "xml-pe",
+        "value": " "
+      },
+      {
+        "type": "xml-pe",
+        "value": "?>"
+      },
+      {
+        "type": "text",
+        "value": "    "
+      }
+    ],
+    "state": "[\"start\"]"
   }
 ];
       var result = [];
@@ -166,83 +222,29 @@ module.exports = {
       assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
     
-    "test: PI": function() {
-      var code = '  <?php hello \n ?>    ';
-      var lines = code.split("\n");
-      //var state = undefined;
-      var expected = [
-      {
-        "tokens": [
-          {
-            "type": "text",
-            "value": "  "
-          },
-          {
-            "type": "xml-pe",
-            "value": "<?"
-          },
-          {
-            "type": "xml-pe",
-            "value": "php"
-          },
-          {
-            "type": "xml-pe",
-            "value": " "
-          },
-          {
-            "type": "xml-pe",
-            "value": "hello"
-          },
-          {
-            "type": "xml-pe",
-            "value": " "
-          }
-        ],
-        "state": "[\"Start\",\"PI\"]"
-      },
-      {
-        "tokens": [
-          {
-            "type": "xml-pe",
-            "value": " "
-          },
-          {
-            "type": "xml-pe",
-            "value": "?>"
-          },
-          {
-            "type": "text",
-            "value": "    "
-          }
-        ],
-        "state": "[\"Start\"]"
-      }
-    ];
-      var result = [];
-      for(var i in lines) {
-        var line = lines[i];
-        var tokens = lexer.getLineTokens(line, state);
-        var state = tokens.state;
-        result.push(tokens);
-      }
-      assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
-      assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
-    },
-    
     "test: XML ": function() {
-      var code = '  <foo>{ 1 + 1 } < </foo>    ';
+      var code = 'xquery version "1.0";\n\nlet $message := "Hello World!"\nreturn <results>\n  <message>{$message}</message>\n</results>\n';
+      code = "declare namespace namespace = 'http://www.example.com/'; 1";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
       
     ];
       var result = [];
+      
       for(var i in lines) {
         var line = lines[i];
+        result[i] = [];
         var tokens = lexer.getLineTokens(line, state);
         var state = tokens.state;
-        result.push(tokens);
+        result[i].push(state);
+        for(var j in tokens.tokens) {
+          var token = tokens.tokens[j];
+          result[i].push([token.type, token.value]);
+        };
+        //result.push(tokens);
       }
+
       console.log(JSON.stringify(result, null, 2));
       //assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
       //assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
