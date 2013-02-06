@@ -201,6 +201,23 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 1);
+    },
+
+    "test: group by warning (1)": function() {
+      var code = 'for $item in ()\ngroup by $item\nlet $count := count($item)\nreturn $count';
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 1);
+      assert.equal(markers[0].message, "Count on grouping variable ($item) always returns 1.");
+    },
+
+    "test: group by warning (2)": function() {
+      var code = 'declare default function namespace "http://www.example.com/"; for $item in ()\ngroup by $item\nlet $count := count($item)\nreturn $count';
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      assert.equal(markers.length, 0);
     }
 };
 });
