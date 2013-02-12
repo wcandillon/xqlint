@@ -60,7 +60,7 @@ define(function(require, exports, module) {
       }
     };
 
-  function testAddNamespaceDecl(code, namespaceDecl, expected){
+  function testAddNamespaceDecl(code, namespaceDecl, expected, expectedAdd){
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
@@ -73,9 +73,10 @@ define(function(require, exports, module) {
     console.log("Expected:\n" + expected);
     //console.log("OutputAST:\n" + JSON.stringify(newAst, null, 2));
     assert.equal(result, expected);
+    assert.equal(adder.getAddedString(), expectedAdd);
   }
 
-  function testAddModuleImport(code, imp, expected){
+  function testAddModuleImport(code, imp, expected, expectedAdd){
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
@@ -87,6 +88,7 @@ define(function(require, exports, module) {
     console.log("Output:\n" + result);
     //console.log("OutputAST:\n" + JSON.stringify(newAst, null, 2));
     assert.equal(result, expected);
+    assert.equal(adder.getAddedString(), expectedAdd);
   }
 
   module.exports = {
@@ -96,77 +98,84 @@ define(function(require, exports, module) {
     "test: addNamespaceDecl1": function() {
       var code = 'declare namespace exmpl = "exmpl.org";\n1';
       var expected = 'declare namespace exmpl = "exmpl.org";\ndeclare namespace newNs = "new.org";\n1';
+      var expectedAdd = 'declare namespace newNs = "new.org";';
 
       var decl = {
         NCName: "newNs",
         URILiteral: "new.org"
       };
-      testAddNamespaceDecl(code, decl, expected);
+      testAddNamespaceDecl(code, decl, expected, expectedAdd);
     },
     
     "test: addNamespaceDecl2": function() {
       var code = '1';
       var expected = 'declare namespace newNs = "new.org";\n1';
+      var expectedAdd = 'declare namespace newNs = "new.org";';
 
       var decl = {
         NCName: "newNs",
         URILiteral: "new.org"
       };
-      testAddNamespaceDecl(code, decl, expected);
+      testAddNamespaceDecl(code, decl, expected, expectedAdd);
     },
     
     "test: addNamespaceDecl3": function() {
       var code = '\n\ntst:bla();';
       var expected = 'declare namespace tst = "";\n\ntst:bla();';
+      var expectedAdd = 'declare namespace tst = "";';
 
       var decl = {
         NCName: "tst",
         URILiteral: ""
       };
-      testAddNamespaceDecl(code, decl, expected);
+      testAddNamespaceDecl(code, decl, expected, expectedAdd);
     },
     
     "test: addModuleImport1": function() {
       var code = 'tst:bla();';
       var expected = 'import module namespace tst = "";\ntst:bla();';
+      var expectedAdd = 'import module namespace tst = "";';
 
       var imp = {
         NCName: "tst",
       };
-      testAddModuleImport(code, imp, expected);
+      testAddModuleImport(code, imp, expected, expectedAdd);
     },
     
     "test: addModuleImport2": function() {
       var code = 'tst:bla();';
       var expected = 'import module namespace tst = "tst.org";\ntst:bla();';
+      var expectedAdd = 'import module namespace tst = "tst.org";';
 
       var imp = {
         NCName: "tst",
         URILiterals: "tst.org"
       };
-      testAddModuleImport(code, imp, expected);
+      testAddModuleImport(code, imp, expected, expectedAdd);
     },
     
     "test: addModuleImport3": function() {
       var code = 'tst:bla();';
       var expected = 'import module namespace tst = "tst.org" at "tst2.org";\ntst:bla();';
+      var expectedAdd = 'import module namespace tst = "tst.org" at "tst2.org";';
 
       var imp = {
         NCName: "tst",
         URILiterals: ["tst.org", "tst2.org"]
       };
-      testAddModuleImport(code, imp, expected);
+      testAddModuleImport(code, imp, expected, expectedAdd);
     },
     
     "test: addModuleImport4": function() {
       var code = 'tst:bla();';
       var expected = 'import module namespace tst = "tst.org" at "tst2.org", "tst3.org";\ntst:bla();';
-      
+      var expectedAdd = 'import module namespace tst = "tst.org" at "tst2.org", "tst3.org";';
+     
       var imp = {
         NCName: "tst",
         URILiterals: ["tst.org", "tst2.org", "tst3.org"]
       };
-      testAddModuleImport(code, imp, expected);
+      testAddModuleImport(code, imp, expected, expectedAdd);
     }
 
 
