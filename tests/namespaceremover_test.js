@@ -60,7 +60,7 @@ define(function(require, exports, module) {
       }
     };
 
-  function testRemover(code, removePos, expected){
+  function testRemover(code, removePos, expected, expectedRem){
     var h = new JSONParseTreeHandler(code);
     var parser = new XQueryParser(code, h);
     parser.parse_XQuery();
@@ -71,6 +71,7 @@ define(function(require, exports, module) {
     var result = astToText(removedAst);
     console.log("Output:\n" + result);
     assert.equal(result, expected);
+    assert.equal(remover.getRemovedString(), expectedRem);
   }
 
 
@@ -81,37 +82,40 @@ define(function(require, exports, module) {
     "test: no action": function() {
       var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
       var expected = code;
+      var expectedRem = "";
       var removePos = {
         sl: -1,
         el: -1,
         sc: -1,
         ec: -1
       };
-      testRemover(code, removePos, expected);
+      testRemover(code, removePos, expected, expectedRem);
     },
 
    "test: remove1": function() {
       var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
       var expected = '\nimport module "http://expath.org/ns/http-client";\n1';
+      var expectedRem =  'declare namespace bla = "example.org";';
       var removePos = {
         sl: 0,
         el: 0,
         sc: 0,
         ec: 36
       };
-      testRemover(code, removePos, expected);
+      testRemover(code, removePos, expected, expectedRem);
     },
    
    "test: remove2": function() {
       var code = 'declare namespace bla = "example.org";\nimport module "http://expath.org/ns/http-client";\n1';
       var expected = 'declare namespace bla = "example.org";\n\n1';
+      var expectedRem = 'import module "http://expath.org/ns/http-client";';
       var removePos = {
         sl: 1,
         el: 1,
         sc: 0,
         ec: 47
       };
-      testRemover(code, removePos, expected);
+      testRemover(code, removePos, expected, expectedRem);
     }
   
   };
