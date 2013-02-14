@@ -157,20 +157,8 @@ declare %an:sequential function http:send-request(
 };
 
 (:~
- : Function for convenience.
  :
- : Calling this function is equivalent to calling
- :
- : <code>
- : http:send-request($request, (), ())
- : </code>
- :
- : @see documentation of <a href="#send-request-3">send-request</a> with three parameters.
- :
- : @param $request see request parameter of the sequential
- :  <a href="#send-request-3">send-request</a> function with three parameters.
- : @return see return value of the sequential 
- :  <a href="#send-request-3">send-request</a> function with three parameters.
+ : The function takes a description of the request in parameter, and returns a representation of the response.
  :)
 declare %an:sequential function http:send-request (
   $request as element()) as item()+ {

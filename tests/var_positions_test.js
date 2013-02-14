@@ -144,6 +144,17 @@ module.exports = {
       assert.equal(varDecls["c"] !== undefined, true);
       assert.equal(varDecls["d"] !== undefined, true);
       assert.equal(varDecls["e"] !== undefined, false);
+    },
+
+    "test: scoped variables": function() {
+      var code = "for $item in db:collection($name) group by $id := 1";
+      var compiler = new Compiler();
+      var ast = compiler.compile(code);
+      var sctx = ast.sctx;
+      var currentSctx = Utils.findNode(sctx, { line: 0, col: code.length - 2 });
+      var varDecls = currentSctx.getVarDecls();
+      assert.equal(varDecls["item"] !== undefined, true);
+      assert.equal(varDecls["id"] === undefined, true);
     }
 };
 });
