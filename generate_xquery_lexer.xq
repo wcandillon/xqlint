@@ -24,7 +24,7 @@ variable $response := http-client:send-request(validate {
 </http:request>
 });
 variable $meta := $response[1];
-variable $body := string($response[2]);
+variable $body := string($response[2]) ! replace(., "\r", "");
 if($meta/@status = 200) then {
   fs:write($output, $body, $output-text);
   "Parser successfully generated at " || $output || "
