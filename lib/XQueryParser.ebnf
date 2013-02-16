@@ -775,6 +775,7 @@ FunctionName
            | 'constraint'
            | 'loop'
            | 'returning'
+           | 'object'
 NCName   ::= NCName^Token
            | 'after'
            | 'and'
