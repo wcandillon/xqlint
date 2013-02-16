@@ -209,7 +209,7 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 1);
-      assert.equal(markers[0].message, "Count on grouping variable ($item) always returns 1.");
+      assert.equal(markers[0].message, "Count on grouping variable ($item) always returns 1. Use count clause instead.");
     },
 
     "test: group by warning (2)": function() {
@@ -218,6 +218,16 @@ module.exports = {
       var sctx = compiler.compile(code);
       var markers = sctx.markers;
       assert.equal(markers.length, 0);
+    },
+
+    "test: transform expression": function() {
+      var code = 'declare %an:sequential function vwiki:menu2($user as schema-element(d:user), $wiki as schema-element(d:wiki)) { variable $menu := <menu />; copy $result := <div>{$menu/node()}</div> modify ( for $check in $result//descendant::node()[@auth] return if (auth:check($user, basedata:getById(fn:data($check/@auth)), "read")) then () else delete node $check ) return $result/node() };';
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      for(var i=0; i < markers.length; i++) {
+        assert.equal(markers[i].message.indexOf("[XPST0008]"), -1);
+      }
     }
 };
 });
