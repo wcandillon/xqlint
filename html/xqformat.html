@@ -8,25 +8,74 @@
 <script type="text/javascript">
 
 require([ '../lib/XQueryParser', '../lib/JSONParseTreeHandler',
-		 '../lib/visitors/CodeFormatter'], 
-        function (XQueryParser, JSONParseTreeHandler, CodeFormatter) {
+		 '../lib/visitors/CodeFormatter', '../lib/visitors/Positioner'], 
+        function (XQueryParser, JSONParseTreeHandler, CodeFormatter, Positioner) {
     
 });
 
+function translatePos(str, charPos){
+	var res = {
+		line: 0,
+		column: 0
+	}
+	
+	for (var i = 0; i < charPos; i++){
+		if (str[i] == '\n'){
+			res.line++;
+			res.column = 0;
+		} else{
+			res.column++;
+		}
+	}
+
+	return res;
+}
+
+function getSel(){
+	var textarea = document.getElementById("textbox");
+	var startChar = textarea.selectionStart;
+	var endChar = textarea.selectionEnd;
+	if (startChar == endChar){ 
+		// No selection
+		return;
+	}
+	
+	if (startChar > endChar){
+		// Invert selection
+		var tmp = startChar;
+		startChar = endChar;
+		endChar = tmp;
+  	}
+	
+	var start = translatePos(textarea.value, startChar);
+	var end = translatePos(textarea.value, endChar);
+
+	return {
+		sl: start.line,
+		sc: start.column,
+		el: end.line,
+		ec: end.column
+	};
+	
+}
 
 function formatCode(){
 	var XQueryParser = requirejs('../lib/XQueryParser').XQueryParser;
 	var JSONParseTreeHandler = requirejs('../lib/JSONParseTreeHandler').JSONParseTreeHandler;
 	var CodeFormatter = requirejs('../lib/visitors/CodeFormatter').CodeFormatter;
+	var Positioner = requirejs('../lib/visitors/Positioner').Positioner;
 
 	var tb = document.getElementById("textbox");
 	var code = tb.value;
 	var h = new JSONParseTreeHandler(code);
-    var parser = new XQueryParser(code, h);
-    parser.parse_XQuery();
-    var ast = h.getParseTree();
-    var codeFormatter = new CodeFormatter(ast);
-    var formatted = codeFormatter.format();
+	var parser = new XQueryParser(code, h);
+	parser.parse_XQuery();
+	var ast = h.getParseTree();
+	var positioner = new Positioner(ast);
+	ast = positioner.computePos();
+	var codeFormatter = new CodeFormatter(ast);
+	var pos = getSel();
+	var formatted = codeFormatter.format(pos);
 	document.getElementById("textbox2").value = formatted;
 }
 </script>
@@ -44,14 +93,17 @@ function formatCode(){
     </tr>
     <tr>
       <td><textarea name="textbox" id="textbox" cols="80" rows="30">
-          paste your xquery code here...
-        </textarea>
+xquery       version  "1.0" ;
+
+(1,      2)
+
+(: 
+Try Format with/without selecting 
+some text before 
+:)</textarea>
         </td>
         <td>
-          <textarea name="textbox2" id="textbox2" cols="80" rows="30">
-
-          </textarea>
-
+          <textarea name="textbox2" id="textbox2" cols="80" rows="30"></textarea>
           </td>
         </tr>
       </table>
