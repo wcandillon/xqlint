@@ -87,7 +87,17 @@ module.exports = {
       var markers = sctx.markers;
       console.log(stringifyNoParents(sctx.sctx));
       console.log(stringifyNoParents(sctx.outline));
+    },
+   
+   "test: xqdoc": function() {
+      var code = "(: some comment :)\n(:~\n : This function has a\nsomewhat ill-formatted\n:   documentation\n :)\ndeclare function local:foo(){1};declare function local:foo2(){1}\n1";
+      var compiler = new Compiler();
+      var sctx = compiler.compile(code);
+      var markers = sctx.markers;
+      console.log(stringifyNoParents(sctx.sctx));
+      console.log(stringifyNoParents(sctx.outline));
     }
+
 };
 });
 
