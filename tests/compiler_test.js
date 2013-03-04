@@ -63,39 +63,80 @@ module.exports = {
     
     "test: functiondecl, vardecl, annotations, types": function() {
       var code = 'declare function local:foo($p1 as xs:string, $p2 as xs:integer) as xs:string {1};\ndeclare %private variable $var as xs:string external := "3";\n{%public(1, "2") variable $a as xs:integer := 2, $b as xs:string; $a}';
-      //var code = 'let $x := 3 return $x';
       var compiler = new Compiler();
-      var sctx = compiler.compile(code);
-      var markers = sctx.markers;
-      console.log(stringifyNoParents(sctx.sctx));
-      console.log(stringifyNoParents(sctx.outline));
+      var compiled = compiler.compile(code);
+      var sctx = compiled.sctx;
+
+      // Test public VarDecls
+      assert.equal(Object.keys(sctx.varDecls).length, 1);
+      var varDecl = sctx.varDecls["var"];
+      assert.ok(varDecl);
+      assert.equal(varDecl.kind, "VarDecl");
+      assert.ok(varDecl.isExternal);
+      assert.equal(varDecl.type, "xs:string");
+      assert.equal(Object.keys(varDecl.annotations).length, 1); 
+      var anno = varDecl.annotations["private"];
+      assert.ok(anno);
+      assert.equal(anno.literals.length, 0);
+      assert.ok(!anno.prefix);
+      assert.equal(anno.name, "private");
+
+      // Test FunctionDecls
+      assert.equal(Object.keys(sctx.declaredFunctions).length, 1);
+      assert.equal(Object.keys(sctx.declaredFunctions["local:foo"]).length, 1);
+      var funDecl = sctx.declaredFunctions["local:foo"]["2"];
+      assert.ok(funDecl);
+      assert.ok(!Object.keys(funDecl.annotations).length);
+      assert.ok(!funDecl.isExternal);            
+      assert.equal(funDecl.type, "xs:string");
+      assert.equal(funDecl.params.length, 2);
+      assert.equal(funDecl.params[0].name, "$p1");
+      assert.equal(funDecl.params[0].type, "xs:string");
+      assert.equal(funDecl.params[1].name, "$p2");
+      assert.equal(funDecl.params[1].type, "xs:integer");
+
+      // Test outline
+      var outline = compiled.outline;
+      assert.equal(outline.length, 2);
+      assert.equal(outline[0].name, "local:foo($p1, $p2)");
+      assert.equal(outline[1].name, "$var");
     },
    
    "test: undeclared variable in assignment": function() {
       var code = "declare function local:test() {\nvariable $foo := $foo;\n$foo;\n};\nlocal:test()";
       var compiler = new Compiler();
-      var sctx = compiler.compile(code);
+      var compiled = compiler.compile(code);
+      var sctx = compiled.sctx;
       var markers = sctx.markers;
-      console.log(stringifyNoParents(sctx.sctx));
-      console.log(stringifyNoParents(sctx.outline));
+      
+      assert.equal(Object.keys(sctx.declaredFunctions).length,1);
+      assert.ok(sctx.declaredFunctions["local:test"]["0"]);
+      assert.ok(!Object.keys(sctx.varDecls).length);
     },
    
    "test: module variable": function() {
       var code = "declare variable $a := 1; $a";
       var compiler = new Compiler();
-      var sctx = compiler.compile(code);
+      var compiled = compiler.compile(code);
+      var sctx = compiled.sctx;
       var markers = sctx.markers;
-      console.log(stringifyNoParents(sctx.sctx));
-      console.log(stringifyNoParents(sctx.outline));
+
+      assert.ok(!Object.keys(sctx.declaredFunctions).length);
+      assert.equal(Object.keys(sctx.varDecls).length, 1);
+      assert.ok(sctx.varDecls.a);
     },
    
    "test: xqdoc": function() {
       var code = "(: some comment :)\n(:~\n : This function has a\nsomewhat ill-formatted\n:   documentation\n :)\ndeclare function local:foo(){1};declare function local:foo2(){1}\n1";
       var compiler = new Compiler();
-      var sctx = compiler.compile(code);
+      var compiled = compiler.compile(code);
+      var sctx = compiled.sctx;
       var markers = sctx.markers;
-      console.log(stringifyNoParents(sctx.sctx));
-      console.log(stringifyNoParents(sctx.outline));
+      
+      assert.ok(!Object.keys(sctx.varDecls).length);
+      assert.equal(Object.keys(sctx.declaredFunctions).length, 2);
+      assert.equal(sctx.declaredFunctions["local:foo"]["0"]["doc"], "This function has a\nsomewhat ill-formatted\n  documentation");
+      assert.ok(!sctx.declaredFunctions["local:foo2"]["0"]["doc"]);
     }
 
 };
