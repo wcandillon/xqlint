@@ -224,7 +224,8 @@ module.exports = {
     
     "test: XML ": function() {
       var code = 'xquery version "1.0";\n\nlet $message := "Hello World!"\nreturn <results>\n  <message>{$message}</message>\n</results>\n';
-      code = '<div class="inpagemenu">  {\n\n              if ($mayedit or $maycreate) then () else attribute style { "background-color:#e0e0e0;" },\n\n              if ($mayedit)\n                then <div>Edit</div>\n            else ()\n}</div>';
+      //code = '<div class="inpagemenu">  {\n\n              if ($mayedit or $maycreate) then () else attribute style { "background-color:#e0e0e0;" },\n\n              if ($mayedit)\n                then <div>Edit</div>\n            else ()\n}</div>';
+      code = "(# #";
       var lines = code.split("\n");
       //var state = undefined;
       var expected = [
