@@ -1,7 +1,7 @@
-// This file was generated on Tue Mar 12, 2013 04:08 (UTC+01) by REx v5.24 which is Copyright (c) 1979-2013 by Gunther Rademacher <grd@gmx.net>
-// REx command line: XML.ebnf -tree -javascript -a xqlint
+// This file was generated on Tue Mar 12, 2013 05:48 (UTC+01) by REx v5.24 which is Copyright (c) 1979-2013 by Gunther Rademacher <grd@gmx.net>
+// REx command line: XMLParser.ebnf -tree -javascript -a xqlint
 
-                                                            // line 2 "XML.ebnf"
+                                                            // line 2 "XMLParser.ebnf"
                                                             /* ***** BEGIN LICENSE BLOCK *****
                                                              * Distributed under the BSD license:
                                                              *
@@ -36,7 +36,7 @@
                                                             var XMLParser = exports.XMLParser = function XMLParser(string, parsingEventHandler)
                                                             {
                                                               init(string, parsingEventHandler);
-                                                            // line 40 "XML.js"
+                                                            // line 40 "XMLParser.js"
   var self = this;
 
   this.ParseException = function(b, e, s, o, x)
@@ -86,7 +86,7 @@
   this.getOffendingToken = function(e)
   {
     var o = e.getOffending();
-    return o >= 0 ? XML.TOKEN[o] : null;
+    return o >= 0 ? XMLParser.TOKEN[o] : null;
   };
 
   this.getExpectedTokenSet = function(e)
@@ -94,11 +94,11 @@
     var expected;
     if (e.getExpected() < 0)
     {
-      expected = XML.getTokenSet(- e.getState());
+      expected = XMLParser.getTokenSet(- e.getState());
     }
     else
     {
-      expected = [XML.TOKEN[e.getExpected()]];
+      expected = [XMLParser.TOKEN[e.getExpected()]];
     }
     return expected;
   };
@@ -1286,7 +1286,7 @@
   {
     if (l1 == t)
     {
-      eventHandler.terminal(XML.TOKEN[l1], b1, e1 > size ? size : e1);
+      eventHandler.terminal(XMLParser.TOKEN[l1], b1, e1 > size ? size : e1);
       b0 = b1; e0 = e1; l1 = l2; if (l1 != 0) {
       b1 = b2; e1 = e2; l2 = l3; if (l2 != 0) {
       b2 = b3; e2 = e3; l3 = 0; }}
@@ -1349,7 +1349,7 @@
   {
     begin = end;
     var current = end;
-    var result = XML.INITIAL[tokenSetId];
+    var result = XMLParser.INITIAL[tokenSetId];
     var state = 0;
 
     for (var code = result & 511; code != 0; )
@@ -1359,12 +1359,12 @@
       ++current;
       if (c0 < 0x80)
       {
-        charclass = XML.MAP0[c0];
+        charclass = XMLParser.MAP0[c0];
       }
       else if (c0 < 0xd800)
       {
         var c1 = c0 >> 4;
-        charclass = XML.MAP1[(c0 & 15) + XML.MAP1[(c1 & 31) + XML.MAP1[c1 >> 5]]];
+        charclass = XMLParser.MAP1[(c0 & 15) + XMLParser.MAP1[(c1 & 31) + XMLParser.MAP1[c1 >> 5]]];
       }
       else
       {
@@ -1380,16 +1380,16 @@
         var lo = 0, hi = 4;
         for (var m = 2; ; m = (hi + lo) >> 1)
         {
-          if (XML.MAP2[m] > c0) hi = m - 1;
-          else if (XML.MAP2[5 + m] < c0) lo = m + 1;
-          else {charclass = XML.MAP2[10 + m]; break;}
+          if (XMLParser.MAP2[m] > c0) hi = m - 1;
+          else if (XMLParser.MAP2[5 + m] < c0) lo = m + 1;
+          else {charclass = XMLParser.MAP2[10 + m]; break;}
           if (lo > hi) {charclass = 0; break;}
         }
       }
 
       state = code;
       var i0 = (charclass << 9) + code - 1;
-      code = XML.TRANSITION[(i0 & 15) + XML.TRANSITION[i0 >> 4]];
+      code = XMLParser.TRANSITION[(i0 & 15) + XMLParser.TRANSITION[i0 >> 4]];
 
       if (code > 511)
       {
@@ -1412,7 +1412,7 @@
   }
 }
 
-XML.getTokenSet = function(tokenSetId)
+XMLParser.getTokenSet = function(tokenSetId)
 {
   var set = [];
   var s = tokenSetId < 0 ? - tokenSetId : INITIAL[tokenSetId] & 511;
@@ -1421,19 +1421,19 @@ XML.getTokenSet = function(tokenSetId)
     var j = i;
     var i0 = (i >> 5) * 280 + s - 1;
     var i1 = i0 >> 2;
-    var f = XML.EXPECTED[(i0 & 3) + XML.EXPECTED[(i1 & 63) + XML.EXPECTED[i1 >> 6]]];
+    var f = XMLParser.EXPECTED[(i0 & 3) + XMLParser.EXPECTED[(i1 & 63) + XMLParser.EXPECTED[i1 >> 6]]];
     for ( ; f != 0; f >>>= 1, ++j)
     {
       if ((f & 1) != 0)
       {
-        set.push(XML.TOKEN[j]);
+        set.push(XMLParser.TOKEN[j]);
       }
     }
   }
   return set;
 };
 
-XML.MAP0 =
+XMLParser.MAP0 =
 [
   /*   0 */ 71, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 4, 5,
   /*  36 */ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 18, 18, 18, 18, 18, 18, 18, 18, 20, 21, 22, 23, 24, 25,
@@ -1442,7 +1442,7 @@ XML.MAP0 =
   /* 118 */ 65, 32, 66, 67, 32, 48, 68, 48, 48, 48
 ];
 
-XML.MAP1 =
+XMLParser.MAP1 =
 [
   /*   0 */ 108, 124, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 156, 181, 181, 181, 181,
   /*  21 */ 181, 214, 215, 213, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214, 214,
@@ -1466,19 +1466,19 @@ XML.MAP1 =
   /* 452 */ 70, 70, 70, 70, 70, 70
 ];
 
-XML.MAP2 =
+XMLParser.MAP2 =
 [
   /*  0 */ 57344, 63744, 64976, 65008, 65536, 63743, 64975, 65007, 65533, 1114111, 48, 70, 48, 70, 48
 ];
 
-XML.INITIAL =
+XMLParser.INITIAL =
 [
   /*  0 */ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
   /* 29 */ 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56,
   /* 56 */ 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72
 ];
 
-XML.TRANSITION =
+XMLParser.TRANSITION =
 [
   /*    0 */ 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305,
   /*   18 */ 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2305, 2304, 2323, 5215, 2322,
@@ -1720,7 +1720,7 @@ XML.TRANSITION =
   /* 5483 */ 74, 75, 76, 77, 78, 79, 0, 0, 181, 147, 183, 149, 0, 0, 0, 0, 0, 0, 0, 157, 192, 159, 194
 ];
 
-XML.EXPECTED =
+XMLParser.EXPECTED =
 [
   /*   0 */ 4, 68, 132, 188, 222, 206, 215, 303, 305, 211, 219, 241, 251, 231, 484, 255, 259, 271, 278, 285, 281, 300,
   /*  22 */ 244, 247, 209, 228, 232, 295, 312, 315, 291, 411, 225, 305, 294, 296, 267, 405, 319, 305, 413, 328, 305,
@@ -1750,7 +1750,7 @@ XML.EXPECTED =
   /* 473 */ 0x80000000, 0, 8, 0, 4, 16, 32, 64, 196608, 0, 64, 0, 0, 0, 33554444
 ];
 
-XML.TOKEN =
+XMLParser.TOKEN =
 [
   "(0)",
   "EOF",
@@ -1821,7 +1821,7 @@ XML.TOKEN =
   "'|'"
 ];
 
-                                                            // line 207 "XML.ebnf"
+                                                            // line 207 "XMLParser.ebnf"
                                                             });
-                                                            // line 1827 "XML.js"
+                                                            // line 1827 "XMLParser.js"
 // End

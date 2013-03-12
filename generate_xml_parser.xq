@@ -8,7 +8,7 @@ declare namespace o = "http://www.w3.org/2010/xslt-xquery-serialization";
 variable $output-text := <o:serialization-parameters>
   <o:method value="text"/>
 </o:serialization-parameters>;
-variable $filename := "XML.ebnf";
+variable $filename := "XMLParser.ebnf";
 variable $output   := "xml/XMLParser.js";
 variable $grammar := fs:read-text("xml/" || $filename);
 variable $response := http-client:send-request(validate {
