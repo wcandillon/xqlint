@@ -54,7 +54,7 @@ define(function(require, exports, module) {
     var formatted = codeFormatter.format();
     expected = expected.trim();
     formatted = formatted.trim();
-    code = code.trim();  
+    code = code.trim();
     
     var green = '\x1b[32m';
     var red = '\x1b[31m';
