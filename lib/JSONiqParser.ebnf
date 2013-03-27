@@ -38,7 +38,7 @@ var JSONiqParser = exports.JSONiqParser = function JSONiqParser(string, parsingE
 XQuery   ::= Module EOF
 Module   ::= VersionDecl? ( LibraryModule | MainModule )
 VersionDecl
-         ::= 'xquery' ( 'encoding' StringLiteral | 'version' StringLiteral ( 'encoding' StringLiteral )? ) Separator
+         ::= 'jsoniq' ( 'encoding' StringLiteral | 'version' StringLiteral ( 'encoding' StringLiteral )? ) Separator
 LibraryModule
          ::= ModuleDecl Prolog
 ModuleDecl
@@ -274,14 +274,14 @@ ExtensionExpr
          ::= Pragma+ '{' Expr? '}'
 Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
           /* ws: explicit */
-PathExpr ::= '/' ( RelativePathExpr / )
-           | '//' RelativePathExpr
-           | RelativePathExpr
+PathExpr ::= RelativePathExpr
 RelativePathExpr
-         ::= StepExpr ( ( '/' | '//' | '!' ) StepExpr )*
+         ::= StepExpr
 StepExpr ::= PostfixExpr
+/*
            | AxisStep
 AxisStep ::= ( ReverseStep | ForwardStep ) PredicateList
+
 ForwardStep
          ::= ForwardAxis NodeTest
            | AbbrevForwardStep
@@ -306,14 +306,16 @@ ReverseAxis
            | 'ancestor-or-self' '::'
 AbbrevReverseStep
          ::= '..'
+
 NodeTest ::= KindTest
            | NameTest
+*/
 NameTest ::= EQName
            | Wildcard
 PostfixExpr
-         ::= PrimaryExpr JSONGetter ( Predicate | ArgumentList )*
-JSONGetter
-         ::= ( '.' NCName  )*
+         ::= PrimaryExpr  ( Predicate | ArgumentList | ObjectLookup )*
+ObjectLookup
+         ::= "." ( StringLiteral | NCName | ParenthesizedExpr | VarRef )
 ArgumentList
          ::= '(' ( Argument ( ',' Argument )* )? ')'
 PredicateList

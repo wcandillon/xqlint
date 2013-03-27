@@ -47,7 +47,7 @@ function parseFile(filename, failOnError)
   if (showAST){
     c.showAST = true;
   }
-  var ast = c.compile(code);
+  var ast = c.compileJSONiq(code);
   
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);
