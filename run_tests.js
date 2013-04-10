@@ -20,7 +20,7 @@ var testCodeFormatter = false;
 var showAST = false;
 var writeBack = false;
 
-var testFileExtensions = ['.xq'];
+var testFileExtensions = ['.xq', '.jq'];
 
 function getCode(tokens)
 {
@@ -47,7 +47,7 @@ function parseFile(filename, failOnError)
   if (showAST){
     c.showAST = true;
   }
-  var ast = c.compileJSONiq(code);
+  var ast = c.compile(code, filename.endsWith(".jq"));
   
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);

@@ -397,11 +397,11 @@ JSONTest ::=
         | JSONObjectTest
         | JSONArrayTest
 
-JSONItemTest ::= "json-item"
+JSONItemTest ::= "json-item" ('(' ')')?
 
-JSONObjectTest ::= "object"
+JSONObjectTest ::= "object" ('(' ')')?
 
-JSONArrayTest ::= "array"
+JSONArrayTest ::= "array" ('(' ')')?
 
 AtomicOrUnionType
          ::= NCName
