@@ -40,11 +40,26 @@ var assert = require("./assertions");
 
 var requirejs = require('../r');
 var XQueryLexer = requirejs('../lib/XQueryLexer').XQueryLexer;
+var JSONiqLexer = requirejs('../lib/JSONiqLexer').JSONiqLexer;
 var lexer = new XQueryLexer();
 
 module.exports = {
     
     name: "XQuery Lexer",
+   
+    "test: JSONiq context item": function(){
+      var code = "$foo[$$.id eq 1]";
+      var lines = code.split("\n");
+      var lexer = new JSONiqLexer();
+      var result = [];
+      for(var i in lines) {
+        var line = lines[i];
+        var tokens = lexer.getLineTokens(line, state);
+        var state = tokens.state;
+        result.push(tokens);
+      }
+      console.log(JSON.stringify(result, null, 2));
+    },
     
     "test: Comments": function() {
       var code = '(: Hello World (:  \n hello :) world :)';
