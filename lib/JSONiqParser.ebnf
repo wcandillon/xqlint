@@ -214,10 +214,10 @@ TryTargetExpr
 CatchClause
          ::= 'catch' CatchErrorList '{' Expr '}'
 CatchErrorList
-         ::= Wildcard
+         ::= NameTest ( '|' NameTest )*
 OrExpr   ::= AndExpr ( 'or' AndExpr )*
 AndExpr  ::= NotExpr ( 'and' NotExpr )*
-NotExpr  ::= 'not'? ComparisonExpr
+NotExpr  ::= 'not'* ComparisonExpr
 ComparisonExpr
          ::= FTContainsExpr ( ( ValueComp | GeneralComp | NodeComp ) FTContainsExpr )?
 FTContainsExpr
@@ -275,15 +275,48 @@ ExtensionExpr
          ::= Pragma+ '{' Expr? '}'
 Pragma   ::= '(#' S? EQName ( S PragmaContents )? '#)'
           /* ws: explicit */
-PathExpr ::= RelativePathExpr
+PathExpr ::= '/' ( RelativePathExpr / )
+           | '//' RelativePathExpr
+           | RelativePathExpr
 RelativePathExpr
-         ::= StepExpr
+         ::= PostfixExpr ( ( '/' | '//' | '!' ) StepExpr )*
 StepExpr ::= PostfixExpr
-
+           | AxisStep
+AxisStep ::= ( ReverseStep | ForwardStep ) PredicateList
+ForwardStep
+         ::= ForwardAxis NodeTest
+           | AbbrevForwardStep
+ForwardAxis
+         ::= 'child' '::'
+           | 'descendant' '::'
+           | 'attribute' '::'
+           | 'self' '::'
+           | 'descendant-or-self' '::'
+           | 'following-sibling' '::'
+           | 'following' '::'
+AbbrevForwardStep
+         ::= '@'? NodeTest
+ReverseStep
+         ::= ReverseAxis NodeTest
+           | AbbrevReverseStep
+ReverseAxis
+         ::= 'parent' '::'
+           | 'ancestor' '::'
+           | 'preceding-sibling' '::'
+           | 'preceding' '::'
+           | 'ancestor-or-self' '::'
+AbbrevReverseStep
+         ::= '..'
+NodeTest ::= KindTest
+           | NameTest
+NameTest ::= EQName
+           | Wildcard
 PostfixExpr
-         ::= PrimaryExpr  ( Predicate | ArgumentList | ObjectLookup )*
+         ::= PrimaryExpr  ( Predicate | ArgumentList | ObjectLookup | ArrayLookup | ArrayUnboxing )*
 ObjectLookup
          ::= "." ( StringLiteral | NCName | ParenthesizedExpr | VarRef | ContextItemExpr )
+ArrayLookup ::= '[' '[' Expr ']' ']'
+ArrayUnboxing ::= '[' ']'
 ArgumentList
          ::= '(' ( Argument ( ',' Argument )* )? ')'
 PredicateList
@@ -380,7 +413,7 @@ SingleType
 TypeDeclaration
          ::= 'as' SequenceType
 SequenceType
-         ::= 'empty-sequence' '(' ')'
+         ::= 'empty-sequence'? '(' ')'
            | ItemType ( OccurrenceIndicator / )
 OccurrenceIndicator
          ::= '?'
@@ -392,20 +425,64 @@ ItemType ::= KindTest
            | AtomicOrUnionType
            | ParenthesizedItemType
            | JSONTest
+           | StructuredItemTest
 JSONTest ::= 
           JSONItemTest
         | JSONObjectTest
         | JSONArrayTest
 
-JSONItemTest ::= "json-item" ('(' ')')?
+StructuredItemTest ::= 'structured-item' ('(' ')')?
 
-JSONObjectTest ::= "object" ('(' ')')?
+JSONItemTest ::= 'json-item' ('(' ')')?
 
-JSONArrayTest ::= "array" ('(' ')')?
+JSONObjectTest ::= 'object' ('(' ')')?
+
+JSONArrayTest ::= 'array' ('(' ')')?
 
 AtomicOrUnionType
-         ::= NCName
-KindTest ::= JSONTest 
+         ::= EQName
+KindTest ::= DocumentTest
+           | ElementTest
+           | AttributeTest
+           | SchemaElementTest
+           | SchemaAttributeTest
+           | PITest
+           | CommentTest
+           | TextTest
+           | NamespaceNodeTest
+           | AnyKindTest
+AnyKindTest
+         ::= 'node' '(' ')'
+DocumentTest
+         ::= 'document-node' '(' ( ElementTest | SchemaElementTest )? ')'
+TextTest ::= 'text' '(' ')'
+CommentTest
+         ::= 'comment' '(' ')'
+NamespaceNodeTest
+         ::= 'namespace-node' '(' ')'
+PITest   ::= 'processing-instruction' '(' ( NCName | StringLiteral )? ')'
+AttributeTest
+         ::= 'attribute' '(' ( AttribNameOrWildcard ( ',' TypeName )? )? ')'
+AttribNameOrWildcard
+         ::= AttributeName
+           | '*'
+SchemaAttributeTest
+         ::= 'schema-attribute' '(' AttributeDeclaration ')'
+AttributeDeclaration
+         ::= AttributeName
+ElementTest
+         ::= 'element' '(' ( ElementNameOrWildcard ( ',' TypeName '?'? )? )? ')'
+ElementNameOrWildcard
+         ::= ElementName
+           | '*'
+SchemaElementTest
+         ::= 'schema-element' '(' ElementDeclaration ')'
+ElementDeclaration
+         ::= ElementName
+AttributeName
+         ::= EQName
+ElementName
+         ::= EQName
 SimpleTypeName
          ::= TypeName
 TypeName ::= EQName
@@ -549,7 +626,7 @@ IndexKeyExpr
 IndexKeyTypeDecl
          ::= 'as' AtomicType OccurrenceIndicator?
 AtomicType
-         ::= NCName
+         ::= EQName
 IndexKeyCollation
          ::= 'collation' URILiteral
 IndexDecl
@@ -603,6 +680,7 @@ Statement
            | TypeswitchStatement
            | VarDeclStatement
            | WhileStatement
+           | VoidStatement
 ApplyStatement
          ::= ExprSimple ';'
 AssignStatement
@@ -635,6 +713,7 @@ VarDeclStatement
          ::= Annotation* 'variable' '$' VarName TypeDeclaration? ( ':=' ExprSingle )? ( ',' '$' VarName TypeDeclaration? ( ':=' ExprSingle )? )* ';'
 WhileStatement
          ::= 'while' '(' Expr ')' Statement
+VoidStatement ::= ';'
 ExprSingle
          ::= ExprSimple
            | FLWORExpr
@@ -656,15 +735,15 @@ ExprSimple
            | JSONReplaceExpr
            | JSONAppendExpr
            
-JSONDeleteExpr ::= "delete" "json" PostfixExpr
+JSONDeleteExpr ::= "delete" "json"? PostfixExpr
       
-JSONInsertExpr ::= "insert" "json" ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
+JSONInsertExpr ::= "insert" "json"? ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
       
-JSONRenameExpr ::= "rename" "json" PostfixExpr "as" ExprSingle
+JSONRenameExpr ::= "rename" "json"? PostfixExpr "as" ExprSingle
       
-JSONReplaceExpr ::= "replace" "json" "value" "of" PostfixExpr  "with" ExprSingle
+JSONReplaceExpr ::= "replace" "json"? "value" "of" PostfixExpr  "with" ExprSingle
       
-JSONAppendExpr ::= "append" "json" ExprSingle "into" ExprSingle
+JSONAppendExpr ::= "append" "json"? ExprSingle "into" ExprSingle
 
 CommonContent
          ::= PredefinedEntityRef
@@ -709,7 +788,7 @@ PairConstructor ::=  (ExprSingle | NCName) ":" ExprSingle
 ArrayConstructor ::=  "[" Expr? "]"
       
 BlockExpr
-         ::= '{' StatementsAndExpr '}'
+         ::= '{' StatementsAndOptionalExpr '}'
 FunctionDecl
          ::= 'function' EQName '(' ParamList? ')' ( 'as' SequenceType )? ( '{' StatementsAndOptionalExpr '}' | 'external' )
 
@@ -726,6 +805,9 @@ CDataSection
 CDataSectionContents
          ::= Char* - ( Char* ']]>' Char* )
 Wildcard ::= "*"
+         | (NCName ":" "*")
+         | ("*" ":" NCName)
+         | (BracedURILiteral "*")
 URIQualifiedName
          ::= BracedURILiteral NCName
 BracedURILiteral
