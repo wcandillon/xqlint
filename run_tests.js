@@ -134,7 +134,7 @@ function main(args) {
     walker.on('file', function(root, stat, next) {
       // Add this file to the list of files
       var filename = root + '/' + stat.name;
-      if(filename.endsWith(".xq")) {
+      if(filename.endsWith(".xq") || filename.endsWith(".jq")) {
         parseFile(filename, keepGoing);
       }
       next();

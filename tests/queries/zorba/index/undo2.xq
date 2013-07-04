@@ -3,7 +3,7 @@ import module namespace u = "http://www.zorba-xquery.com/unique-index" at "undo2
 import module namespace dml = "http://www.zorba-xquery.com/modules/store/static/collections/dml";
 import module namespace idml = "http://www.zorba-xquery.com/modules/store/static/indexes/dml";
 
-declare namespace zerr = "http://www.zorba-xquery.com/errors";
+declare namespace zerr = "http://zorba.io/modules/zorba-errors";
 declare namespace err = "http://www.w3.org/2005/xqt-errors";
 
 u:create-db();
@@ -34,10 +34,10 @@ catch *
 
 dml:collection($u:auctions1)
 ,
-idml:probe-index-point-value($u:PersonId1, "1")
+idml:probe-index-point-value($u:PersonId1, "1")/.
 ,
-idml:probe-index-point-value($u:PersonId1, "3")
+idml:probe-index-point-value($u:PersonId1, "3")/.
 ,
-idml:probe-index-point-value($u:PersonId1, "5")
+idml:probe-index-point-value($u:PersonId1, "5")/.
 ,
 dml:collection($u:auctions2)
