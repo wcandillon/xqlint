@@ -824,9 +824,13 @@ DoubleLiteral
          ::= ( '.' Digits | Digits ( '.' [0-9]* )? ) [Ee] [+#x002D]? Digits
           /* ws: explicit */
 StringLiteral
-         ::= '"' ( PredefinedEntityRef | CharRef | EscapeQuot | [^"&] )* '"'
+         ::= '"' ( JSONPredefinedCharRef | JSONCharRef | [^"\] )* '"'
            | "'" ( PredefinedEntityRef | CharRef | EscapeApos | [^&'] )* "'"
           /* ws: explicit */
+JSONPredefinedCharRef
+         ::= '\' ( '\' | '/' | '"' | "'" | 'b' | 'f' | 'n' | 'r' | 't' )
+                   /* ws: explicit */
+JSONCharRef  ::= '\' 'u' [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
 PredefinedEntityRef
          ::= '&' ( 'lt' | 'gt' | 'amp' | 'quot' | 'apos' ) ';'
           /* ws: explicit */
