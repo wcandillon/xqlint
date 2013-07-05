@@ -47,7 +47,14 @@ function parseFile(filename, failOnError)
   if (showAST){
     c.showAST = true;
   }
-  var ast = c.compile(code, filename.endsWith(".jq"));
+  var isJSONiqQuery = filename.endsWith(".jq");
+  if(/^xquery/.test(code)) {
+    isJSONiqQuery = false; 
+  }
+ if(/^jsoniq/.test(code)) {
+    isJSONiqQuery = true; 
+  }
+  var ast = c.compile(code, isJSONiqQuery);
   
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);
