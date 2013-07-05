@@ -985,7 +985,7 @@ ExprSimple
            
 JSONDeleteExpr ::= "delete" "json" PostfixExpr
       
-JSONInsertExpr ::= "insert" "json" ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
+JSONInsertExpr ::= "insert" "json" (ExprSingle | PairConstructorList) "into" ExprSingle ("at" "position" ExprSingle)?
       
 JSONRenameExpr ::= "rename" "json" PostfixExpr "as" ExprSingle
       
@@ -1030,8 +1030,10 @@ JSONSimpleObjectUnion
          ::= '{|' Expr? '|}'
 
  
-ObjectConstructor ::=  "{" ( PairConstructor ("," PairConstructor)* )? "}"
+ObjectConstructor ::=  "{" PairConstructorList? "}"
       
+PairConstructorList ::= PairConstructor ("," PairConstructor)*
+
 PairConstructor ::=  ExprSingle ":" ExprSingle
       
 ArrayConstructor ::=  "[" Expr? "]"
