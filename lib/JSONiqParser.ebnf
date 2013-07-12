@@ -1087,7 +1087,7 @@ Wildcard ::= "*"
          | (NCName ":" "*")
          | ("*" ":" NCName)
          | (BracedURILiteral "*")
-EQName   ::= NCName (':' NCName)?
+EQName   ::= QName
            | URIQualifiedName
 URIQualifiedName
          ::= BracedURILiteral NCName
