@@ -737,8 +737,10 @@ ExprSimple
            
 JSONDeleteExpr ::= "delete" "json"? PostfixExpr
       
-JSONInsertExpr ::= "insert" "json"? (ExprSingle | PairConstructorList) "into" ExprSingle ("at" "position" ExprSingle)?
-      
+JSONInsertExpr ::=
+      "insert" "json"? ExprSingle "into" ExprSingle ("at" "position" ExprSingle)?
+    | "insert" "json"? PairConstructorList "into" ExprSingle
+
 JSONRenameExpr ::= "rename" "json"? PostfixExpr "as" ExprSingle
       
 JSONReplaceExpr ::= "replace" "json"? "value" "of" PostfixExpr  "with" ExprSingle
@@ -782,7 +784,7 @@ JSONSimpleObjectUnion
          ::= '{|' Expr? '|}'
  
 ObjectConstructor ::=  "{" PairConstructorList? "}"
-     
+ 
 PairConstructorList ::= PairConstructor ("," PairConstructor)*
 
 PairConstructor ::=  (ExprSingle | NCName) ":" ExprSingle
@@ -810,6 +812,8 @@ Wildcard ::= "*"
          | (NCName ":" "*")
          | ("*" ":" NCName)
          | (BracedURILiteral "*")
+EQName   ::= NCName (':' NCName)?
+           | URIQualifiedName
 URIQualifiedName
          ::= BracedURILiteral NCName
 BracedURILiteral
@@ -852,7 +856,6 @@ NameStartChar
          ::= [:A-Z_a-z#x00C0-#x00D6#x00D8-#x00F6#x00F8-#x02FF#x0370-#x037D#x037F-#x1FFF#x200C-#x200D#x2070-#x218F#x2C00-#x2FEF#x3001-#xD7FF#xF900-#xFDCF#xFDF0-#xFFFD#x10000-#xEFFFF]
 NameChar ::= NameStartChar
            | [-.0-9#x00B7#x0300-#x036F#x203F-#x2040]
-EQName   ::= NCName (':' NCName)?
 NCName   ::= Name - ( Char* (':' | '.') Char* )
 Char     ::= [#x0009#x000A#x000D#x0020-#xD7FF#xE000-#xFFFD#x10000-#x10FFFF]
 QName    ::= PrefixedName
