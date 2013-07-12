@@ -654,8 +654,8 @@ Whitespace
          ::= S^WS
            | Comment
           /* ws: definition */
-EQName   ::= EQName^Token
-FunctionName ::= EQName | 'true' | 'false' | 'null'
+EQName   ::= FunctionName
+FunctionName ::= EQName^Token | 'true' | 'false' | 'null'
 NCName   ::= NCName^Token
 MainModule
          ::= Prolog Program
