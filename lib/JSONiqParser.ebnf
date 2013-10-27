@@ -1162,7 +1162,7 @@ DelimitingChar
 DelimitingChar
            \\ IntegerLiteral DecimalLiteral DoubleLiteral 
 NonNCNameChar
-           \\  QName NCName^Token EQName^Token
+           \\  QName NCName^Token
                'NaN' 'after' 'all'
                'allowing' 'ancestor' 'ancestor-or-self' 'and' 'any' 
                'as' 'ascending' 'at' 'attribute' 
@@ -1205,7 +1205,7 @@ NonNCNameChar
                'without' 'word' 'words' 'jsoniq' 'zero-digit'
                'append' 'array' 'false' 'from' 'json' 'json-item' 'null' 'object' 'select' 'structured-item' 'true'
 '*'       << Wildcard '*'^OccurrenceIndicator
-EQName^Token
+NCName^Token
           <<  'NaN' 'after' 'all'
               'allowing' 'ancestor' 'ancestor-or-self' 'and' 'any' 
               'as' 'ascending' 'at' 'attribute' 
@@ -1247,7 +1247,7 @@ EQName^Token
               'when' 'where' 'while' 'wildcards' 'window' 'with'
               'without' 'word' 'words' 'jsoniq' 'zero-digit'
               'append' 'array' 'false' 'from' 'json' 'json-item' 'null' 'object' 'select' 'structured-item' 'true'
-NCName^Token
+EQName^Token
           <<  'NaN' 'after' 'all'
               'allowing' 'ancestor' 'ancestor-or-self' 'and' 'any' 
               'as' 'ascending' 'at' 'attribute' 
