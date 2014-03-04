@@ -19,6 +19,7 @@ var testMarkers = true;
 var testCodeFormatter = false;
 var showAST = false;
 var writeBack = false;
+var emacsMarkers = false;
 
 var testFileExtensions = ['.xq', '.jq'];
 
@@ -59,8 +60,17 @@ function parseFile(filename, failOnError)
   var fail = ast.error !== undefined;
   fail ? failures.push(filename) : successes.push(filename);
 
-  if (testMarkers){
-    console.log(ast.markers);
+  if (testMarkers || emacsMarkers) {
+      if (emacsMarkers) {
+	  for (var i =0; i < ast.markers.length; i++) {
+	      var type = ast.markers[i].type
+	      var pos = ast.markers[i].pos
+	      var message = ast.markers[i].message
+	      console.log(type.toUpperCase() + ": " + filename + ":" + (pos.sl + 1) + ":" + pos.sc + ":" + type + " " + message);
+	  }
+      } else {
+	  console.log(ast.markers);
+      }
   }
 
   if(testHighlighter) {
@@ -106,6 +116,7 @@ function main(args) {
   testCodeFormatter = args.indexOf("--test-formatter") != -1;
   showAST           = args.indexOf("--ast") != -1;
   writeBack         = args.indexOf("-w") != -1;
+  emacsMarkers      = args.indexOf("--emacs") != -1;
 
   var path      = "./tests/queries";
   if(file != -1)
