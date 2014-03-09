@@ -1,0 +1,3 @@
+declare %fn:nonexistent variable $var := 3;
+
+$var

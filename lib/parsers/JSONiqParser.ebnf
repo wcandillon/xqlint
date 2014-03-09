@@ -1,5 +1,5 @@
 <?xqlint
-exports.JSONiqParser = function JSONiqParser(string, parsingEventHandler)
+var JSONiqParser = exports.JSONiqParser = function JSONiqParser(string, parsingEventHandler)
 {
   init(string, parsingEventHandler);
 ?>

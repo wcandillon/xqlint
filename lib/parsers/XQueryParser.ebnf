@@ -1,5 +1,5 @@
 <?xqlint
-exports.XQueryParser = function XQueryParser(string, parsingEventHandler)
+var XQueryParser = exports.XQueryParser = function XQueryParser(string, parsingEventHandler)
 {
   init(string, parsingEventHandler);
 ?>
