@@ -20,6 +20,11 @@ files.forEach(function(file){
         var syntaxError = linter.hasSyntaxError();
         if(syntaxError) {
             assert.equal(syntaxError, false, linter.getMarkers()[0].message);
+        } else {
+            var markers = linter.getMarkers();
+            markers.forEach(function(marker){
+                assert.equal(marker.type === 'error', false, 'Check for static errors');
+            });
         }
     };
 });
