@@ -1,1 +1,0 @@
-fn:translate((),"abc","ABC")

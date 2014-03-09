@@ -1,1 +1,0 @@
-Result: "$RBKT_SRC_DIR/ExpQueryResults/zorba/math/tan7.xml.res" "$RBKT_SRC_DIR/ExpQueryResults/zorba/math/tan7p.xml.res"

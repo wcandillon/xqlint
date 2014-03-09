@@ -1,1 +1,0 @@
-fn:compare('Strassen', 'Straße')

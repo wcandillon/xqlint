@@ -1,1 +1,0 @@
-fn:contains ( "tattoo", "ttt")

@@ -1,2 +1,0 @@
-import module namespace ddl = "http://www.zorba-xquery.com/modules/store/static/collections/ddl";
-ddl:available-collections()

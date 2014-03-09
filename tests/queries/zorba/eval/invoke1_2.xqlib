@@ -1,3 +1,0 @@
-module namespace foo2 = "http://foo2.com/";
-
-declare variable $foo2:var := 20;

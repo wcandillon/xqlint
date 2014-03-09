@@ -1,2 +1,0 @@
-fn:data(jn:null())
-

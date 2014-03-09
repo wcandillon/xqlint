@@ -1,1 +1,0 @@
-fn:day-from-dateTime(())

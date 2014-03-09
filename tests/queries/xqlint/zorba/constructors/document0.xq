@@ -1,4 +1,0 @@
-document
-{
-  <el>content</el>
-}
