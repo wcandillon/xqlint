@@ -25,7 +25,7 @@ files.forEach(function(file){
         try {
             parser.parse_XQuery();
         } catch(e) {
-            assert.equal(e.getMessage(), false);  
+            assert.equal(e.getMessage(), false);
         }
     };
 });
