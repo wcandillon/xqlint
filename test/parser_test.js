@@ -18,9 +18,8 @@ files.forEach(function(file){
     batch[file] = function(){
         var linter = new XQLint(file, fs.readFileSync('test/queries/' + file, 'UTF-8'));
         var syntaxError = linter.hasSyntaxError();
-        assert.equal(syntaxError, false);
         if(syntaxError) {
-            console.error(linter.getMarkers()[0].message);   
+            assert.equal(syntaxError, false, linter.getMarkers()[0].message);
         }
     };
 });
