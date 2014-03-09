@@ -14,8 +14,7 @@ vows.describe('Test Namespace declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XQST0047]'), 0, 'Is Error [XQST0047]');
-        //TODO: check position
-        //console.log(error);
+        assert.deepEqual(error.pos, { sl: 1, sc: 0, el: 1, ec: 50 }, 'Marker Position');
     },
     
     'test XQST0047 (2)': function(){
