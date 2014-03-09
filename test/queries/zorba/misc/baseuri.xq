@@ -1,2 +1,0 @@
-
-doc("baseuri.xml")

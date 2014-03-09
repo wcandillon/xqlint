@@ -1,2 +1,0 @@
-jn:is-null("null")
-

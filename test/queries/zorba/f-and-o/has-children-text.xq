@@ -1,1 +1,0 @@
-has-children(text {"text"})

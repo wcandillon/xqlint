@@ -1,1 +1,0 @@
-fn:unparsed-text("foo.xml")

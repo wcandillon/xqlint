@@ -1,1 +1,0 @@
-<elem>content{ }content</elem>

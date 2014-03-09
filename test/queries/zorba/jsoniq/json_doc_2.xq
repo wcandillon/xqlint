@@ -1,1 +1,0 @@
-[ jn:json-doc("input1.json")("foo") ]
