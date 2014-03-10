@@ -24,7 +24,7 @@ vows.describe('Test Namespace declarations').addBatch({
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XQST0047]'), 0, 'Is Error [XQST0047]');
     },
-    
+
     'test XQST0047 (3)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/mainModule6.xq', 'utf-8'));
         var markers = linter.getMarkers();
