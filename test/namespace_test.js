@@ -42,6 +42,15 @@ vows.describe('Test Namespace declarations').addBatch({
         assert.equal(warning.type, 'warning', 'Type of marker');
     },
     
+    'test XQST0049 (4)': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/7.xq', 'utf-8'));
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        var error = markers[0];
+        assert.equal(error.type, 'error', 'Type of marker');
+        assert.equal(error.message.indexOf('[XQST0049]'), 0, 'Is Error [XQST0049]');
+    },
+    
     'test XQST0033  (1)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/3.xq', 'utf-8'));
         var markers = linter.getMarkers();
@@ -85,7 +94,12 @@ vows.describe('Test Namespace declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
+    },
+    
+    'test': function(){
+        //var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/test.xq', 'utf-8'));
+        //var markers = linter.getMarkers();
+        //console.log(markers);
+        //assert.equal(markers.length, 0, 'Number of markers');
     }
-    
-    
 }).export(module);
