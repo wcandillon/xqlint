@@ -60,6 +60,15 @@ vows.describe('Test Namespace declarations').addBatch({
         assert.equal(error.message.indexOf('[XQST0033]'), 0, 'Is Error [XQST0033]');
     },
     
+    'test XQST0033  (3)': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/6.xq', 'utf-8'));
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        var error = markers[0];
+        assert.equal(error.type, 'error', 'Type of marker');
+        assert.equal(error.message.indexOf('[XQST0033]'), 0, 'Is Error [XQST0033]');
+    },
+    
     'test XQST0088  (1)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/mainModule7.xq', 'utf-8'));
         var markers = linter.getMarkers();
