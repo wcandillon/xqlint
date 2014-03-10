@@ -6,7 +6,7 @@ var assert = require('assert');
 var fs = require('fs');
 var ffs = require('final-fs');
 
-var XQLint = require('../lib/XQLint').XQLint;
+var XQLint = require('../lib/xqlint').XQLint;
 
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;

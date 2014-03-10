@@ -4,7 +4,7 @@ var vows = require('vows');
 var assert = require('assert');
 var fs = require('fs');
 
-var XQLint = require('../lib/XQLint').XQLint;
+var XQLint = require('../lib/xqlint').XQLint;
 
 vows.describe('Test Namespace declarations').addBatch({
     'test XQST0047 (1)': function(){
