@@ -94,12 +94,5 @@ vows.describe('Test Namespace declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
-    },
-    
-    'test': function(){
-        //var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/test.xq', 'utf-8'));
-        //var markers = linter.getMarkers();
-        //console.log(markers);
-        //assert.equal(markers.length, 0, 'Number of markers');
     }
 }).export(module);
