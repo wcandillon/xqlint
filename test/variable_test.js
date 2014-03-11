@@ -46,8 +46,8 @@ vows.describe('Test Variable declarations').addBatch({
     'XPST0008 (2)': function(){
         var linter = new XQLint('test', 'for $hello in 1 group by $var := 2 return $var');
         var markers = linter.getMarkers();
+        console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
-        
     },
     
     'XPST0008 (3)': function(){
@@ -70,6 +70,20 @@ vows.describe('Test Variable declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XPST0008]'), 0, 'Is Error [XPST0008]');
+    },
+
+    'XPST0008 (6)': function(){
+        var linter = new XQLint('test', 'for $hello in 1 group by $var := $var return $var');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        assert.equal(markers[0].message.indexOf('[XPST0008]'), 0, 'Is Error [XPST0008]');
+    },
+    
+    'Inline function parameters': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/variables/1.xq', 'utf-8'));
+        var markers = linter.getMarkers();
+        console.log(markers);
+        assert.equal(markers.length, 0, 'Number of markers');
     },
     
     'test': function(){
