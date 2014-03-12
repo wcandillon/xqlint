@@ -46,7 +46,6 @@ vows.describe('Test Variable declarations').addBatch({
     'XPST0008 (2)': function(){
         var linter = new XQLint('test', 'for $hello in 1 group by $var := 2 return $var');
         var markers = linter.getMarkers();
-        console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
     },
     
@@ -87,7 +86,7 @@ vows.describe('Test Variable declarations').addBatch({
     },
     
     'test': function(){
-        var linter = new XQLint('test', fs.readFileSync('test/queries/zorba/xqxq/url-schema-resolver3.xq', 'utf-8'));
+        var linter = new XQLint('test', fs.readFileSync('test/test.xq', 'utf-8'));
         var markers = linter.getMarkers();
         console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
