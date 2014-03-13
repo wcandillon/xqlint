@@ -1,6 +1,6 @@
  for $user-questions in
 
-for $faq in db:find($db, "faq")
+for $faq in db:find("faq")
 
 group by $user := $faq("owner")("display_name"), $id := $faq("question_id")
 

@@ -94,5 +94,24 @@ vows.describe('Test Namespace declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
+    },
+    
+    
+    'test Module Declaration': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/8.xq', 'utf-8'));
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        //var error = markers[0];
+        //assert.equal(error.type, 'error', 'Type of marker');
+        //assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
+    },
+    
+    'test Function Declaration': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/9.xq', 'utf-8'));
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        //var error = markers[0];
+        //assert.equal(error.type, 'error', 'Type of marker');
+        //assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
     }
 }).export(module);

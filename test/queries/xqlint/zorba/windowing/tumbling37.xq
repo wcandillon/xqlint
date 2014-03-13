@@ -5,4 +5,4 @@ for tumbling window $w1 in
   return $w2
 start $s when true()
 end $e when $e - $s eq 2
-return <window>{$w2}</window>
+return <window>{$w1}</window>
