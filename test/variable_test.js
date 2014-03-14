@@ -81,15 +81,7 @@ vows.describe('Test Variable declarations').addBatch({
     'Inline function parameters': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/variables/1.xq', 'utf-8'));
         var markers = linter.getMarkers();
-        console.log(markers);
+        //console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
-    },
-    
-    'test': function(){
-        var linter = new XQLint('test', fs.readFileSync('test/test.xq', 'utf-8'));
-        var markers = linter.getMarkers();
-        console.log(markers);
-        assert.equal(markers.length, 0, 'Number of markers');
-        //test/queries/zorba/xqxq/url-schema-resolver3.xq
     }
 }).export(module);
