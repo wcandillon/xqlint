@@ -18,14 +18,18 @@ vows.describe('Test Variable declarations').addBatch({
     
     'XPST0081 (2)': function(){
         var linter = new XQLint('test', 'declare namespace bar = "http://www.example.com"; let $bar:hello := 1 return 1');
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 0, 'Number of markers');
+        markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
     },
     
     'XPST0081 (3)': function(){
         var linter = new XQLint('test', 'let $Q{http://www.example.com}hello := 1 return 1');
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 0, 'Number of markers');
+        markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
     },
     
     'XPST0081 (5)': function(){
@@ -34,9 +38,27 @@ vows.describe('Test Variable declarations').addBatch({
         assert.equal(markers.length, 0, 'Number of markers');
     },
     
+    'XPST0081 (6)': function(){
+        var linter = new XQLint('test', 'declare function local:foo($ex:foo) {  $ex:foo }; local:foo(1)');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 2, 'Number of markers');
+        var error = markers[0];
+        assert.equal(error.type, 'error', 'Type of marker');
+        assert.equal(error.message.indexOf('[XPST0081]'), 0, 'Is Error [XPST0081]');
+        error = markers[1];
+        assert.equal(error.type, 'error', 'Type of marker');
+        assert.equal(error.message.indexOf('[XPST0081]'), 0, 'Is Error [XPST0081]');
+    },
+    
+    'XPST0081 (7)': function(){
+        var linter = new XQLint('test', 'declare namespace ex = "http://example.com"; declare function local:foo($ex:foo) {  $ex:foo }; local:foo(1)');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+    
     'XPST0008 (1)': function(){
         var linter = new XQLint('test', 'let $foo := 1 return $bar');
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 1, 'Number of markers');
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
@@ -45,7 +67,7 @@ vows.describe('Test Variable declarations').addBatch({
 
     'XPST0008 (2)': function(){
         var linter = new XQLint('test', 'for $hello in 1 group by $var := 2 return $var');
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 0, 'Number of markers');
     },
     
@@ -73,7 +95,7 @@ vows.describe('Test Variable declarations').addBatch({
 
     'XPST0008 (6)': function(){
         var linter = new XQLint('test', 'for $hello in 1 group by $var := $var return $var');
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 1, 'Number of markers');
         assert.equal(markers[0].message.indexOf('[XPST0008]'), 0, 'Is Error [XPST0008]');
     },
@@ -83,5 +105,25 @@ vows.describe('Test Variable declarations').addBatch({
         var markers = linter.getMarkers();
         //console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
+    },
+    
+    'unused variable (1)': function(){
+        var linter = new XQLint('test', 'let $foo := 1 return 1');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+        assert.equal(markers[0].type, 'warning', 'Type of marker');
+    },
+    
+    'unused variable (2)': function(){
+        var linter = new XQLint('test', 'let $foo := 2\nlet $foo := 1\nlet $bar := $foo\nreturn $foo');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 2, 'Number of markers');
+        assert.equal(markers[0].type, 'warning', 'Type of marker');
+        assert.equal(markers[1].type, 'warning', 'Type of marker');
     }
+    
+    //Test var decl
+    //Test private var decl
+    //Test complex expressions
+    //Test scripting
 }).export(module);
