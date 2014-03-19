@@ -102,9 +102,10 @@ vows.describe('Test Variable declarations').addBatch({
     
     'Inline function parameters': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/variables/1.xq', 'utf-8'));
-        var markers = linter.getMarkers();
-        //console.log(markers);
-        assert.equal(markers.length, 0, 'Number of markers');
+        var markers = linter.getErrors();
+        assert.equal(markers.length, 0, 'Number of errors');
+        markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of warnings');
     },
     
     'XQST0048 (1)': function(){
@@ -164,6 +165,12 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint('test', 'declare variable $bar := 1; 1 + 1');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'unused variable (7)': function(){
+        var linter = new XQLint('test', 'declare variable $bar := 1; let $foo := 1 let $foo := $foo + $bar return $foo');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
     }
     //Test private fn decl
     //Test complex expressions
