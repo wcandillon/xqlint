@@ -107,6 +107,26 @@ vows.describe('Test Variable declarations').addBatch({
         assert.equal(markers.length, 0, 'Number of markers');
     },
     
+    'XQST0048 (1)': function(){
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare namespace ex = "http://28msec.com"; declare variable $ex:bar := 1;');
+        var markers = linter.getErrors();
+        assert.equal(markers.length, 1, 'Number of markers');
+        assert.equal(markers[0].message.indexOf('[XQST0048]'), 0, 'Is Error [XQST0048]');
+    },
+    
+    'XQST0048 (2)': function(){
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare namespace ex = "http://28msec.com"; declare function ex:bar(){ 1 };');
+        var markers = linter.getErrors();
+        assert.equal(markers.length, 1, 'Number of markers');
+        assert.equal(markers[0].message.indexOf('[XQST0048]'), 0, 'Is Error [XQST0048]');
+    },
+    
+    'XQST0048 (3)': function(){
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare namespace ex = "http://28msec.com"; declare function foo:bar($ex:hello){ 1 };');
+        var markers = linter.getErrors();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+    
     'unused variable (1)': function(){
         var linter = new XQLint('test', 'let $foo := 1 return 1');
         var markers = linter.getMarkers();
@@ -120,6 +140,18 @@ vows.describe('Test Variable declarations').addBatch({
         assert.equal(markers.length, 2, 'Number of markers');
         assert.equal(markers[0].type, 'warning', 'Type of marker');
         assert.equal(markers[1].type, 'warning', 'Type of marker');
+    },
+
+    'unused variable (3)': function(){
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare variable $foo:bar := 1;');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (4)': function(){
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare %fn:private variable $foo:bar := 1;');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
     }
     
     //Test var decl
