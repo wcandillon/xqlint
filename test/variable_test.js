@@ -152,10 +152,20 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare %fn:private variable $foo:bar := 1;');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'unused variable (5)': function(){
+        var linter = new XQLint('test', 'declare variable $foo:bar := 1; 1 + 1');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'unused variable (6)': function(){
+        var linter = new XQLint('test', 'declare variable $bar := 1; 1 + 1');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
     }
-    
-    //Test var decl
-    //Test private var decl
+    //Test private fn decl
     //Test complex expressions
     //Test scripting
 }).export(module);

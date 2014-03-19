@@ -113,5 +113,11 @@ vows.describe('Test Namespace declarations').addBatch({
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
         //assert.equal(error.message.indexOf('[XQST0088]'), 0, 'Is Error [XQST0088]');
+    },
+
+    'test resolution': function(){
+        var linter = new XQLint('test', 'declare variable $foo:bar := 1; 1 + 1');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
     }
 }).export(module);
