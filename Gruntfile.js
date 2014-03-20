@@ -97,8 +97,13 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'build/xqlint.js': ['lib/**/*.js'],
+                    'build/xqlint.js': ['lib/xqlint.js'],
+                    'build/xquery_lexer.js': ['lib/lexers/XQueryLexer.js'],
+                    'build/jsoniq_lexer.js': ['lib/lexers/JSONiqLexer.js']
                 }
+            },
+            options: {
+              standalone: 'ace/mode/xquery'
             }
         }
     });
