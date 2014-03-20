@@ -15,10 +15,11 @@ vows.describe('Test Syntax Highlighting').addBatch({
         var lines = code.split('\n');
         var lexer = new JSONiqLexer();
         var result = [];
+        var line, tokens, state;
         for(var i in lines) {
-            var line = lines[i];
-            var tokens = lexer.getLineTokens(line, state);
-            var state = tokens.state;
+            line = lines[i];
+            tokens = lexer.getLineTokens(line, state);
+            state = tokens.state;
             result.push(tokens);
         }
         assert.deepEqual(result, expected, 'Check result');
@@ -26,7 +27,7 @@ vows.describe('Test Syntax Highlighting').addBatch({
     
     'test: Comments': function() {
         var code = '(: Hello World (:  \n hello :) world :)';
-        var lines = code.split("\n");
+        var lines = code.split('\n');
         var expected = [
             { tokens:
                 [ { type: 'comment', value: '(:' },
@@ -43,10 +44,11 @@ vows.describe('Test Syntax Highlighting').addBatch({
         ];
         var lexer = new XQueryLexer();
         var result = [];
+        var line, tokens, state;
         for(var i in lines) {
-            var line = lines[i];
-            var tokens = lexer.getLineTokens(line, state);
-            var state = tokens.state;
+            line = lines[i];
+            tokens = lexer.getLineTokens(line, state);
+            state = tokens.state;
             result.push(tokens);
         }
         assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
