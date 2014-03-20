@@ -93,6 +93,13 @@ module.exports = function(grunt) {
                 // This option is grunt's "full" file format.
                 src: ['test/*.js', 'spec/*']
             }
+        },
+        browserify: {
+            dist: {
+                files: {
+                    'build/xqlint.js': ['lib/**/*.js'],
+                }
+            }
         }
     });
     
