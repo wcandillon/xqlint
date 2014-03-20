@@ -1,2 +1,4 @@
 lib/parsers/XQueryParser.js
 lib/parsers/JSONiqParser.js
+lib/lexers/XQueryTokenizer.js
+lib/lexers/JSONiqTokenizer.js

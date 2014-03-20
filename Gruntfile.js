@@ -55,7 +55,19 @@ module.exports = function(grunt) {
 						destination: 'lib/parsers/JSONiqParser.js',
 						command: '-ll 2 -backtrack -tree -javascript -a xqlint',
 						tz: '-60',
-					}
+					},
+                    {
+						source: 'lib/lexers/XQueryTokenizer.ebnf',
+                        destination: 'lib/lexers/XQueryTokenizer.js',
+                        command: '-ll 2 -backtrack -tree -javascript -a xqlint',
+                        tz: '-60'
+                    },
+                    {
+						source: 'lib/lexers/JSONiqTokenizer.ebnf',
+                        destination: 'lib/lexers/JSONiqTokenizer.js',
+                        command: '-ll 2 -backtrack -tree -javascript -a xqlint',
+                        tz: '-60'
+                    }
 				]
 			}
 		},
