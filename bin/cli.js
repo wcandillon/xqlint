@@ -41,7 +41,7 @@ cli
         //var ast = linter.getAST();
         console.log('Linting ' + file + '...');
         if(markers.length === 0) {
-            console.log('File OK.'.green);
+            console.log('File OK.');
         } else {
             linter.getErrors().forEach(function(error){
                 var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
