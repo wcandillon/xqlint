@@ -7,13 +7,12 @@ module.exports = function(grunt) {
     grunt.registerMultiTask('rex', 'Generate Parsers', function(){
         var fs = require('fs');
         var request = require('request');
-		var FormData = require('form-data');
-		var path = require('path');
-       
+        var FormData = require('form-data');
+        var path = require('path');
         var done = this.async();
-		var count = this.data.parsers.length;
+        var count = this.data.parsers.length;
 		
-		this.data.parsers.forEach(function(parser){
+        this.data.parsers.forEach(function(parser){
 
             var requestCallback = function(err, res, body) {
                 fs.writeFileSync(parser.destination, body);
@@ -23,7 +22,7 @@ module.exports = function(grunt) {
                 }
             };
             
-			var grammar = fs.readFileSync(parser.source);
+            var grammar = fs.readFileSync(parser.source);
 
             var form = new FormData();
             form.append('tz', parser.tz, { knownLength: new Buffer(parser.tz).length, contentType: 'text/plain'  });
@@ -94,7 +93,19 @@ module.exports = function(grunt) {
                 src: ['test/*.js', 'spec/*']
             }
         },
-        browserify: {
+        ace_build: {
+            dist: {
+                files: {
+                    'ace_build/xqlint.js': ['lib/xqlint.js'],
+                    'ace_build/xquery_lexer.js': ['lib/lexers/XQueryLexer.js'],
+                    'ace_build/jsoniq_lexer.js': ['lib/lexers/JSONiqLexer.js']
+                }
+            },
+            options: {
+                standalone: 'ace/mode/xquery'
+            }
+        },
+        browser_build: {
             dist: {
                 files: {
                     'build/xqlint.js': ['lib/xqlint.js'],
@@ -103,7 +114,7 @@ module.exports = function(grunt) {
                 }
             },
             options: {
-              standalone: 'ace/mode/xquery'
+                standalone: ''
             }
         }
     });
