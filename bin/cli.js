@@ -4,6 +4,7 @@ var fs = require('fs');
 var ffs = require('final-fs');
 var path = require('path');
 var cli = require('commander');
+var colors = require('colors');
 
 var XQLint = require('../lib/xqlint').XQLint;
 var TreeOps = require('../lib/tree_ops').TreeOps;
@@ -34,15 +35,28 @@ cli
         });
     }
     files.forEach(function(file){
-        console.log('Check ' + file);
         var source = fs.readFileSync(file, 'utf-8');
         var linter = new XQLint(file, source);
         var markers = linter.getMarkers();
         //var ast = linter.getAST();
+        console.log('Linting ' + file + '...');
         if(markers.length === 0) {
-            console.log('File is OK');
+            console.log('File OK.'.green);
         } else {
-            console.log(JSON.stringify(markers, null, 2));
+            linter.getErrors().forEach(function(error){
+                var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
+                console.log(line.red);
+                line = source.split('\n')[error.pos.sl];
+                process.stdout.write(line.substring(0, error.pos.sc).red);
+                console.log(line.substring(error.pos.sc).underline.red);
+            });
+            linter.getWarnings().forEach(function(error){
+                var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
+                console.log(line.yellow);
+                line = source.split('\n')[error.pos.sl];
+                process.stdout.write(line.substring(0, error.pos.sc).yellow);
+                console.log(line.substring(error.pos.sc).underline.yellow);
+            });
         }
     });
 });
