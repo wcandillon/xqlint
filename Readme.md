@@ -17,7 +17,7 @@ $ npm install xqlint -g
 ### Lint
 
 ```bash
-$ xqlint lint <path>
+$ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
 ![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-03-22%2015.40.41.png)
 
