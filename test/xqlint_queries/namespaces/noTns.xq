@@ -1,5 +1,4 @@
-import schema default element namespace "" 
-	at "noTns.xsd";
+import schema default element namespace "" at "noTns.xsd";
 
 validate
 { 
