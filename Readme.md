@@ -3,7 +3,7 @@ XQLint [![Build Status](https://travis-ci.org/wcandillon/xqlint.svg?branch=maste
 
 ## XQuery & JSONiq Code Quality Tool
 
-XQLint parses XQuery files and returns errors and warnings based on semantic analysis.
+XQLint parses XQuery & JSONiq files and returns errors and warnings based on static code analysis.
 
 ## Installation
 
