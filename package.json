@@ -6,7 +6,7 @@
   },
   "name": "xqlint",
   "description": "XQuery Quality Checker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "jsoniq",
     "xquery",
@@ -18,7 +18,7 @@
   "repository": {
     "url": "https://github.com/wcandillon/xqlint"
   },
-  "main": "./bin/main.js",
+  "main": "./lib/xqlint.js",
   "xqlint": {
     "xqlint": "./bin/xqlint"
   },
