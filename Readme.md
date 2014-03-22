@@ -17,7 +17,7 @@ $ npm install xqlint -g
 ### Lint
 
 ```bash
-$ xqlint lint <path>
+$ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
 ![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-03-22%2015.40.41.png)
 
@@ -53,3 +53,8 @@ grunt browser_build
 ##Who is using this project?
 * [28.io cli tool](https://github.com/28msec/28)
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), is using this parser to perform XQuery syntax checking and semantic highlighting of the source code.
+
+##Changelog
+
+Version 0.0.2
+* Add code formatting checks.
