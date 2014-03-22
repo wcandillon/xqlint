@@ -19,7 +19,7 @@ $ npm install xqlint -g
 ```
 $ xqlint lint <path>
 ```
-
+![result](http://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-03-22%2015.40.41.png)
 
 
 ##Who is using this project?
