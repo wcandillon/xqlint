@@ -19,7 +19,7 @@ var printAST = function(ast, indent){
 };
 
 cli
-.command('parse <path>')
+.command('lint <path>')
 .description('Check queries')
 .action(function(p) {
     p = path.resolve(path.normalize(p));
@@ -34,16 +34,15 @@ cli
             }
         });
     }
+    var errors = 0;
+    var warnings = 0;
     files.forEach(function(file){
         var source = fs.readFileSync(file, 'utf-8');
         var linter = new XQLint(file, source);
         var markers = linter.getMarkers();
-        //var ast = linter.getAST();
-        //console.log('Linting ' + file + '...');
-        if(markers.length === 0) {
-            //console.log('File OK.');
-        } else {
+        if(markers.length !== 0) {
             linter.getErrors().forEach(function(error){
+                errors++;
                 console.log(file);
                 var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
                 console.log(line.red);
@@ -52,6 +51,7 @@ cli
                 console.log(line.substring(error.pos.sc).underline.red);
             });
             linter.getWarnings().forEach(function(error){
+                warnings++;
                 console.log(file);
                 var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
                 console.log(line.yellow);
@@ -61,7 +61,13 @@ cli
             });
         }
     });
-    console.log('Linted ' + files.length + ' files');
+    if(errors === 0 && warnings === 0) {
+        console.log('Linted ' + files.length + ' files'.green);
+    } else if(errors > 0) {
+        console.log(('Linted ' + files.length + ' files. Found ' + errors + ' errors and ' + warnings + ' warnings.').red);
+    } else if(warnings > 0) {
+        console.log(('Linted ' + files.length + ' files. Found ' + errors + ' errors and ' + warnings + ' warnings.').yellow);
+    }
 });
 
 cli.version(pkg.version);
