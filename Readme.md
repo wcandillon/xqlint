@@ -19,6 +19,8 @@ $ npm install xqlint -g
 ```bash
 $ xqlint lint <path>
 ```
+![result](http://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-03-22%2015.40.41.png)
+
 ## Development
 
 If you'd like to hack on xqlint itself:
