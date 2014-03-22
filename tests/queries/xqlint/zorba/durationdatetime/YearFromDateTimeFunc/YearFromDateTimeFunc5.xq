@@ -1,1 +1,0 @@
-fn:year-from-dateTime(())

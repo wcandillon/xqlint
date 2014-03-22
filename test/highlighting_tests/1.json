@@ -1,0 +1,47 @@
+[
+  {
+    "tokens": [
+      {
+        "type": "variable",
+        "value": "$foo"
+      },
+      {
+        "type": "text",
+        "value": "["
+      },
+      {
+        "type": "text",
+        "value": "$$"
+      },
+      {
+        "type": "text",
+        "value": "."
+      },
+      {
+        "type": "support.function",
+        "value": "id"
+      },
+      {
+        "type": "text",
+        "value": " "
+      },
+      {
+        "type": "keyword",
+        "value": "eq"
+      },
+      {
+        "type": "text",
+        "value": " "
+      },
+      {
+        "type": "constant",
+        "value": "1"
+      },
+      {
+        "type": "text",
+        "value": "]"
+      }
+    ],
+    "state": "[\"start\"]"
+  }
+]

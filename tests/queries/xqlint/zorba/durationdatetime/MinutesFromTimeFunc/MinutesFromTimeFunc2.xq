@@ -1,1 +1,0 @@
-fn:minutes-from-time(())

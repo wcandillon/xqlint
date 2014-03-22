@@ -1,1 +1,0 @@
-fn:timezone-from-dateTime(())

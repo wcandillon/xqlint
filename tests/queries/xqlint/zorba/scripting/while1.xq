@@ -1,6 +1,0 @@
-
-
-while(true()) 
-{
-  break loop;
-}

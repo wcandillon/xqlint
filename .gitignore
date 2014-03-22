@@ -1,0 +1,5 @@
+node_modules
+ace_build
+build
+.DS_Store
+*.swp

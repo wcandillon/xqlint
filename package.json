@@ -1,0 +1,67 @@
+{
+  "author": {
+    "name": "William Candillon",
+    "email": "w@28.io",
+    "url": "http://28.io"
+  },
+  "name": "XQLint",
+  "description": "XQuery Quality Checker",
+  "version": "0.0.1",
+  "keywords": [
+    "jsoniq",
+    "xquery",
+    "dev",
+    "cloud"
+  ],
+  "homepage": "https://28.io",
+  "bugs": "https://github.com/wcandillon/xqlint/issues",
+  "repository": {
+    "url": "https://github.com/wcandillon/xqlint"
+  },
+  "main": "./bin/main.js",
+  "xqlint": {
+    "xqlint": "./bin/xqlint"
+  },
+  "dependencies": {
+    "commander": "~2.1.0",
+    "q": "~1.0.0",
+    "final-fs": "~1.6.0",
+    "colors": "~0.6.2"
+  },
+  "devDependencies": {
+    "request": "~2.33.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "matchdep": "~0.3.0",
+    "vows": "~0.7.0",
+    "grunt-vows": "~0.4.0",
+    "time-grunt": "~0.1.1",
+    "form-data": "~0.1.2",
+    "browserify": "~3.33.0",
+    "grunt-browserify": "~1.3.2"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">=0.8.0",
+    "npm": ">=1.1.0"
+  },
+  "contributors": [
+    {
+      "name": "William Candillon",
+      "email": "w@28.io"
+    }
+  ],
+  "scripts": {
+    "test": "grunt"
+  },
+  "directories": {
+    "test": "./test",
+    "bin": "./bin"
+  },
+  "licenses": [
+    {
+      "type": "Apache 2",
+      "url": "https://github.com/wcandillon/xqlint/blob/master/LICENSE"
+    }
+  ]
+}

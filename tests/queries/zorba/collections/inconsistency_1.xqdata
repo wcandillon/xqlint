@@ -1,5 +1,0 @@
-module namespace ns = "http://example.org/datamodule/";
-
-declare namespace ann = "http://www.zorba-xquery.com/annotations";
-
-declare %ann:queue %ann:append-only collection ns:collection_1;

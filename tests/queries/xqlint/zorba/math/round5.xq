@@ -1,1 +1,0 @@
-fn:round(xs:double("INF"))
