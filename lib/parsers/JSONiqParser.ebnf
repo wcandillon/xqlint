@@ -147,6 +147,7 @@ GroupingSpecList
          ::= GroupingSpec ( ',' GroupingSpec )*
 GroupingSpec
          ::= GroupingVariable ( TypeDeclaration? ':=' ExprSingle )? ( 'collation' URILiteral )?
+           | ExprSingle
 GroupingVariable
          ::= '$' VarName
 OrderByClause
@@ -484,7 +485,9 @@ TargetExpr
 NewNameExpr
          ::= ExprSingle
 TransformExpr
-         ::= 'copy' '$' VarName ':=' ExprSingle ( ',' '$' VarName ':=' ExprSingle )* 'modify' ExprSingle ('return' | 'select') ExprSingle
+         ::= 'copy' TransformSpec ( ',' TransformSpec )* 'modify' ExprSingle 'return' ExprSingle
+TransformSpec
+         ::= '$' VarName ':=' ExprSingle
 FTSelection
          ::= FTOr FTPosFilter*
 FTWeight ::= 'weight' '{' Expr '}'
