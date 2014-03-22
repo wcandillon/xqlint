@@ -1,4 +1,4 @@
-XQLint [![Build Status](https://travis-ci.org/wcandillon/xqlint.png?branch=master)](https://travis-ci.org/wcandillon/xqlint)
+XQLint [![Build Status](https://travis-ci.org/wcandillon/xqlint.svg?branch=master)](https://travis-ci.org/wcandillon/xqlint)
 ============
 
 ## XQuery & JSONiq Code Quality Tool
