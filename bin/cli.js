@@ -39,11 +39,12 @@ cli
         var linter = new XQLint(file, source);
         var markers = linter.getMarkers();
         //var ast = linter.getAST();
-        console.log('Linting ' + file + '...');
+        //console.log('Linting ' + file + '...');
         if(markers.length === 0) {
-            console.log('File OK.');
+            //console.log('File OK.');
         } else {
             linter.getErrors().forEach(function(error){
+                console.log(file);
                 var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
                 console.log(line.red);
                 line = source.split('\n')[error.pos.sl];
@@ -51,6 +52,7 @@ cli
                 console.log(line.substring(error.pos.sc).underline.red);
             });
             linter.getWarnings().forEach(function(error){
+                console.log(file);
                 var line = '[' + (error.pos.sl + 1) + ':' + (error.pos.sc) + '] ' + error.message;
                 console.log(line.yellow);
                 line = source.split('\n')[error.pos.sl];
@@ -59,6 +61,7 @@ cli
             });
         }
     });
+    console.log('Linted ' + files.length + ' files');
 });
 
 cli.version(pkg.version);

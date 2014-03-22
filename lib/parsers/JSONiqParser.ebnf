@@ -987,7 +987,7 @@ JSONInsertExpr ::=
 
 JSONRenameExpr ::= "rename" "json"? PostfixExpr "as" ExprSingle
       
-JSONReplaceExpr ::= "replace" "json"? "value" "of" PostfixExpr  "with" ExprSingle
+JSONReplaceExpr ::= "replace" "value" "of" "json" PostfixExpr  "with" ExprSingle
       
 JSONAppendExpr ::= "append" "json"? ExprSingle "into" ExprSingle
 

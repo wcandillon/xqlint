@@ -37,9 +37,7 @@ vows.describe('Test Namespace declarations').addBatch({
     'test XQST0047 (4)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/5.xq', 'utf-8'));
         var markers = linter.getMarkers();
-        assert.equal(markers.length, 1, 'Number of markers');
-        var warning = markers[0];
-        assert.equal(warning.type, 'warning', 'Type of marker');
+        assert.equal(markers.length, 0, 'Number of markers');
     },
     
     'test XQST0049 (4)': function(){

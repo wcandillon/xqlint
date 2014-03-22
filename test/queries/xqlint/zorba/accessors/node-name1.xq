@@ -1,1 +1,0 @@
-fn:node-name(<a/>)
