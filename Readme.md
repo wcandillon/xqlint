@@ -14,11 +14,12 @@ $ npm install xqlint -g
 ```
 ## Usage
 
-### Lunt
+### Lint
 
 ```
 $ xqlint lint <path>
 ```
+
 
 
 ##Who is using this project?
