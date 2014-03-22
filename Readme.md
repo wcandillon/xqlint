@@ -9,18 +9,44 @@ XQLint parses XQuery & JSONiq files and returns errors and warnings based on sta
 
 Install Node.js and NPM for your system (Mac, Windows or Linux). And install the command line tool using:
 
-```
+```bash
 $ npm install xqlint -g
 ```
 ## Usage
 
 ### Lint
 
-```
+```bash
 $ xqlint lint <path>
 ```
+## Development
 
+If you'd like to hack on xqlint itself:
 
+```bash
+git clone git@github.com:wcandillon/xqlint.git
+cd xqlint
+npm install
+grunt
+```
+
+### Run tests
+
+```bash
+grunt vows
+```
+
+### Generate Parsers
+
+```bash
+grunt rex
+```
+
+### Build XQLint for the Browser
+
+```bash
+grunt browser_build
+```
 
 ##Who is using this project?
 * [28.io cli tool](https://github.com/28msec/28)
