@@ -6,7 +6,7 @@
   },
   "name": "xqlint",
   "description": "XQuery Quality Checker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [
     "jsoniq",
     "xquery",
