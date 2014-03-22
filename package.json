@@ -4,7 +4,7 @@
     "email": "w@28.io",
     "url": "http://28.io"
   },
-  "name": "XQLint",
+  "name": "xqlint",
   "description": "XQuery Quality Checker",
   "version": "0.0.1",
   "keywords": [
