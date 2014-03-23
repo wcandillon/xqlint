@@ -4,8 +4,8 @@ var vows = require('vows');
 var assert = require('assert');
 var fs = require('fs');
 
-var XQueryLexer = require('../lib/lexers/XQueryLexer').XQueryLexer;
-var JSONiqLexer = require('../lib/lexers/JSONiqLexer').JSONiqLexer;
+var XQueryLexer = require('../lib/lexers/xquery_lexer').XQueryLexer;
+var JSONiqLexer = require('../lib/lexers/jsoniq_lexer').JSONiqLexer;
 
 
 vows.describe('Test Syntax Highlighting').addBatch({
