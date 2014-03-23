@@ -5,8 +5,8 @@
     "url": "http://28.io"
   },
   "name": "xqlint",
-  "description": "XQuery Quality Checker",
-  "version": "0.0.3",
+  "description": "XQuery & JSONiq Quality Checker",
+  "version": "0.0.4",
   "keywords": [
     "jsoniq",
     "xquery",

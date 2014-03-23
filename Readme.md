@@ -56,6 +56,9 @@ grunt browser_build
 
 ##Changelog
 
+Version 0.0.4
+* Add highlight command.
+
 Version 0.0.3
 * Exports XQLint module.
 * Add code formatting checks.
