@@ -1041,8 +1041,9 @@ ArrayConstructor ::=  "[" Expr? "]"
 BlockExpr
          ::= '{' StatementsAndOptionalExpr '}'
 FunctionDecl
-         ::= 'function' EQName '(' ParamList? ')' ( 'as' SequenceType )? ( '{' StatementsAndOptionalExpr '}' | 'external' )
-
+         ::= 'function' EQName '(' ParamList? ')' ReturnType? ( '{' StatementsAndOptionalExpr '}' | 'external' )
+ReturnType
+         ::= 'as' SequenceType
 <?TOKENS?>
 
 PragmaContents

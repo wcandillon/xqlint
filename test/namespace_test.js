@@ -46,7 +46,7 @@ vows.describe('Test Namespace declarations').addBatch({
     
     'test XQST0049 (4)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/7.xq', 'utf-8'), undefined, { styleCheck: false });
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 1, 'Number of markers');
         var error = markers[0];
         assert.equal(error.type, 'error', 'Type of marker');
@@ -139,7 +139,7 @@ vows.describe('Test Namespace declarations').addBatch({
     
     'test unused namespace (3)': function(){
         var linter = new XQLint('test', fs.readFileSync('test/xqlint_queries/namespaces/12.xq', 'utf-8'), undefined, { styleCheck: false });
-        var markers = linter.getMarkers();
+        var markers = linter.getErrors();
         assert.equal(markers.length, 0, 'Number of markers');
     },
     
@@ -154,7 +154,7 @@ vows.describe('Test Namespace declarations').addBatch({
     },
 
     'test resolution': function(){
-        var linter = new XQLint('test', 'declare variable $foo:bar := 1; 1 + 1');
+        var linter = new XQLint('test', 'declare variable $foo:bar as xs:integer := 1; 1 + 1');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
     }

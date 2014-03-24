@@ -10,9 +10,9 @@ module.exports = function(grunt) {
         var FormData = require('form-data');
         var path = require('path');
         var done = this.async();
-        var count = this.data.parsers.length;
+        var count = this.data.grammars.length;
 		
-        this.data.parsers.forEach(function(parser){
+        this.data.grammars.forEach(function(parser){
 
             var requestCallback = function(err, res, body) {
                 fs.writeFileSync(parser.destination, body);
@@ -40,9 +40,9 @@ module.exports = function(grunt) {
     });
  
     grunt.initConfig({
-		rex: {
-			dist: {
-				parsers: [
+        rex: {
+            parsers: {
+                grammars: [
 					{
 						source: 'lib/parsers/XQueryParser.ebnf',
 						destination: 'lib/parsers/XQueryParser.js',
@@ -54,7 +54,11 @@ module.exports = function(grunt) {
 						destination: 'lib/parsers/JSONiqParser.js',
 						command: '-ll 2 -backtrack -tree -javascript -a xqlint',
 						tz: '-60',
-					},
+					}
+                ]
+            },
+			lexers: {
+                grammars: [
                     {
 						source: 'lib/lexers/XQueryTokenizer.ebnf',
                         destination: 'lib/lexers/XQueryTokenizer.js',
@@ -118,6 +122,7 @@ module.exports = function(grunt) {
             }
         }
     });
-    
+    grunt.registerTask('lexers', ['rex:lexers']);
+    grunt.registerTask('parsers', ['rex:parsers']);
     grunt.registerTask('default', ['jshint', 'vows']);
 };

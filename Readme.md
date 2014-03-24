@@ -41,7 +41,7 @@ grunt vows
 ### Generate Parsers
 
 ```bash
-grunt rex
+grunt parsers
 ```
 
 ### Build XQLint for the Browser
@@ -55,6 +55,11 @@ grunt browser_build
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
 
 ##Changelog
+
+Version 0.0.4
+* Add warnings for untyped module variables and functions.
+* Fix syntax highlight bug for JSONiq.
+* Add highlight command.
 
 Version 0.0.3
 * Exports XQLint module.

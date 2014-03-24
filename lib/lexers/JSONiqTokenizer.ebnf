@@ -76,7 +76,7 @@ CommentDoc
           /* ws: explicit */
 
 QuotString
-         ::= PredefinedEntityRef | CharRef | EscapeQuot | QuotChar | '"' | EOF
+         ::= JSONPredefinedCharRef | JSONCharRef | JSONChar | '"' | EOF
           /* ws: explicit */
 
 AposString
@@ -353,6 +353,14 @@ NCName   ::= NCName^Token
            | 'returning'
 <?TOKENS?>
 
+JSONChar ::= [^"\]
+
+JSONCharRef
+         ::= '\' 'u' [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]
+         
+JSONPredefinedCharRef
+         ::= '\' ( '\' | '/' | '"' | "'" | 'b' | 'f' | 'n' | 'r' | 't' )
+         
 ModuleDecl
          ::= ('import' S)? ('module' | 'schema') S 'namespace'
 
