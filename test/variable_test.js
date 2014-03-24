@@ -39,7 +39,7 @@ vows.describe('Test Variable declarations').addBatch({
     },
     
     'XPST0081 (6)': function(){
-        var linter = new XQLint('test', 'declare function local:foo($ex:foo) {  $ex:foo }; local:foo(1)');
+        var linter = new XQLint('test', 'declare function local:foo($ex:foo as xs:integer) as xs:integer {  $ex:foo }; local:foo(1)');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 2, 'Number of markers');
         var error = markers[0];
@@ -51,7 +51,7 @@ vows.describe('Test Variable declarations').addBatch({
     },
     
     'XPST0081 (7)': function(){
-        var linter = new XQLint('test', 'declare namespace ex = "http://example.com"; declare function local:foo($ex:foo) {  $ex:foo }; local:foo(1)');
+        var linter = new XQLint('test', 'declare namespace ex = "http://example.com"; declare function local:foo($ex:foo as xs:integer) as xs:integer {  $ex:foo }; local:foo(1)');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
@@ -144,31 +144,31 @@ vows.describe('Test Variable declarations').addBatch({
     },
 
     'unused variable (3)': function(){
-        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare variable $foo:bar := 1;');
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare variable $foo:bar as xs:integer := 1;');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
     'unused variable (4)': function(){
-        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare %fn:private variable $foo:bar := 1;');
+        var linter = new XQLint('test', 'module namespace foo = "http://www.example.com"; declare %fn:private variable $foo:bar as xs:integer := 1;');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
     },
 
     'unused variable (5)': function(){
-        var linter = new XQLint('test', 'declare variable $foo:bar := 1; 1 + 1');
+        var linter = new XQLint('test', 'declare variable $foo:bar as xs:integer := 1; 1 + 1');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
     },
 
     'unused variable (6)': function(){
-        var linter = new XQLint('test', 'declare variable $bar := 1; 1 + 1');
+        var linter = new XQLint('test', 'declare variable $bar as xs:integer := 1; 1 + 1');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
     },
 
     'unused variable (7)': function(){
-        var linter = new XQLint('test', 'declare variable $bar := 1; let $foo := 1 let $foo := $foo + $bar return $foo');
+        var linter = new XQLint('test', 'declare variable $bar as xs:integer := 1; let $foo := 1 let $foo := $foo + $bar return $foo');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     }

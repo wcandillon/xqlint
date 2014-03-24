@@ -41,7 +41,7 @@ grunt vows
 ### Generate Parsers
 
 ```bash
-grunt rex
+grunt parsers
 ```
 
 ### Build XQLint for the Browser
@@ -57,6 +57,8 @@ grunt browser_build
 ##Changelog
 
 Version 0.0.4
+* Add warnings for untyped module variables and functions.
+* Fix syntax highlight bug for JSONiq.
 * Add highlight command.
 
 Version 0.0.3
