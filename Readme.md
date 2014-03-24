@@ -21,6 +21,18 @@ $ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
 ![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-03-22%2015.40.41.png)
 
+### Syntax Highlighting
+
+```bash
+$ xqlint highlight <path>
+```
+
+### Code formatting
+
+```bash
+$ xqlint format <path>
+```
+
 ## Development
 
 If you'd like to hack on xqlint itself:
@@ -55,6 +67,9 @@ grunt browser_build
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
 
 ##Changelog
+
+Version 0.0.5
+* Add code formatting command.
 
 Version 0.0.4
 * Add warnings for untyped module variables and functions.
