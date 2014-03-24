@@ -1,0 +1,23 @@
+<?xqlint
+var CommentParser = exports.CommentParser = function CommentParser(string, parsingEventHandler)
+{
+  init(string, parsingEventHandler);
+?>
+
+
+Comments ::= (S^WS | Comment)* EOF
+
+Comment  ::= '(:' ( CommentContents | Comment )* ':)'
+
+<?TOKENS?>
+S        ::= [#x0009#x000A#x000D#x0020]+
+Char     ::= [#x0009#x000A#x000D#x0020-#xD7FF#xE000-#xFFFD#x10000-#x10FFFF]
+CommentContents
+         ::= ( ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) ) - ( Char* '(' ) ) &':'
+           |   ( Char+ - ( Char* ( '(:' | ':)' ) Char* ) )                   &'('
+
+EOF      ::= $
+<?ENCORE?>
+
+<?xqlint
+?>
