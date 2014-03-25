@@ -97,32 +97,32 @@ module.exports = function(grunt) {
                 src: ['test/*.js', 'spec/*']
             }
         },
-        ace_build: {
-            dist: {
+        browserify: {
+            ace_build: {
                 files: {
                     'ace_build/xqlint.js': ['lib/xqlint.js'],
-                    'ace_build/xquery_lexer.js': ['lib/lexers/XQueryLexer.js'],
-                    'ace_build/jsoniq_lexer.js': ['lib/lexers/JSONiqLexer.js']
+                    'ace_build/xquery_lexer.js': ['lib/lexers/xquery_lexer.js'],
+                    'ace_build/jsoniq_lexer.js': ['lib/lexers/jsoniq_lexer.js']
+                },
+                options: {
+                    standalone: 'ace/mode/xquery'
                 }
             },
-            options: {
-                standalone: 'ace/mode/xquery'
-            }
-        },
-        browser_build: {
-            dist: {
+            browser_build: {
                 files: {
                     'build/xqlint.js': ['lib/xqlint.js'],
-                    'build/xquery_lexer.js': ['lib/lexers/XQueryLexer.js'],
-                    'build/jsoniq_lexer.js': ['lib/lexers/JSONiqLexer.js']
+                    'build/xquery_lexer.js': ['lib/lexers/xquery_lexer.js'],
+                    'build/jsoniq_lexer.js': ['lib/lexers/jsoniq_lexer.js']
+                },
+                options: {
+                    standalone: ''
                 }
-            },
-            options: {
-                standalone: ''
             }
         }
     });
+    grunt.registerTask('ace_build', ['browserify:ace_build']);
+    grunt.registerTask('browser_build', ['browserify:browser_build']);
     grunt.registerTask('lexers', ['rex:lexers']);
     grunt.registerTask('parsers', ['rex:parsers']);
-    grunt.registerTask('default', ['jshint', 'vows']);
+    grunt.registerTask('default', ['jshint', 'vows', 'ace_build', 'browser_build']);
 };
