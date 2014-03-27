@@ -70,6 +70,7 @@ grunt browser_build
 
 Version 0.0.6
 * Add code completion
+* Bug fixe with XQST0048.
 
 Version 0.0.5
 * Add code formatting command.
