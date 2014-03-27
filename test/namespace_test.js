@@ -157,5 +157,17 @@ vows.describe('Test Namespace declarations').addBatch({
         var linter = new XQLint('test', 'declare variable $foo:bar as xs:integer := 1; 1 + 1');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'test module function names (1)': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/queries/rbtree.xq/map.xq', 'utf-8'), undefined, { styleCheck: false });
+        var errors = linter.getErrors();
+        assert.equal(errors.length, 0, 'Number of errors');
+    },
+    
+    'test module function names (2)': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/queries/rbtree.xq/rbtree.xq', 'utf-8'), undefined, { styleCheck: false });
+        var errors = linter.getErrors();
+        assert.equal(errors.length, 0, 'Number of errors');
     }
 }).export(module);

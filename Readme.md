@@ -68,6 +68,9 @@ grunt browser_build
 
 ##Changelog
 
+Version 0.0.6
+* Bug fixe with XQST0048.
+
 Version 0.0.5
 * Add code formatting command.
 
