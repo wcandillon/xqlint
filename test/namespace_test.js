@@ -169,5 +169,14 @@ vows.describe('Test Namespace declarations').addBatch({
         var linter = new XQLint('test', fs.readFileSync('test/queries/rbtree.xq/rbtree.xq', 'utf-8'), undefined, { styleCheck: false });
         var errors = linter.getErrors();
         assert.equal(errors.length, 0, 'Number of errors');
+    },
+
+    'test module function names (3)': function(){
+        var linter = new XQLint('test', fs.readFileSync('test/queries/rbtree.xq/rbtree2.xq', 'utf-8'), undefined, { styleCheck: false });
+        var errors = linter.getErrors();
+        var error = errors[1];
+        assert.equal(error.message.indexOf('[XQST0048]'), 0, 'Is Error [XQST0048]');
     }
+
+
 }).export(module);
