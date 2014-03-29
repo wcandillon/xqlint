@@ -8,7 +8,7 @@ var XQLint = require('../lib/xqlint').XQLint;
 
 vows.describe('Test Code Completion').addBatch({
     'test var (1)': function(){
-        var source = 'let $foo := 1 return $';
+        var source = 'let $bar := 1 return $bar, let $foo := 1 return $';
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
@@ -17,7 +17,7 @@ vows.describe('Test Code Completion').addBatch({
     },
     
     'test var (2)': function(){
-        var source = 'let $foo := 1 return $f';
+        var source = 'let $bar := 1 return $bar, let $foo := 1 return $f';
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
