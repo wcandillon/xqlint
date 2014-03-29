@@ -2,29 +2,40 @@
 
 var vows = require('vows');
 var assert = require('assert');
-
+var path = require('path');
 var fs = require('fs');
 var ffs = require('final-fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
 
-String.prototype.endsWith = function(suffix) {
-    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+var batch = {};
+var getFiles = function(p){
+    p = path.resolve(path.normalize(p));
+    var files = [];
+    if(fs.statSync(p).isFile()){
+        files.push(p);
+    } else {
+        var list = ffs.readdirRecursiveSync(p, true, p);
+        list.forEach(function(file){
+            if(['jq', 'xq'].indexOf(file.substring(file.length - 2)) !== -1) {
+                files.push(file);
+            }
+        });
+    }
+    return files;
 };
 
-var batch = {};
-var files = ffs.readdirRecursiveSync('test/queries', true);
+var files = getFiles('test/queries/zorba');
+files = files.concat(getFiles('test/queries/zorba_extra'));
 files.forEach(function(file){
     batch[file] = function(){
-        var linter = new XQLint(file, fs.readFileSync('test/queries/' + file, 'UTF-8'));
+        var linter = new XQLint(fs.readFileSync(file, 'utf-8'), { styleCheck: false, fileName: file });
         var syntaxError = linter.hasSyntaxError();
         if(syntaxError) {
             assert.equal(syntaxError, false, linter.getMarkers()[0].message);
         } else {
-            var markers = linter.getMarkers();
-            markers.forEach(function(marker){
-                assert.equal(marker.type === 'error', false, 'Check for static errors');
-            });
+            var errors = linter.getErrors();
+            assert.equal(errors.length === 0, true, 'Check for static errors');
         }
     };
 });

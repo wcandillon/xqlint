@@ -25,7 +25,7 @@ vows.describe('Test Module URI Resolver').addBatch({
                 }
             };
         });
-        var linter = new XQLint('test', 'import module namespace foo = "http://www.example.com"; $foo:bar', sctx);
+        var linter = new XQLint('import module namespace foo = "http://www.example.com"; $foo:bar', { staticContext: sctx });
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
@@ -35,7 +35,7 @@ vows.describe('Test Module URI Resolver').addBatch({
         sctx.setModuleResolver(function(){//uri, hints
             throw new Error('Module not found');
         });
-        var linter = new XQLint('test', 'import module namespace foo = "http://www.example.com"; $foo:bar', sctx);
+        var linter = new XQLint('import module namespace foo = "http://www.example.com"; $foo:bar', { staticContext: sctx });
         var markers = linter.getMarkers();
         assert.equal(markers.length, 2, 'Number of markers');
     }
