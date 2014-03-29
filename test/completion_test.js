@@ -5,6 +5,7 @@ var assert = require('assert');
 //var fs = require('fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
+var TreeOps = require('../lib/tree_ops').TreeOps;
 
 vows.describe('Test Code Completion').addBatch({
     'test var (1)': function(){
@@ -17,7 +18,7 @@ vows.describe('Test Code Completion').addBatch({
     },
     
     'test var (2)': function(){
-        var source = 'let $bar := 1 return $bar, let $foo := 1 return $f';
+        var source = 'let $foo := 1 return $f';
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
@@ -42,7 +43,7 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 1, 'Number of proposals');
-        assert.equal(proposals[0].name, 'local:', 'Prefix');
+        assert.equal(proposals[0].name, 'local:test($hello)', 'Prefix');
     },
     
     'test expr (2)': function(){
@@ -50,8 +51,15 @@ vows.describe('Test Code Completion').addBatch({
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
-        console.log(proposals);
         assert.equal(proposals.length, 1, 'Number of proposals');
         assert.equal(proposals[0].name, 'local:test($hello)', 'test function');
+    },
+    
+    'test expr (3)': function(){
+        var source = '';
+        var linter = new XQLint(source);
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length, 2, 'Number of proposals');
     }
 }).export(module);
