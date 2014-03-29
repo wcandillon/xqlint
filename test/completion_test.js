@@ -5,7 +5,6 @@ var assert = require('assert');
 //var fs = require('fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
-var TreeOps = require('../lib/tree_ops').TreeOps;
 
 vows.describe('Test Code Completion').addBatch({
     'test var (1)': function(){
