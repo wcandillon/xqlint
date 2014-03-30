@@ -98,16 +98,6 @@ module.exports = function(grunt) {
             }
         },
         browserify: {
-            ace_build: {
-                files: {
-                    'ace_build/xqlint.js': ['lib/xqlint.js'],
-                    'ace_build/xquery_lexer.js': ['lib/lexers/xquery_lexer.js'],
-                    'ace_build/jsoniq_lexer.js': ['lib/lexers/jsoniq_lexer.js']
-                },
-                options: {
-                    standalone: 'ace/mode/xquery'
-                }
-            },
             browser_build: {
                 files: {
                     'build/xqlint.js': ['lib/xqlint.js'],
@@ -120,7 +110,6 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.registerTask('ace_build', ['browserify:ace_build']);
     grunt.registerTask('browser_build', ['browserify:browser_build']);
     grunt.registerTask('lexers', ['rex:lexers']);
     grunt.registerTask('parsers', ['rex:parsers']);
