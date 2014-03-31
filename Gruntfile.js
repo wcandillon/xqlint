@@ -113,5 +113,5 @@ module.exports = function(grunt) {
     grunt.registerTask('browser_build', ['browserify:browser_build']);
     grunt.registerTask('lexers', ['rex:lexers']);
     grunt.registerTask('parsers', ['rex:parsers']);
-    grunt.registerTask('default', ['jshint', 'vows', 'ace_build', 'browser_build']);
+    grunt.registerTask('default', ['jshint', 'vows']);
 };
