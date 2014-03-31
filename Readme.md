@@ -27,12 +27,6 @@ $ xqlint lint <path> [-s, --style-check <yes, no>]
 $ xqlint highlight <path>
 ```
 
-### Code formatting
-
-```bash
-$ xqlint format <path>
-```
-
 ## Development
 
 If you'd like to hack on xqlint itself:
@@ -64,7 +58,7 @@ grunt parsers
 ##Changelog
 
 Version 0.0.6
-* Add code completion
+* Add code completion.
 * Bug fixe with XQST0048.
 
 Version 0.0.5
