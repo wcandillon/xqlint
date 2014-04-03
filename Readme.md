@@ -57,6 +57,10 @@ grunt parsers
 
 ##Changelog
 
+Version 0.0.7
+* Bug fixes.
+* Make style check false by default.
+
 Version 0.0.6
 * Add code completion.
 * Bug fixe with XQST0048.
