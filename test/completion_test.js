@@ -36,6 +36,14 @@ vows.describe('Test Code Completion').addBatch({
         assert.equal(proposals[0].name, '$ex:hello', '$ex:hello variable');
 
     },
+
+    'test var (4)': function(){
+        var source = 'let $varname := 1 let $foo := $varname return $varname + $';
+        var linter = new XQLint(source);
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length, 2, 'Number of proposals');
+    },
     
     'test expr (1)': function(){
         var source = 'declare function local:test($hello){ $hello }; l';
