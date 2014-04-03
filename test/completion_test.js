@@ -181,9 +181,6 @@ vows.describe('Test Code Completion').addBatch({
                 var name = variable.name.substring(variable.name.indexOf(':') + 1);
                 variables[uri + '#' + name] = { type: 'VarDecl', annotations: [] };
             });
-            //console.log(variables);
-            //console.log(JSON.stringify(mod.variables, null, 4));
-            //console.log(JSON.stringify(functions, null, 4));
             return {
                 variables: variables,
                 functions: functions
@@ -194,6 +191,14 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 6, 'Number of proposals');
+    },
+    
+    'test functions (3)': function(){
+        var source = 'ns:';
+        var linter = new XQLint(source);
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length, 0, 'Number of proposals');
     },
     
     'test variables (1)': function(){
