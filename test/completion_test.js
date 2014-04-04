@@ -132,9 +132,22 @@ vows.describe('Test Code Completion').addBatch({
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 1, 'Number of proposals');
         assert.equal(proposals[0].name, 'http://www.28msec.com/modules/http-reponse', 'module list');
-        assert.equal(proposals[0].value, '/http-reponse', 'module list');
+        assert.equal(proposals[0].value, '//www.28msec.com/modules/http-reponse', 'module list');
     },
-    
+    /*
+    'test namespaces (6)': function(){
+        var p1 = 'import module namespace ns = "http://www.2';
+        var p2 = '";';
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.availableModuleNamespaces = Object.keys(index);
+        var linter = new XQLint(p1 + p2, { staticContext: sctx });
+        var pos = { line: 0, col: p1.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length > 10, true, 'Number of proposals');
+        console.log(proposals[0]);
+    },
+    */
     'test prefixes (1)': function(){
         var source = 'import module namespace ns="http://www.28msec.com/modules/http-response";';
         var sctx = new StaticContext();
