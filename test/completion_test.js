@@ -77,10 +77,11 @@ vows.describe('Test Code Completion').addBatch({
         var p2 = '";';
         var sctx = new StaticContext();
         sctx.availableModuleNamespaces.push('http://www.28msec.com/modules/http-reponse');
+        sctx.availableModuleNamespaces.push('http://zorba.io/modules/reflection');
         var linter = new XQLint(p1 + p2, { staticContext: sctx });
         var pos = { line: 0, col: p1.length };
         var proposals = linter.getCompletions(pos);
-        assert.equal(proposals.length, 1, 'Number of proposals');
+        assert.equal(proposals.length, 2, 'Number of proposals');
         assert.equal(proposals[0].name, 'http://www.28msec.com/modules/http-reponse', 'module list');
     },
     
@@ -148,8 +149,6 @@ vows.describe('Test Code Completion').addBatch({
                     functions[uri + '#' + fn.name + '#' + fn.arity].params.push('$' + param.name);
                 });
             });
-            //console.log(JSON.stringify(mod, null, 4));
-            //console.log(JSON.stringify(functions, null, 4));
             return {
                 variables: variables,
                 functions: functions
@@ -200,6 +199,46 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 0, 'Number of proposals');
+    },
+    
+    'test functions (4)': function(){
+        var source = 'declare function local:foo(){ 1 }; declare function local:bar(){ 2 }; local';
+        var linter = new XQLint(source);
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length, 2, 'Number of proposals');
+    },
+    
+    'test functions (5)': function(){
+        var source = 'import module namespace ns="http://www.28msec.com/modules/http-response"; ns:status';
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        var sctx = new StaticContext();
+        sctx.setModuleResolver(function(uri){//uri, hints
+            var mod = index[uri];
+            var variables = {};
+            var functions = {};
+            mod.functions.forEach(function(fn){
+                functions[uri + '#' + fn.name + '#' + fn.arity] = {
+                    params: []
+                };
+                fn.parameters.forEach(function(param){
+                    functions[uri + '#' + fn.name + '#' + fn.arity].params.push('$' + param.name);
+                });
+            });
+            mod.variables.forEach(function(variable){
+                var name = variable.name.substring(variable.name.indexOf(':') + 1);
+                variables[uri + '#' + name] = { type: 'VarDecl', annotations: [] };
+            });
+            return {
+                variables: variables,
+                functions: functions
+            };
+        });
+        sctx.availableModuleNamespaces = Object.keys(index);
+        var linter = new XQLint(source, { staticContext: sctx });
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length, 2, 'Number of proposals');
     },
     
     'test variables (1)': function(){
