@@ -207,6 +207,7 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 2, 'Number of proposals');
+        assert.equal(proposals[0].value, 'bar()', 'Number of proposals');
     },
     
     'test functions (5)': function(){
