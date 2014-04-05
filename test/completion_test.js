@@ -202,12 +202,13 @@ vows.describe('Test Code Completion').addBatch({
     },
     
     'test functions (4)': function(){
-        var source = 'declare function local:foo(){ 1 }; declare function local:bar(){ 2 }; local:';
+        var source = 'declare function local:foo(){ 1 }; declare function local:bar($foo as xs:string){ 2 }; local:';
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 2, 'Number of proposals');
-        assert.equal(proposals[0].value, 'bar()', 'Number of proposals');
+        assert.equal(proposals[0].value, 'local:bar($foo as xs:string)', 'Number of proposals');
+        assert.equal(proposals[0].snippet, 'local:bar(${1:\\$foo})', 'Number of proposals');
     },
     
     'test functions (4 bis)': function(){

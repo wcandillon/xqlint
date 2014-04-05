@@ -59,6 +59,8 @@ grunt parsers
 
 Version 0.0.8
 * Improve marker output in the cli.
+* Improve function resolving
+* Several bug fixes
 
 Version 0.0.7
 * Bug fixes.

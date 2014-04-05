@@ -10,4 +10,4 @@ let $input :=
       service: $service
   }
 return
-    local:javascript($input)
+    foo:javascript($input)
