@@ -377,5 +377,15 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length > 10, true, 'Number of proposals');
-    }
+    },
+    
+    'test default functions': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint('re', { fileName: 'merry.xq',  staticContext: sctx });
+        var pos = { line: 0, col: 2 };
+        var proposals = linter.getCompletions(pos);
+        //console.log(proposals);
+    },
 }).export(module);

@@ -186,6 +186,42 @@ vows.describe('Test Module URI Resolver').addBatch({
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
+    'test 13': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint('concat("Hello", "World", "Foo", "Bar")', { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'test 14': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint('revarse()', { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'test 15': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint('reverse()', { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 1, 'Number of markers');
+    },
+
+    'test 16': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint('reverse((1, 2, 3))', { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
     'test XQST0059': function(){
         var sctx = new StaticContext();
         sctx.setModuleResolver(function(){//uri, hints
