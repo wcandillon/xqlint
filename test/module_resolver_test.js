@@ -2,7 +2,7 @@
 
 var vows = require('vows');
 var assert = require('assert');
-//var fs = require('fs');
+var fs = require('fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
 var StaticContext = require('../lib/compiler/static_context').StaticContext;
@@ -137,6 +137,29 @@ vows.describe('Test Module URI Resolver').addBatch({
         });
         var linter = new XQLint('import module namespace foo = "http://www.example.com"; foo:bar(1, 2)', { staticContext: sctx });
         var markers = linter.getErrors();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+    
+    
+    'test 8': function(){
+        var linter = new XQLint('test', 'import module namespace foo = "http://www.example.com"; $foo:bar');
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'test 9': function(){
+        var sctx = new StaticContext();
+        sctx.setModules();
+        var linter = new XQLint(fs.readFileSync('test/queries/zorba/xqdoc.jq', 'utf-8'), { staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 2, 'Number of markers');
+    },
+
+    'test 10': function(){
+        var sctx = new StaticContext();
+        sctx.setModules();
+        var linter = new XQLint(fs.readFileSync('test/queries/zorba/xqdoc2.jq', 'utf-8'), { staticContext: sctx });
+        var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
