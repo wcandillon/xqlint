@@ -271,8 +271,46 @@ vows.describe('Test Code Completion').addBatch({
         assert.equal(proposals.length, 2, 'Number of proposals');
     },
     
-    'test functions (7)': function(){
-        var source = 'import module namespace ns="http://www.28msec.com/modules/http-response"; ns';
+    'test functions (8)': function(){
+        var source = 'import module namespace ns="http://www.28msec.com/modules/http-response";\nn';
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        var sctx = new StaticContext();
+        var modules = {};
+        Object.keys(index).forEach(function(uri) {
+            var mod = index[uri];
+            var variables = {};
+            var functions = {};
+            mod.functions.forEach(function(fn){
+                functions[uri + '#' + fn.name + '#' + fn.arity] = {
+                    params: [],
+                    annotations: [],
+                    name: fn.name,
+                    arity: fn.arity,
+                    eqname: { uri: uri, name: fn.name }
+                };
+                fn.parameters.forEach(function(param){
+                    functions[uri + '#' + fn.name + '#' + fn.arity].params.push('$' + param.name);
+                });
+            });
+            mod.variables.forEach(function(variable){
+                var name = variable.name.substring(variable.name.indexOf(':') + 1);
+                variables[uri + '#' + name] = { type: 'VarDecl', annotations: [], eqname: { uri: uri, name: name } };
+            });
+            modules[uri] = {
+                variables: variables,
+                functions: functions
+            };
+        });
+        sctx.setModules(modules);
+        sctx.availableModuleNamespaces = Object.keys(index);
+        var linter = new XQLint(source, { staticContext: sctx });
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length > 10, true, 'Number of proposals');
+    },
+    
+    'test functions (9)': function(){
+        var source = 'import module namespace ns="http://www.28msec.com/modules/http-response";\nns:s';
         var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
         var sctx = new StaticContext();
         var modules = {};
