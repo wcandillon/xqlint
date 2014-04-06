@@ -153,16 +153,16 @@ vows.describe('Test Module URI Resolver').addBatch({
         sctx.setModulesFromXQDoc(index);
         var linter = new XQLint(fs.readFileSync('test/queries/zorba/xqdoc.jq', 'utf-8'), { fileName: 'xqdoc.jq',  staticContext: sctx });
         var markers = linter.getMarkers();
-        console.log(markers);
         assert.equal(markers.length, 2, 'Number of markers');
     },
 
     'test 10': function(){
         var sctx = new StaticContext();
-        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
-        sctx.setModulesFromXQDoc(index);
+        //var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        //sctx.setModulesFromXQDoc(index);
         var linter = new XQLint(fs.readFileSync('test/queries/zorba/xqdoc2.jq', 'utf-8'), { fileName: 'xqdoc2.jq', staticContext: sctx });
         var markers = linter.getMarkers();
+        //console.log(markers);
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
