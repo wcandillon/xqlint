@@ -22,7 +22,7 @@ vows.describe('Test Function declarations').addBatch({
     'functions (3)': function(){
         var linter = new XQLint('declare function local:foo() as xs:string { ns:bar() };  1');
         var markers = linter.getErrors();
-        assert.equal(markers.length, 0, 'Number of markers');
+        assert.equal(markers.length, 1, 'Number of markers');
     },
     
     'functions (4)': function(){
