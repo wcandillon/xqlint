@@ -166,6 +166,26 @@ vows.describe('Test Module URI Resolver').addBatch({
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
+    'test 11': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint(fs.readFileSync('test/xqlint_queries/trycatch.xq', 'utf-8'), { fileName: 'trycatch.xq',  staticContext: sctx });
+        var warnings = linter.getWarnings();
+        assert.equal(warnings.length, 1, 'Number of warnings');
+        var errors = linter.getErrors();
+        assert.equal(errors.length, 0, 'Number of errors');
+    },
+
+    'test 12': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint(fs.readFileSync('test/queries/zorba/merry.xq', 'utf-8'), { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
     'test XQST0059': function(){
         var sctx = new StaticContext();
         sctx.setModuleResolver(function(){//uri, hints
