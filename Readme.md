@@ -19,7 +19,7 @@ $ npm install xqlint -g
 ```bash
 $ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
-![result](https://www.dropbox.com/s/un4up9khgbe8ewa/Screenshot%202014-04-07%2011.06.31.png)
+![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-04-07%2011.06.31.png)
 
 ### Syntax Highlighting
 
