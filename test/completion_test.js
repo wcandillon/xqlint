@@ -61,7 +61,7 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 1, 'Number of proposals');
-        assert.equal(proposals[0].name, 'local:test($hello)', 'test function');
+        assert.equal(proposals[0].name, 'test($hello)', 'test function');
     },
     
     'test expr (3)': function(){
@@ -207,7 +207,7 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 2, 'Number of proposals');
-        assert.equal(proposals[0].name, 'local:bar($foo as xs:string)', 'Number of proposals');
+        assert.equal(proposals[0].name, 'bar($foo as xs:string)', 'Number of proposals');
         assert.equal(proposals[0].snippet, 'local:bar(${1:\\$foo})', 'Number of proposals');
     },
     
