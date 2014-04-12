@@ -207,7 +207,7 @@ vows.describe('Test Code Completion').addBatch({
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 2, 'Number of proposals');
-        assert.equal(proposals[0].value, 'local:bar($foo as xs:string)', 'Number of proposals');
+        assert.equal(proposals[0].name, 'local:bar($foo as xs:string)', 'Number of proposals');
         assert.equal(proposals[0].snippet, 'local:bar(${1:\\$foo})', 'Number of proposals');
     },
     
@@ -385,6 +385,17 @@ vows.describe('Test Code Completion').addBatch({
         sctx.setModulesFromXQDoc(index);
         var linter = new XQLint('re', { fileName: 'merry.xq',  staticContext: sctx });
         var pos = { line: 0, col: 2 };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length > 1, true, 'Number of proposals');
+    },
+    
+    'test resolved functions': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        sctx.setModulesFromXQDoc(index);
+        var src = 'import module namespace ns = "http://zorba.io/modules/zorba-query"; ns:prepare';
+        var linter = new XQLint(src, { fileName: 'merry.xq',  staticContext: sctx });
+        var pos = { line: 0, col: src.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length > 1, true, 'Number of proposals');
     }
