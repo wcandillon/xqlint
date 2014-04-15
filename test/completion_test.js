@@ -378,6 +378,17 @@ vows.describe('Test Code Completion').addBatch({
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length > 10, true, 'Number of proposals');
     },
+     
+    'test variables (2)': function(){
+        var source = 'import module namespace ns="http://www.28msec.com/modules/http-response"; $ns:n';
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
+        var sctx = new StaticContext();
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint(source, { staticContext: sctx });
+        var pos = { line: 0, col: source.length };
+        var proposals = linter.getCompletions(pos);
+        assert.equal(proposals.length > 5, true, 'Number of proposals');
+    },
     
     'test default functions': function(){
         var sctx = new StaticContext();
