@@ -57,6 +57,9 @@ grunt parsers
 
 ##Changelog
 
+Version 0.0.9
+* Add built-in schema types
+
 Version 0.0.8
 * Improve marker output in the cli.
 * Improve function resolving
