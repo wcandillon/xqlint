@@ -156,12 +156,13 @@ vows.describe('Test Namespace declarations').addBatch({
     
     'test unused namespace (5)': function(){
         var sctx = new StaticContext();
-        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8')); 
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
         sctx.setModulesFromXQDoc(index);
         var linter = new XQLint(fs.readFileSync('test/xqlint_queries/csv.jq', 'utf-8'), { staticContext: sctx, styleCheck: false, fileName: 'csv.jq' });
         var warnings = linter.getWarnings();
         var errors = linter.getErrors();
         assert.equal(errors.length, 0, 'Number of errors');
+        assert.equal(warnings.length, 2, 'Number of warnings');
     },
 
     'test resolution': function(){
