@@ -5,6 +5,7 @@ var assert = require('assert');
 var fs = require('fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
+var StaticContext = require('../lib/compiler/static_context').StaticContext;
 
 vows.describe('Test Namespace declarations').addBatch({
     'test XQST0047 (1)': function(){
@@ -151,6 +152,16 @@ vows.describe('Test Namespace declarations').addBatch({
         assert.equal(warning.type, 'warning', 'Type of marker');
         warning = markers[1];
         assert.equal(warning.type, 'warning', 'Type of marker');
+    },
+    
+    'test unused namespace (5)': function(){
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8')); 
+        sctx.setModulesFromXQDoc(index);
+        var linter = new XQLint(fs.readFileSync('test/xqlint_queries/csv.jq', 'utf-8'), { staticContext: sctx, styleCheck: false, fileName: 'csv.jq' });
+        var warnings = linter.getWarnings();
+        var errors = linter.getErrors();
+        assert.equal(errors.length, 0, 'Number of errors');
     },
 
     'test resolution': function(){

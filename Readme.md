@@ -57,6 +57,9 @@ grunt parsers
 
 ##Changelog
 
+Version 0.1.0
+* Bug fixes
+
 Version 0.0.9
 * Add built-in schema types
 
