@@ -56,6 +56,8 @@ grunt parsers
 * [XQLint Grunt Task](https://github.com/wcandillon/grunt-xqlint)
 
 ##Changelog
+Version 0.1.1
+* Improve "built-in" function resolving
 
 Version 0.1.0
 * Bug fixes
