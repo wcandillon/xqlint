@@ -51,8 +51,9 @@ vows.describe('Test Code Completion').addBatch({
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
-        assert.equal(proposals.length, 1, 'Number of proposals');
-        assert.equal(proposals[0].name, 'local:', 'Prefix');
+        assert.equal(proposals.length, 2, 'Number of proposals');
+        assert.equal(proposals[0].name, 'libjn:', 'Prefix');
+        assert.equal(proposals[1].name, 'local:', 'Prefix');
     },
     
     'test expr (2)': function(){
@@ -69,7 +70,7 @@ vows.describe('Test Code Completion').addBatch({
         var linter = new XQLint(source);
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
-        assert.equal(proposals.length, 3, 'Number of proposals');
+        assert.equal(proposals.length, 6, 'Number of proposals');
     },
     
     'test namespaces (1)': function(){
@@ -130,7 +131,7 @@ vows.describe('Test Code Completion').addBatch({
         var linter = new XQLint(source, { staticContext: sctx });
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
-        assert.equal(proposals.length, 4, 'Number of proposals');
+        assert.equal(proposals.length, 7, 'Number of proposals');
     },
     
     'test functions (1)': function(){
