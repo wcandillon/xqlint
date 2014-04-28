@@ -242,6 +242,16 @@ vows.describe('Test Module URI Resolver').addBatch({
         assert.equal(markers.length, 0, 'Number of markers');
     },
 
+    'test 19': function(){
+        var source = 'import module namespace sec-networks = "http://xbrl.io/modules/bizql/profiles/sec/networks"; $sec-networks:BALANCE_SHEET';
+        var sctx = new StaticContext();
+        var index = JSON.parse(fs.readFileSync('test/exports.json', 'utf-8'));
+        sctx.setModules(index);
+        var linter = new XQLint(source, { fileName: 'merry.xq',  staticContext: sctx });
+        var markers = linter.getErrors();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
     'test XQST0059': function(){
         var sctx = new StaticContext();
         sctx.setModuleResolver(function(){//uri, hints
