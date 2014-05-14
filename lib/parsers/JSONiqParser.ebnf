@@ -161,7 +161,9 @@ OrderModifier
 ReturnClause
          ::= ('return' | 'select') ExprSingle
 QuantifiedExpr
-         ::= ( 'some' | 'every' ) '$' VarName TypeDeclaration? 'in' ExprSingle ( ',' '$' VarName TypeDeclaration? 'in' ExprSingle )* 'satisfies' ExprSingle
+         ::= ( 'some' | 'every' ) QuantifiedVarDecl ( ',' QuantifiedVarDecl )* 'satisfies' ExprSingle
+QuantifiedVarDecl
+         ::= '$' VarName TypeDeclaration? 'in' ExprSingle
 SwitchExpr
          ::= 'switch' '(' Expr ')' SwitchCaseClause+ 'default' ('return' | 'select')  ExprSingle
 SwitchCaseClause

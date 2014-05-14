@@ -171,7 +171,15 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint('declare variable $bar as xs:integer := 1; let $foo := 1 let $foo := $foo + $bar return $foo');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
-    }
+    },
+
+    'unused variable (8)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/rendering.jq', 'utf-8'), { styleCheck: false });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+    
+    
     //Test private fn decl
     //Test complex expressions
     //Test scripting
