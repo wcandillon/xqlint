@@ -7,7 +7,8 @@ before_script:
 deploy:
   provider: npm
   email: w@28.io
-  api_key: 1pbeVHg2wMqrrcFDUDkR
+  api_key:
+    secure: "g+DjrtGRz4W7bvcCrJT3Oa80SFF/9TL+zP0rmTq36ANHNz0EyPV8epanL26RmQj+QA5XnHqzK1kFjFURrVncLJZdHXIdOSalaB5k8yRgpLEMETQvmTUfe6rWNTaEndKTjrUyWhHqceK4QlSrcv3VIq8loObimqaH7J1K3fZ7XgQ="
   on:
     branch: master
     repo: wcandillon/xqlint
