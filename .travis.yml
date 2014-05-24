@@ -10,4 +10,4 @@ deploy:
   api_key: 1pbeVHg2wMqrrcFDUDkR
   on:
     branch: master
-    repo: git@github.com:wcandillon/xqlint.git
+    repo: wcandillon/xqlint
