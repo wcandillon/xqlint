@@ -10,6 +10,6 @@ deploy:
   api_key:
     secure: sptzco/DP3GmZ7N2tNYQ3Oek5nyZNc4byyWM+Pyt0yjQ0FGKlAVtkekIABmQrjf23AGZ1Y7uF9/AuLFpyQu4f9WMgXYJ1Orp06AVI7aksxyHyMpQXSpHpNIXyy/doMCzymnaVBTaME8exPli3BiJ30WkWQGZlQyVzAwV0vlSj5k=
   on: 
-    repo: 28msec/28
+    repo: wcandillon/xqlint
     branch: master
     node: 0.11
