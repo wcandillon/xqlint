@@ -8,7 +8,7 @@ deploy:
   provider: npm 
   email: w@28.io
   api_key:
-    secure: sptzco/DP3GmZ7N2tNYQ3Oek5nyZNc4byyWM+Pyt0yjQ0FGKlAVtkekIABmQrjf23AGZ1Y7uF9/AuLFpyQu4f9WMgXYJ1Orp06AVI7aksxyHyMpQXSpHpNIXyy/doMCzymnaVBTaME8exPli3BiJ30WkWQGZlQyVzAwV0vlSj5k=
+    secure: "HkgW8xoZkV6pc9UlVhiw2qc8VLwCuutc4g1bOuG7Gv1VO/s4yaTLohMqEDB5MWr60GQp7D9A+3Ial4eUTB6lkG19vamNqAIUoE17C0Yfne9AKd01piLw1fNOGIurmObahH0cgKX9QbvY3CufDclxT0XyqrK9Btt8Otf+vC+MKaM="
   on: 
     repo: wcandillon/xqlint
     branch: master
