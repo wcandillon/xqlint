@@ -1,4 +1,4 @@
-XQLint [![Build Status](https://travis-ci.org/wcandillon/xqlint.svg?branch=master)](https://travis-ci.org/wcandillon/xqlint) [![NPM version](https://badge.fury.io/js/xqlint.png)](http://badge.fury.io/js/xqlint)
+XQLint [![Build Status](http://img.shields.io/travis/wcandillon/xqlint/master.svg?style=flat)](https://travis-ci.org/wcandillon/xqlint) [![NPM version](http://img.shields.io/npm/v/xqlint.svg?style=flat)](http://badge.fury.io/js/xqlint)
 ============
 
 ## XQuery & JSONiq Code Quality Tool
