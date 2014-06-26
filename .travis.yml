@@ -5,11 +5,11 @@ node_js:
 before_script:
 - npm install -g grunt-cli
 deploy:
-  provider: npm 
+  provider: npm
   email: w@28.io
   api_key:
-    secure: "HkgW8xoZkV6pc9UlVhiw2qc8VLwCuutc4g1bOuG7Gv1VO/s4yaTLohMqEDB5MWr60GQp7D9A+3Ial4eUTB6lkG19vamNqAIUoE17C0Yfne9AKd01piLw1fNOGIurmObahH0cgKX9QbvY3CufDclxT0XyqrK9Btt8Otf+vC+MKaM="
-  on: 
+    secure: X5AfDdX8PuqEnJ3y6xa+BteK3oEQdt+eT70GxAA0i/k6qQJv50kaptoAe+GxDj83Iv6l8bwvv8swijtFpptGby24BntkFK9OIt279u6UF3seWnjJNN8426uKiaIDlvv8y6flEbEr+SQ2irojUF4sR3EsxIQR3pIeg5/eJZSyPvk=
+  on:
     repo: wcandillon/xqlint
     branch: master
-    node: 0.11
+    node: '0.11'
