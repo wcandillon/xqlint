@@ -16,7 +16,8 @@
   "homepage": "https://28.io",
   "bugs": "https://github.com/wcandillon/xqlint/issues",
   "repository": {
-    "url": "https://github.com/wcandillon/xqlint"
+    "type": "git",
+    "url": "git://github.com/wcandillon/xqlint.git"
   },
   "main": "./lib/xqlint.js",
   "xqlint": {
