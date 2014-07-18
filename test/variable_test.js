@@ -178,8 +178,12 @@ vows.describe('Test Variable declarations').addBatch({
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
-    
-    
+ 
+    'unused variable (9)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/update-report-schema.jq', 'utf-8'), { styleCheck: false });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    } 
     //Test private fn decl
     //Test complex expressions
     //Test scripting
