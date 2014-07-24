@@ -19,21 +19,17 @@ module.exports = function(grunt) {
             form.append('tz', parser.tz, { knownLength: new Buffer(parser.tz).length, contentType: 'text/plain'  });
             form.append('command', parser.command, { knownLength: new Buffer(parser.command).length, contentType: 'text/plain' });
             form.append('input', grammar, { knownLength : new Buffer(grammar).length, contentType: 'text/plain', filename: path.basename(parser.source) });
-            form.getLength(function(err, length){
-                if (err) {
-                    throw err;
+            var length = form.getLengthSync();
+            var r = request.post('http://www.bottlecaps.de/rex/', function(err, res, body) {
+                if(err) {
+                    deferred.reject(err);
+                } else {
+                    fs.writeFileSync(parser.destination, body);
+                    deferred.resolve();
                 }
-                var r = request.post('http://www.bottlecaps.de/rex/', function(err, res, body) {
-                    if(err) {
-                        deferred.reject(err);
-                    } else {
-                        fs.writeFileSync(parser.destination, body);
-                        deferred.resolve();
-                    }
-                });
-                r._form = form;
-                r.setHeader('content-length', length);
             });
+            r._form = form;
+            r.setHeader('content-length', length);
             promises.push(deferred.promise);
         });
         Q.all(promises)

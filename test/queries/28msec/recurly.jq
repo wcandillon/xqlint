@@ -12,7 +12,7 @@ declare %private %an:sequential function local:test($response as object()) as ob
         return
         {|   
           for $node in $error/@*
-          return { local-name($node) : data($node) },
+          return { fn:local-name($node) : data($node) },
           { "description": string($error) }
         |}   
       ]    
