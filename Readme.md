@@ -21,6 +21,12 @@ $ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
 ![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-04-07%2011.06.31.png)
 
+### Print AST as XML
+
+```bash
+$ xqlint ast <path>
+```
+
 ### Syntax Highlighting
 
 ```bash
