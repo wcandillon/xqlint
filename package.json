@@ -6,7 +6,7 @@
   },
   "name": "xqlint",
   "description": "XQuery & JSONiq Quality Checker",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "keywords": [
     "jsoniq",
     "xquery",
@@ -27,7 +27,8 @@
     "commander": "~2.2.0",
     "q": "~1.0.0",
     "final-fs": "~1.6.0",
-    "colors": "~0.6.2"
+    "colors": "~0.6.2",
+    "update-notifier": "~0.2.0"
   },
   "devDependencies": {
     "request": "~2.33.0",
