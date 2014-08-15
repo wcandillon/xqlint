@@ -183,6 +183,12 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint(fs.readFileSync('test/queries/28msec/update-report-schema.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (10)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/eval.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
     }
 
     //Test private fn decl
