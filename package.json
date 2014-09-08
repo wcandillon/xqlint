@@ -24,23 +24,23 @@
     "xqlint": "./bin/xqlint"
   },
   "dependencies": {
-    "commander": "~2.2.0",
+    "commander": "~2.3.0",
     "q": "~1.0.0",
     "final-fs": "~1.6.0",
     "colors": "~0.6.2",
     "update-notifier": "~0.2.0"
   },
   "devDependencies": {
-    "request": "~2.33.0",
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.10.0",
-    "matchdep": "~0.3.0",
-    "vows": "~0.7.0",
-    "grunt-vows": "~0.4.0",
-    "time-grunt": "~0.1.1",
-    "form-data": "~0.1.2",
     "browserify": "~4.2.0",
-    "grunt-browserify": "~2.1.1"
+    "form-data": "~0.1.2",
+    "grunt": "~0.4.2",
+    "grunt-browserify": "~2.1.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-vows": "~0.4.1",
+    "matchdep": "~0.3.0",
+    "request": "~2.33.0",
+    "time-grunt": "~0.1.1",
+    "vows": "^0.7.0"
   },
   "optionalDependencies": {},
   "engines": {
