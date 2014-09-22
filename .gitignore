@@ -3,3 +3,4 @@ ace_build
 build
 .DS_Store
 *.swp
+.idea
