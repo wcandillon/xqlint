@@ -60,3 +60,4 @@ grunt parsers
 * [28.io cli tool](https://github.com/28msec/28)
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
 * [XQLint Grunt Task](https://github.com/wcandillon/grunt-xqlint)
+* [XQLint Gulp Plugin](https://github.com/wcandillon/gulp-xqlint)
