@@ -53,5 +53,91 @@ vows.describe('Test Syntax Highlighting').addBatch({
         }
         assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
         assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+
+    'test: bug fix (1)': function(){
+        var code = '<foo>{1\n}</foo>';
+        var lines = code.split('\n');
+        var expected = [{
+                'tokens': [{
+                    'type': 'meta.tag',
+                    'value': '<foo'
+                }, {
+                    'type': 'meta.tag',
+                    'value': '>'
+                }, {
+                    'type': 'text',
+                    'value': '{'
+                }, {
+                    'type': 'constant',
+                    'value': '1'
+                }],
+                'state': '["start","StartTag","TagContent","start"]'
+            }, {
+                'tokens': [{
+                    'type': 'text',
+                    'value': '}'
+                }, {
+                    'type': 'meta.tag',
+                    'value': '</foo>'
+                }],
+                'state': '["start"]'
+            }]
+            ;
+        var lexer = new JSONiqLexer();
+        var result = [];
+        var line, tokens, state;
+        for(var i in lines) {
+            line = lines[i];
+            tokens = lexer.getLineTokens(line, state);
+            state = tokens.state;
+            result.push(tokens);
+        }
+        console.log(JSON.stringify(result, null, 2));
+        assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+        assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
+    },
+
+    'test: bug fix (2)': function(){
+        var code = '<foo>{1\n}</foo>';
+        var lines = code.split('\n');
+        var expected = [{
+                'tokens': [{
+                    'type': 'meta.tag',
+                    'value': '<foo'
+                }, {
+                    'type': 'meta.tag',
+                    'value': '>'
+                }, {
+                    'type': 'text',
+                    'value': '{'
+                }, {
+                    'type': 'constant',
+                    'value': '1'
+                }],
+                'state': '["start","StartTag","TagContent","start"]'
+            }, {
+                'tokens': [{
+                    'type': 'text',
+                    'value': '}'
+                }, {
+                    'type': 'meta.tag',
+                    'value': '</foo>'
+                }],
+                'state': '["start"]'
+            }]
+            ;
+        var lexer = new XQueryLexer();
+        var result = [];
+        var line, tokens, state;
+        for(var i in lines) {
+            line = lines[i];
+            tokens = lexer.getLineTokens(line, state);
+            state = tokens.state;
+            result.push(tokens);
+        }
+        console.log(JSON.stringify(result, null, 2));
+        assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
+        assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     }
 }).export(module);
