@@ -1,9 +1,10 @@
 #XQLint
 [![Build Status](http://img.shields.io/travis/wcandillon/xqlint/master.svg?style=flat)](https://travis-ci.org/wcandillon/xqlint) [![NPM version](http://img.shields.io/npm/v/xqlint.svg?style=flat)](http://badge.fury.io/js/xqlint) [![Code Climate](http://img.shields.io/codeclimate/github/wcandillon/xqlint.svg?style=flat)](https://codeclimate.com/github/wcandillon/xqlint)
 
-## XQuery & JSONiq Code Quality Tool
+## JSONiq & XQuery Code Quality Tool
 
 XQLint parses XQuery & JSONiq files and returns errors and warnings based on static code analysis.
+![example](http://i.imgur.com/86jU7C1.png)
 
 ## Installation
 
@@ -58,6 +59,7 @@ grunt parsers
 
 ##Who is using this project?
 * [28.io cli tool](https://github.com/28msec/28)
+* [Atom Editor](https://atom.io/packages/language-jsoniq)
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
 * [XQLint Grunt Task](https://github.com/wcandillon/grunt-xqlint)
 * [XQLint Gulp Plugin](https://github.com/wcandillon/gulp-xqlint)
