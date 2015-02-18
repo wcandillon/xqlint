@@ -93,7 +93,7 @@ vows.describe('Test Syntax Highlighting').addBatch({
             state = tokens.state;
             result.push(tokens);
         }
-        console.log(JSON.stringify(result, null, 2));
+        //console.log(JSON.stringify(result, null, 2));
         assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
         assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     },
@@ -136,7 +136,7 @@ vows.describe('Test Syntax Highlighting').addBatch({
             state = tokens.state;
             result.push(tokens);
         }
-        console.log(JSON.stringify(result, null, 2));
+        //console.log(JSON.stringify(result, null, 2));
         assert.equal(JSON.stringify(result[0]), JSON.stringify(expected[0]));
         assert.equal(JSON.stringify(result[1]), JSON.stringify(expected[1]));
     }
