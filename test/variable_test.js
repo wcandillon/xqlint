@@ -201,6 +201,24 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint(fs.readFileSync('test/queries/28msec/quantifier2.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (13)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/components.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (14)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/modelstructure-for-component.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (15)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/modelstructure-for-component.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
     }
 
     //Test private fn decl
