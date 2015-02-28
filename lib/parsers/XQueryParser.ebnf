@@ -161,7 +161,9 @@ OrderModifier
 ReturnClause
          ::= 'return' ExprSingle
 QuantifiedExpr
-         ::= ( 'some' | 'every' ) '$' VarName TypeDeclaration? 'in' ExprSingle ( ',' '$' VarName TypeDeclaration? 'in' ExprSingle )* 'satisfies' ExprSingle
+         ::= ( 'some' | 'every' ) QuantifiedVarDecl ( ',' QuantifiedVarDecl )* 'satisfies' ExprSingle
+QuantifiedVarDecl
+         ::= '$' VarName TypeDeclaration? 'in' ExprSingle
 SwitchExpr
          ::= 'switch' '(' Expr ')' SwitchCaseClause+ 'default' 'return' ExprSingle
 SwitchCaseClause
@@ -390,13 +392,13 @@ JSONTest ::=
         | JSONObjectTest
         | JSONArrayTest
 
-StructuredItemTest ::= "structured-item" "(" ")"
+StructuredItemTest ::= 'structured-item' '(' ')'
 
-JSONItemTest ::= "json-item" "(" ")"
+JSONItemTest ::= 'json-item' '(' ')'
 
-JSONObjectTest ::= "object" "(" ")"
+JSONObjectTest ::= 'object' '(' ')'
 
-JSONArrayTest ::= "array" "(" ")"
+JSONArrayTest ::= 'array' '(' ')'
 
 AtomicOrUnionType
          ::= EQName
@@ -1236,4 +1238,3 @@ NCName^Token
               'when' 'where' 'while' 'wildcards' 'window' 'with'
               'without' 'word' 'words' 'xquery' 'zero-digit'
               'append' 'array' 'json' 'json-item' 'structured-item' 'object'
-<?ENCORE?>

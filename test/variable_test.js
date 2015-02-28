@@ -171,7 +171,56 @@ vows.describe('Test Variable declarations').addBatch({
         var linter = new XQLint('declare variable $bar as xs:integer := 1; let $foo := 1 let $foo := $foo + $bar return $foo');
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (8)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/rendering.jq', 'utf-8'), { styleCheck: false });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (9)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/update-report-schema.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (10)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/eval.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (11)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/quantifier.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (12)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/quantifier2.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (13)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/components.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (14)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/modelstructure-for-component.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    },
+
+    'unused variable (15)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/modelstructure-for-component.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
     }
+
     //Test private fn decl
     //Test complex expressions
     //Test scripting

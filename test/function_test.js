@@ -2,7 +2,7 @@
 
 var vows = require('vows');
 var assert = require('assert');
-//var fs = require('fs');
+var fs = require('fs');
 
 var XQLint = require('../lib/xqlint').XQLint;
 
@@ -30,4 +30,10 @@ vows.describe('Test Function declarations').addBatch({
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
     },
+
+    'updating function (1)': function(){
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/update.jq', 'utf-8'), { styleCheck: false, fileName: 'update.jq' });
+        var markers = linter.getMarkers();
+        assert.equal(markers.length, 0, 'Number of markers');
+    }
 }).export(module);

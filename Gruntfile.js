@@ -9,34 +9,36 @@ module.exports = function(grunt) {
         var request = require('request');
         var FormData = require('form-data');
         var path = require('path');
+        var Q = require('q');
         var done = this.async();
-        var count = this.data.grammars.length;
-		
+        var promises = [];
         this.data.grammars.forEach(function(parser){
-
-            var requestCallback = function(err, res, body) {
-                fs.writeFileSync(parser.destination, body);
-                count--;
-                if(count === 0) {
-                    done();
-                }
-            };
-            
+            var deferred = Q.defer();
             var grammar = fs.readFileSync(parser.source);
-
             var form = new FormData();
             form.append('tz', parser.tz, { knownLength: new Buffer(parser.tz).length, contentType: 'text/plain'  });
             form.append('command', parser.command, { knownLength: new Buffer(parser.command).length, contentType: 'text/plain' });
             form.append('input', grammar, { knownLength : new Buffer(grammar).length, contentType: 'text/plain', filename: path.basename(parser.source) });
-            form.getLength(function(err, length){
-                if (err) {
-                    return requestCallback(err);
+            var length = form.getLengthSync();
+            var r = request.post('http://www.bottlecaps.de/rex/', function(err, res, body) {
+                if(err) {
+                    deferred.reject(err);
+                } else {
+                    fs.writeFileSync(parser.destination, body);
+                    deferred.resolve();
                 }
-                var r = request.post('http://www.bottlecaps.de/rex/', requestCallback);
-                r._form = form;
-                r.setHeader('content-length', length);
             });
+            r._form = form;
+            r.setHeader('content-length', length);
+            promises.push(deferred.promise);
         });
+        Q.all(promises)
+        .then(function(){
+            done();
+        })
+	    .catch(function(error){
+            grunt.fail.fatal(error);
+	    });
     });
  
     grunt.initConfig({
