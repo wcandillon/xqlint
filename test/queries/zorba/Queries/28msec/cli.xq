@@ -10,6 +10,7 @@ declare namespace err = "http://www.w3.org/2005/xqt-errors";
 declare namespace options = "http://zorba.io/options/features";
 declare namespace ann = "http://zorba.io/annotations";
 declare namespace features = "http://zorba.io/features";
+declare namespace errors = "http://28.io/errors";
 declare option options:enable "features:hof";
 
 declare variable $sausalito-home as xs:string external;
