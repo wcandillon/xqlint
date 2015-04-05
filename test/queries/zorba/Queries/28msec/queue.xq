@@ -12,7 +12,6 @@ import module namespace store = "http://www.28msec.com/modules/store";
 (: ----------------------------- Collection --------------------------------- :)
 
 (: Queue containing jobs :)
-declare collection queue:jobs as object()*;
 declare variable $queue:jobs as xs:QName := xs:QName("queue:jobs");
 
 
