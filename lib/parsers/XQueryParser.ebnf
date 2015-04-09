@@ -577,7 +577,7 @@ FTIgnoreOption
 CollectionDecl
          ::= 'collection' EQName CollectionTypeDecl?
 CollectionTypeDecl
-         ::= 'as' KindTest OccurrenceIndicator?
+         ::= 'as' ItemType OccurrenceIndicator?
 IndexName
          ::= EQName
 IndexDomainExpr
