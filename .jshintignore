@@ -1,3 +1,4 @@
+lib/parsers/ExistParser.js
 lib/parsers/XQueryParser.js
 lib/parsers/JSONiqParser.js
 lib/lexers/XQueryTokenizer.js
