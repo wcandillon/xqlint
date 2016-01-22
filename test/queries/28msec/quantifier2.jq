@@ -12,4 +12,4 @@ declare %an:nondeterministic function local:cleanup($report as item) as item*
   return $report
 };
 
-()
+local:cleanup({})
