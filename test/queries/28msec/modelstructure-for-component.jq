@@ -99,25 +99,6 @@ declare function local:enrich-json-rec($objects as object*, $level as integer) a
         |}
 };
 
-
-declare function local:enrich-json($component as object) as object
-{
-    {
-        ModelStructure : [ local:enrich-json-rec($component.ModelStructure, 0) ] ,
-        CIK : $component.CIK,
-        EntityRegistrantName : $component.EntityRegistrantName,
-        Label : $component.Label,
-        AccessionNumber : $component.AccessionNumber,
-        TableName : $component.TableName,
-        FormType : $component.FormType,
-        FiscalPeriod : $component.FiscalPeriod,
-        FiscalYear : $component.FiscalYear,
-        AcceptanceDatetime : $component.AcceptanceDatetime,
-        NetworkIdentifier: $component.NetworkIdentifier,
-        Disclosure : $component.Disclosure
-    }
-};
-
 (: Query parameters :)
 declare  %rest:case-insensitive                 variable $token              as string? external;
 declare  %rest:env                              variable $request-uri        as string  external;

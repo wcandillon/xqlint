@@ -216,9 +216,9 @@ vows.describe('Test Variable declarations').addBatch({
     },
 
     'unused variable (15)': function(){
-        var linter = new XQLint(fs.readFileSync('test/queries/28msec/modelstructure-for-component.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
+        var linter = new XQLint(fs.readFileSync('test/queries/28msec/unused-local-function.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
         var markers = linter.getMarkers();
-        assert.equal(markers.length, 0, 'Number of markers');
+        assert.equal(markers.length, 1, 'Number of markers');
     }
 
     //Test private fn decl
