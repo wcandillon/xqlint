@@ -14,12 +14,6 @@ vows.describe('Test Code Formatting').addBatch({
     },
     
     'test style check (2)': function(){
-        var linter = new XQLint(fs.readFileSync('test/queries/zorba/merry.xq', 'utf-8'), { styleCheck: true });
-        var markers = linter.getMarkers();
-        assert.equal(markers.length, 3, 'Number of markers');
-    },
-    
-    'test style check (3)': function(){
         var linter = new XQLint(fs.readFileSync('test/queries/zorba/merry.xq', 'utf-8'));
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
