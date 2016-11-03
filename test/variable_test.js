@@ -221,7 +221,7 @@ vows.describe('Test Variable declarations').addBatch({
         assert.equal(markers.length, 1, 'Number of markers');
     },
 
-    'unused variable (15)': function(){
+    'unused variable (16)': function(){
         var linter = new XQLint(fs.readFileSync('test/queries/28msec/function-item.jq', 'utf-8'), { styleCheck: false, fileName: 'report.jq' });
         var markers = linter.getMarkers();
         assert.equal(markers.length, 0, 'Number of markers');
