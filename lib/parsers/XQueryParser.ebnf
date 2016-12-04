@@ -211,7 +211,9 @@ TreatExpr
          ::= CastableExpr ( 'treat' 'as' SequenceType )?
 CastableExpr
          ::= CastExpr ( 'castable' 'as' SingleType )?
-CastExpr ::= UnaryExpr ( 'cast' 'as' SingleType )?
+CastExpr ::= ArrowExpr ( 'cast' 'as' SingleType )?
+ArrowExpr
+         ::= UnaryExpr ( '=>' ArrowFunctionSpecifier ArgumentList )*
 UnaryExpr
          ::= ( '-' | '+' )* ValueExpr
 ValueExpr
@@ -288,11 +290,16 @@ ArgumentList
          ::= '(' ( Argument ( ',' Argument )* )? ')'
 PredicateList
          ::= Predicate*
+         
 Predicate
          ::= '[' Expr ']'
 Lookup  ::= '?' KeySpecifier
 UnaryLookup ::= '?' KeySpecifier
 KeySpecifier ::= NCName | IntegerLiteral | ParenthesizedExpr | '*'
+ArrowFunctionSpecifier
+         ::= EQName
+           | VarRef
+           | ParenthesizedExpr
 Literal  ::= NumericLiteral
            | StringLiteral
 NumericLiteral
