@@ -63,3 +63,5 @@ grunt parsers
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
 * [XQLint Grunt Task](https://github.com/wcandillon/grunt-xqlint)
 * [XQLint Gulp Plugin](https://github.com/wcandillon/gulp-xqlint)
+* [eXide](https://github.com/wolfgangmm/eXide), a web-based XQuery IDE for eXist-db, [view demo](http://exist-db.org/exist/apps/eXide/).
+* [atom-existdb](https://github.com/wolfgangmm/atom-existdb), an Atom editor integration package for eXist-db.
