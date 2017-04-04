@@ -67,7 +67,7 @@ vows.describe('Test Code Completion').addBatch({
     
     'test expr (3)': function(){
         var source = '';
-        var linter = new XQLint(source);
+        var linter = new XQLint(source, { processor: '28msec' });
         var pos = { line: 0, col: source.length };
         var proposals = linter.getCompletions(pos);
         assert.equal(proposals.length, 6, 'Number of proposals');
@@ -125,7 +125,7 @@ vows.describe('Test Code Completion').addBatch({
 
     'test prefixes (1)': function(){
         var source = 'import module namespace ns="http://www.28msec.com/modules/http-response";';
-        var sctx = new StaticContext();
+        var sctx = new StaticContext(undefined, undefined, '28msec');
         var index = JSON.parse(fs.readFileSync('test/index.json', 'utf-8'));
         sctx.availableModuleNamespaces = Object.keys(index);
         var linter = new XQLint(source, { staticContext: sctx });
