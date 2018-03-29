@@ -57,7 +57,7 @@ grunt vows
 grunt parsers
 ```
 
-##Who is using this project?
+## Who is using this project?
 * [28.io cli tool](https://github.com/28msec/28)
 * [Atom Editor](https://atom.io/packages/language-jsoniq)
 * [ACE, aka the Cloud9 editor](https://github.com/ajaxorg/ace), [view demo](http://try.zorba.io).
