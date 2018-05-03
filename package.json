@@ -6,7 +6,7 @@
   },
   "name": "xqlint",
   "description": "XQuery & JSONiq Quality Checker",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "keywords": [
     "jsoniq",
     "xquery",
@@ -29,7 +29,7 @@
     "final-fs": "~1.6.0",
     "lodash": "^3.2.0",
     "q": "~1.0.0",
-    "update-notifier": "~0.2.0"
+    "update-notifier": "~2.5.0"
   },
   "devDependencies": {
     "browserify": "~4.2.0",
