@@ -27,7 +27,7 @@
     "colors": "~0.6.2",
     "commander": "~2.3.0",
     "final-fs": "~1.6.0",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "q": "~1.0.0",
     "update-notifier": "~2.5.0"
   },
