@@ -7,29 +7,34 @@ module.exports = function(grunt) {
     grunt.registerMultiTask('rex', 'Generate Parsers', function(){
         var fs = require('fs');
         var request = require('request');
-        var FormData = require('form-data');
-        var path = require('path');
         var Q = require('q');
         var done = this.async();
         var promises = [];
         this.data.grammars.forEach(function(parser){
             var deferred = Q.defer();
-            var grammar = fs.readFileSync(parser.source);
-            var form = new FormData();
-            form.append('tz', parser.tz, { knownLength: new Buffer(parser.tz).length, contentType: 'text/plain'  });
-            form.append('command', parser.command, { knownLength: new Buffer(parser.command).length, contentType: 'text/plain' });
-            form.append('input', grammar, { knownLength : new Buffer(grammar).length, contentType: 'text/plain', filename: path.basename(parser.source) });
-            var length = form.getLengthSync();
-            var r = request.post('http://www.bottlecaps.de/rex/', function(err, res, body) {
-                if(err) {
-                    deferred.reject(err);
-                } else {
-                    fs.writeFileSync(parser.destination, body);
-                    deferred.resolve();
+            request(
+                {
+                    method: "POST",
+                    url: "https://bottlecaps.de/rex",
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    formData : {
+                        "input": fs.createReadStream(parser.source),
+                        "command": parser.command,
+						"tz": new Date().getTimezoneOffset()
+                    }
+                },
+                function(err, res, body) {
+                    if(err) {
+                        deferred.reject(err);
+                    }
+                    else {
+                        fs.writeFileSync(parser.destination, body);
+                        deferred.resolve();
+                    }
                 }
-            });
-            r._form = form;
-            r.setHeader('content-length', length);
+            );
             promises.push(deferred.promise);
         });
         Q.all(promises)
@@ -48,14 +53,12 @@ module.exports = function(grunt) {
 					{
 						source: 'lib/parsers/XQueryParser.ebnf',
 						destination: 'lib/parsers/XQueryParser.js',
-						command: '-ll 2 -backtrack -tree -javascript -a xqlint',
-						tz: '-60',
+						command: '-ll 2 -backtrack -tree -javascript -a xqlint'
 					},
 					{
 						source: 'lib/parsers/JSONiqParser.ebnf',
 						destination: 'lib/parsers/JSONiqParser.js',
-						command: '-ll 2 -backtrack -tree -javascript -a xqlint',
-						tz: '-60',
+						command: '-ll 2 -backtrack -tree -javascript -a xqlint'
 					}
                 ]
             },
@@ -64,14 +67,12 @@ module.exports = function(grunt) {
                     {
 						source: 'lib/lexers/XQueryTokenizer.ebnf',
                         destination: 'lib/lexers/XQueryTokenizer.js',
-                        command: '-ll 2 -backtrack -tree -javascript -a xqlint',
-                        tz: '-60'
+                        command: '-ll 2 -backtrack -tree -javascript -a xqlint'
                     },
                     {
 						source: 'lib/lexers/JSONiqTokenizer.ebnf',
                         destination: 'lib/lexers/JSONiqTokenizer.js',
-                        command: '-ll 2 -backtrack -tree -javascript -a xqlint',
-                        tz: '-60'
+                        command: '-ll 2 -backtrack -tree -javascript -a xqlint'
                     }
 				]
 			}
