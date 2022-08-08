@@ -14,15 +14,15 @@ module.exports = function(grunt) {
             var deferred = Q.defer();
             request(
                 {
-                    method: "POST",
-                    url: "https://bottlecaps.de/rex",
+                    method: 'POST',
+                    url: 'https://bottlecaps.de/rex',
                     headers: {
-                        "Content-Type": "multipart/form-data"
+                        'Content-Type': 'multipart/form-data'
                     },
                     formData : {
-                        "input": fs.createReadStream(parser.source),
-                        "command": parser.command,
-						"tz": new Date().getTimezoneOffset()
+                        'input': fs.createReadStream(parser.source),
+                        'command': parser.command,
+						'tz': new Date().getTimezoneOffset()
                     }
                 },
                 function(err, res, body) {
