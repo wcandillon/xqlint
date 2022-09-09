@@ -1,12 +1,11 @@
 {
   "author": {
     "name": "William Candillon",
-    "email": "w@28.io",
-    "url": "http://28.io"
+    "email": "wcandillon@gmail.com"
   },
   "name": "xqlint",
   "description": "XQuery & JSONiq Quality Checker",
-  "version": "0.3.0",
+  "version": "0.5.2",
   "keywords": [
     "jsoniq",
     "xquery",
@@ -27,21 +26,21 @@
     "colors": "~0.6.2",
     "commander": "~2.3.0",
     "final-fs": "~1.6.0",
-    "lodash": "^3.2.0",
+    "lodash": "4.17.21",
     "q": "~1.0.0",
-    "update-notifier": "~0.2.0"
+    "update-notifier": "~2.5.0"
   },
   "devDependencies": {
-    "browserify": "~4.2.0",
-    "form-data": "~0.1.2",
-    "grunt": "~0.4.2",
-    "grunt-browserify": "~2.1.1",
-    "grunt-contrib-jshint": "~0.10.0",
+    "browserify": "16.2.1",
+    "form-data": "2.3.2",
+    "grunt": "1.5.3",
+    "grunt-browserify": "5.3.0",
+    "grunt-contrib-jshint": "1.1.0",
     "grunt-vows": "~0.4.1",
-    "matchdep": "~0.3.0",
-    "request": "~2.33.0",
-    "time-grunt": "~0.1.1",
-    "vows": "^0.7.0"
+    "matchdep": "2.0.0",
+    "request": "2.87.0",
+    "time-grunt": "~1.4.0",
+    "vows": "^0.8.3"
   },
   "optionalDependencies": {},
   "engines": {

@@ -29,7 +29,7 @@ var files = getFiles('test/queries/zorba');
 files = files.concat(getFiles('test/queries/zorba_extra'));
 files.forEach(function(file){
     batch[file] = function(){
-        var linter = new XQLint(fs.readFileSync(file, 'utf-8'), { styleCheck: false, fileName: file });
+        var linter = new XQLint(fs.readFileSync(file, 'utf-8'), { styleCheck: false, fileName: file, processor: '28msec' });
         var syntaxError = linter.hasSyntaxError();
         if(syntaxError) {
             assert.equal(syntaxError, false, linter.getMarkers()[0].message);
