@@ -84,7 +84,9 @@ VarDefaultValue
 ContextItemDecl
          ::= 'declare' 'context' 'item' ( 'as' ItemType )? ( ':=' VarValue | 'external' ( ':=' VarDefaultValue )? )
 FunctionDecl
-         ::= 'function' EQName '(' ParamList? ')' ( 'as' SequenceType )? ( FunctionBody | 'external' )
+         ::= 'function' EQName '(' ParamList? ')' ReturnType? ( FunctionBody | 'external' )
+ReturnType
+         ::= 'as' SequenceType
 ParamList
          ::= Param ( ',' Param )*
 Param    ::= '$' EQName TypeDeclaration?
