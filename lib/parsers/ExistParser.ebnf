@@ -224,7 +224,9 @@ TreatExpr
          ::= CastableExpr ( 'treat' 'as' SequenceType )?
 CastableExpr
          ::= CastExpr ( 'castable' 'as' SingleType )?
-CastExpr ::= TransformWithExpr ( 'cast' 'as' SingleType )?
+CastExpr ::= ArrowExpr ( 'cast' 'as' SingleType )?
+ArrowExpr
+         ::= UnaryExpr ( '=>' ArrowFunctionSpecifier ArgumentList )*
 TransformWithExpr
          ::= UnaryExpr ( 'transform' 'with' '{' Expr? '}' )?
 UnaryExpr
@@ -315,6 +317,10 @@ PrimaryExpr
            | UnorderedExpr
            | Constructor
            | FunctionItemExpr
+           | MapConstructor
+           | ArrayConstructor
+           | StringConstructor
+           | UnaryLookup
 Literal  ::= NumericLiteral
            | StringLiteral
 NumericLiteral
@@ -388,8 +394,44 @@ ComputedConstructor
            | CompTextConstructor
            | CompCommentConstructor
            | CompPIConstructor
+           | MapConstructor
 CompDocConstructor
          ::= 'document' '{' Expr '}'
+MapConstructor
+         ::= 'map' '{' ( MapConstructorEntry ( ',' MapConstructorEntry )* )? '}'
+MapConstructorEntry
+         ::= MapKeyExpr ':' MapValueExpr
+MapKeyExpr
+         ::= ExprSingle
+MapValueExpr
+         ::= ExprSingle
+ArrayConstructor
+         ::= SquareArrayConstructor
+           | CurlyArrayConstructor
+SquareArrayConstructor
+         ::= '[' ( ExprSingle ( ',' ExprSingle )* )? ']'
+CurlyArrayConstructor
+         ::= 'array' EnclosedExpr
+StringConstructor
+         ::= '``[' StringConstructorContent ']``'
+          /* ws: explicit */
+StringConstructorContent
+         ::= StringConstructorChars ( StringConstructorInterpolation StringConstructorChars )*
+          /* ws: explicit */
+StringConstructorInterpolation
+         ::= '`{' Expr? '}`'
+
+UnaryLookup
+         ::= '?' KeySpecifier
+KeySpecifier
+         ::= NCName
+           | IntegerLiteral
+           | ParenthesizedExpr
+           | '*'
+ArrowFunctionSpecifier
+         ::= EQName
+           | VarRef
+           | ParenthesizedExpr
 CompElemConstructor
          ::= 'element' ( EQName | '{' Expr '}' ) '{' ContentExpr? '}'
 ContentExpr
@@ -431,6 +473,24 @@ ItemType ::= KindTest
            | FunctionTest
            | AtomicOrUnionType
            | ParenthesizedItemType
+           | MapType
+           | JSONTest
+           | StructuredItemTest
+JSONTest ::= 
+          JSONItemTest
+        | JSONObjectTest
+        | JSONArrayTest
+
+MapType ::= 'map' '(' ( '*' | (AtomicOrUnionType ',' SequenceType) ) ')'
+
+MapExpr ::= 'map' '{' ( ExprSingle ":" ExprSingle ( "," ExprSingle ":" ExprSingle )* )? '}'
+StructuredItemTest ::= "structured-item" "(" ")"
+
+JSONItemTest ::= "json-item" "(" ")"
+
+JSONObjectTest ::= "object" "(" ")"
+
+JSONArrayTest ::= "array" "(" ")"
 AtomicOrUnionType
          ::= EQName
 KindTest ::= DocumentTest
@@ -534,6 +594,7 @@ QName    ::= FunctionName
            | 'function'
            | 'if'
            | 'item'
+           | 'map'
            | 'namespace-node'
            | 'node'
            | 'processing-instruction'
@@ -653,6 +714,7 @@ NCName   ::= NCName^Token
            | 'le'
            | 'let'
            | 'lt'
+           | 'map'
            | 'mod'
            | 'modify'
            | 'ne'
@@ -735,6 +797,9 @@ UnprefixedName
 Prefix   ::= NCName
 LocalPart
          ::= NCName
+StringConstructorChars
+         ::= ( Char* - ( Char* ( '`{' | ']``' ) Char* ) ) &( '`{' | ']`' )
+          /* ws: explicit */
 NCName   ::= Name - ( Char* ':' Char* )
 S        ::= ( #x0020 | #x0009 | #x000D | #x000A )+
 Char     ::= #x0009
@@ -771,9 +836,9 @@ DelimitingChar
 DelimitingChar
           \\ DecimalLiteral DoubleLiteral IntegerLiteral
 NonNCNameChar
-          \\ NCName^Token QName^Token URIQualifiedName 'NaN' 'after' 'allowing' 'ancestor' 'ancestor-or-self' 'and' 'as' 'ascending' 'at' 'attribute' 'base-uri' 'before' 'boundary-space' 'by' 'case' 'cast' 'castable' 'catch' 'child' 'collation' 'comment' 'construction' 'context' 'copy' 'copy-namespaces' 'count' 'decimal-format' 'decimal-separator' 'declare' 'default' 'delete' 'descendant' 'descendant-or-self' 'descending' 'digit' 'div' 'document' 'document-node' 'element' 'else' 'empty' 'empty-sequence' 'encoding' 'end' 'eq' 'every' 'except' 'external' 'first' 'following' 'following-sibling' 'for' 'function' 'ge' 'greatest' 'group' 'grouping-separator' 'gt' 'idiv' 'if' 'import' 'in' 'infinity' 'inherit' 'insert' 'update' 'instance' 'intersect' 'into' 'is' 'item' 'last' 'lax' 'le' 'least' 'let' 'lt' 'minus-sign' 'mod' 'modify' 'module' 'namespace' 'namespace-node' 'ne' 'next' 'no-inherit' 'no-preserve' 'node' 'nodes' 'of' 'only' 'option' 'or' 'order' 'ordered' 'ordering' 'parent' 'pattern-separator' 'per-mille' 'percent' 'preceding' 'preceding-sibling' 'preserve' 'previous' 'processing-instruction' 'rename' 'replace' 'return' 'revalidation' 'satisfies' 'schema' 'schema-attribute' 'schema-element' 'self' 'skip' 'sliding' 'some' 'stable' 'start' 'strict' 'strip' 'switch' 'text' 'then' 'to' 'treat' 'try' 'tumbling' 'type' 'typeswitch' 'union' 'unordered' 'updating' 'validate' 'value' 'variable' 'version' 'when' 'where' 'window' 'with' 'xquery' 'zero-digit'
+          \\ NCName^Token QName^Token URIQualifiedName 'NaN' 'after' 'allowing' 'ancestor' 'ancestor-or-self' 'and' 'as' 'ascending' 'at' 'attribute' 'base-uri' 'before' 'boundary-space' 'by' 'case' 'cast' 'castable' 'catch' 'child' 'collation' 'comment' 'construction' 'context' 'copy' 'copy-namespaces' 'count' 'decimal-format' 'decimal-separator' 'declare' 'default' 'delete' 'descendant' 'descendant-or-self' 'descending' 'digit' 'div' 'document' 'document-node' 'element' 'else' 'empty' 'empty-sequence' 'encoding' 'end' 'eq' 'every' 'except' 'external' 'first' 'following' 'following-sibling' 'for' 'function' 'ge' 'greatest' 'group' 'grouping-separator' 'gt' 'idiv' 'if' 'import' 'in' 'infinity' 'inherit' 'insert' 'update' 'instance' 'intersect' 'into' 'is' 'item' 'last' 'lax' 'le' 'least' 'let' 'lt' 'map' 'minus-sign' 'mod' 'modify' 'module' 'namespace' 'namespace-node' 'ne' 'next' 'no-inherit' 'no-preserve' 'node' 'nodes' 'of' 'only' 'option' 'or' 'order' 'ordered' 'ordering' 'parent' 'pattern-separator' 'per-mille' 'percent' 'preceding' 'preceding-sibling' 'preserve' 'previous' 'processing-instruction' 'rename' 'replace' 'return' 'revalidation' 'satisfies' 'schema' 'schema-attribute' 'schema-element' 'self' 'skip' 'sliding' 'some' 'stable' 'start' 'strict' 'strip' 'switch' 'text' 'then' 'to' 'treat' 'try' 'tumbling' 'type' 'typeswitch' 'union' 'unordered' 'updating' 'validate' 'value' 'variable' 'version' 'when' 'where' 'window' 'with' 'xquery' 'zero-digit'
 QName^Token
-          << 'after' 'ancestor' 'ancestor-or-self' 'and' 'as' 'ascending' 'attribute' 'before' 'case' 'cast' 'castable' 'child' 'collation' 'comment' 'copy' 'count' 'declare' 'default' 'delete' 'descendant' 'descendant-or-self' 'descending' 'div' 'document' 'document-node' 'element' 'else' 'empty' 'empty-sequence' 'end' 'eq' 'every' 'except' 'first' 'following' 'following-sibling' 'for' 'function' 'ge' 'group' 'gt' 'idiv' 'if' 'import' 'insert' 'update' 'instance' 'intersect' 'into' 'invoke' 'is' 'item' 'last' 'le' 'let' 'lt' 'mod' 'modify' 'module' 'namespace' 'namespace-node' 'ne' 'node' 'only' 'or' 'order' 'ordered' 'parent' 'preceding' 'preceding-sibling' 'processing-instruction' 'rename' 'replace' 'return' 'satisfies' 'schema-attribute' 'schema-element' 'self' 'some' 'stable' 'start' 'switch' 'text' 'to' 'transform' 'treat' 'try' 'typeswitch' 'union' 'unordered' 'validate' 'where' 'with' 'xquery'
+          << 'after' 'ancestor' 'ancestor-or-self' 'and' 'as' 'ascending' 'attribute' 'before' 'case' 'cast' 'castable' 'child' 'collation' 'comment' 'copy' 'count' 'declare' 'default' 'delete' 'descendant' 'descendant-or-self' 'descending' 'div' 'document' 'document-node' 'element' 'else' 'empty' 'empty-sequence' 'end' 'eq' 'every' 'except' 'first' 'following' 'following-sibling' 'for' 'function' 'ge' 'group' 'gt' 'idiv' 'if' 'import' 'insert' 'update' 'instance' 'intersect' 'into' 'invoke' 'is' 'item' 'last' 'le' 'let' 'lt' 'map' 'mod' 'modify' 'module' 'namespace' 'namespace-node' 'ne' 'node' 'only' 'or' 'order' 'ordered' 'parent' 'preceding' 'preceding-sibling' 'processing-instruction' 'rename' 'replace' 'return' 'satisfies' 'schema-attribute' 'schema-element' 'self' 'some' 'stable' 'start' 'switch' 'text' 'to' 'transform' 'treat' 'try' 'typeswitch' 'union' 'unordered' 'validate' 'value' 'where' 'with' 'xquery'
 NCName^Token
-          << 'after' 'and' 'as' 'ascending' 'before' 'case' 'cast' 'castable' 'collation' 'count' 'default' 'descending' 'div' 'else' 'empty' 'end' 'eq' 'except' 'for' 'ge' 'group' 'gt' 'idiv' 'instance' 'intersect' 'into' 'is' 'le' 'let' 'lt' 'mod' 'modify' 'ne' 'only' 'or' 'order' 'return' 'satisfies' 'stable' 'start' 'to' 'transform' 'treat' 'union' 'where' 'with' 'following' 'preceding'
+          << 'after' 'and' 'as' 'ascending' 'before' 'case' 'cast' 'castable' 'collation' 'count' 'default' 'descending' 'div' 'else' 'empty' 'end' 'eq' 'except' 'for' 'ge' 'group' 'gt' 'idiv' 'instance' 'intersect' 'into' 'is' 'le' 'let' 'lt' 'map' 'mod' 'modify' 'ne' 'only' 'or' 'order' 'return' 'satisfies' 'stable' 'start' 'to' 'transform' 'treat' 'union' 'where' 'with' 'following' 'preceding'
 '*'       << Wildcard

@@ -1,0 +1,7 @@
+---
+- id: xqlint
+  name: check xquery
+  description: Test XQuery scripts and modules with xqlint
+  entry: xqlint lint --precommit
+  language: node
+  files: \.xq(l|m)?$
