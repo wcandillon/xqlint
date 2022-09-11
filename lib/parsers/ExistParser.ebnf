@@ -796,6 +796,10 @@ UnprefixedName
          ::= LocalPart
 Prefix   ::= NCName
 LocalPart
+         ::= NCName UnaryLookup?
+UnaryLookup
+         ::= '?' KeySpecifier
+KeySpecifier
          ::= NCName
 StringConstructorChars
          ::= ( Char* - ( Char* ( '`{' | ']``' ) Char* ) ) &( '`{' | ']`' )
