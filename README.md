@@ -22,6 +22,12 @@ $ xqlint lint <path> [-s, --style-check <yes, no>]
 ```
 ![result](https://dl.dropboxusercontent.com/u/1487285/Screenshot%202014-04-07%2011.06.31.png)
 
+#### eXist-db syntax
+
+```bash
+$ xqlint lint [-X, --existdb] <path>
+```
+
 ### Print AST as XML
 
 ```bash
@@ -32,6 +38,18 @@ $ xqlint ast <path>
 
 ```bash
 $ xqlint highlight <path>
+```
+
+## Pre-commit hook
+
+To utilise xqlint as a [pre-commit hook](https://pre-commit.com/) an example `.pre-commit-config.yaml` might look like the following:
+
+```yaml
+- repo: https://github.com/wcandillon/xqlint
+  rev: <revision>
+  hooks:
+    - id: xqlint
+      args: ["--existdb"]
 ```
 
 ## Development
