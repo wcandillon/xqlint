@@ -28,7 +28,7 @@
     "final-fs": "~1.6.0",
     "lodash": "4.17.21",
     "q": "~1.0.0",
-    "update-notifier": "~2.5.0"
+    "update-notifier": "~7.3.1"
   },
   "devDependencies": {
     "browserify": "16.2.1",
